@@ -330,22 +330,31 @@ public class SP_POIN_RcvListView_Controller {
                         }
                     }
 
-                    //insert sku in product_indv
-                    String prodIndv = "INSERT INTO product_indv(upc,sku,date_added,location) VALUES (?,?,?,?)";
-                    PreparedStatement pstindv = connectDB.prepareStatement(prodIndv);
-                    pstindv.setString(1, upc);
-                    pstindv.setString(2, result);
-                    pstindv.setString(3, String.valueOf(java.time.LocalDate.now()));
-                    pstindv.setString(4, loc);
-                    pstindv.execute();
+                    String getExpDate = "SELECT expiry_date FROM POin_rcv WHERE upc = '"+ upc + "' AND PONum = '"+ PONum + "' ;";
+                    Statement stExpDate = connectDB.createStatement();
+                    ResultSet rsExpDate = stExpDate.executeQuery(getExpDate);
 
-                    //insert into POin rcv detail
-                    String prodrcvDet = "INSERT INTO POin_rcv_detail(DONum,upc,sku) VALUES (?,?,?)";
-                    PreparedStatement pstrcvDet = connectDB.prepareStatement(prodrcvDet);
-                    pstrcvDet.setString(1, DONum);
-                    pstrcvDet.setString(2, upc);
-                    pstrcvDet.setString(3, result);
-                    pstrcvDet.execute();
+                    while(rsExpDate.next()) {
+
+
+                        //insert sku in product_indv
+                        String prodIndv = "INSERT INTO product_indv(upc,sku,date_added,location,expiry_date) VALUES (?,?,?,?,?)";
+                        PreparedStatement pstindv = connectDB.prepareStatement(prodIndv);
+                        pstindv.setString(1, upc);
+                        pstindv.setString(2, result);
+                        pstindv.setString(3, String.valueOf(java.time.LocalDate.now()));
+                        pstindv.setString(4, loc);
+                        pstindv.setString(5, String.valueOf(rsExpDate.getDate("expiry_date")));
+                        pstindv.execute();
+
+                        //insert into POin rcv detail
+                        String prodrcvDet = "INSERT INTO POin_rcv_detail(DONum,upc,sku) VALUES (?,?,?)";
+                        PreparedStatement pstrcvDet = connectDB.prepareStatement(prodrcvDet);
+                        pstrcvDet.setString(1, DONum);
+                        pstrcvDet.setString(2, upc);
+                        pstrcvDet.setString(3, result);
+                        pstrcvDet.execute();
+                    }
 
                 }
             }

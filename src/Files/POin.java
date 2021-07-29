@@ -1,5 +1,7 @@
 package Files;
 
+import javafx.beans.property.ObjectProperty;
+
 import java.net.PortUnreachableException;
 import java.security.cert.PolicyNode;
 import java.sql.Date;
@@ -10,7 +12,7 @@ public class POin {
     String PONum,supplier,orderBy,status;
     String upc,prod_name;
     String DONum, rcvBy,appBy;
-    Date date_rcv,orderDate,eta;
+    Date date_rcv,orderDate,eta,expDate;
 
     public POin(int sn, String PONum, String supplier, String orderBy, Date orderDate, String status) {
         this.sn = sn;
@@ -67,13 +69,14 @@ public class POin {
         this.eta=eta;
     }
 
-    public POin(int sn,String upc,String prod_name,int qty_ordered,int qty_rcv,int qty_remaining){
+    public POin(int sn,String upc,String prod_name,int qty_ordered,int qty_rcv,int qty_remaining,Date expDate){
         this.sn=sn;
         this.upc= upc;
         this.prod_name= prod_name;
         this.qty_ordered=qty_ordered;
         this.qty_rcv=qty_rcv;
         this.qty_remaining=qty_remaining;
+        this.expDate = expDate;
     }
 
     public POin(int sn, String poNum, String doNum, String supplier, String rcvBy, Date date_rcv) {
@@ -83,6 +86,14 @@ public class POin {
         this.supplier =supplier;
         this.rcvBy=rcvBy;
         this.date_rcv=date_rcv;
+    }
+
+    public Date getExpDate() {
+        return expDate;
+    }
+
+    public void setExpDate(Date expDate) {
+        this.expDate = expDate;
     }
 
     public Date getOrderDate() {
@@ -222,5 +233,8 @@ public class POin {
     }
 
     public void qty_rcv(Integer newValue) {
+    }
+
+    public void expDate(String newValue) {
     }
 }

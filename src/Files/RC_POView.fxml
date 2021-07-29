@@ -34,10 +34,11 @@
         <columns>
           <TableColumn fx:id="col_sn" prefWidth="75.0" style="-fx-background-color: white; -fx-alignment: center;" text="S/N" />
           <TableColumn fx:id="col_upc" prefWidth="255.0" style="-fx-background-color: white; -fx-alignment: center;" text="UPC" />
-            <TableColumn fx:id="col_productName" prefWidth="362.0" style="-fx-background-color: white; -fx-alignment: center;" text="Product Name" />
-            <TableColumn fx:id="col_qtyOrd" prefWidth="186.0" style="-fx-background-color: white; -fx-alignment: center;" text="Qty Ordered" />
-            <TableColumn fx:id="col_qtyRcv" onEditCommit="#editQtyRcv" prefWidth="173.0" style="-fx-background-color: white; -fx-alignment: center;" text="Qty Received" />
-            <TableColumn fx:id="col_qtyRem" prefWidth="148.0" style="-fx-background-color: white; -fx-alignment: center;" text="Qty Remaining" />
+            <TableColumn fx:id="col_productName" prefWidth="269.0" style="-fx-background-color: white; -fx-alignment: center;" text="Product Name" />
+            <TableColumn fx:id="col_qtyOrd" prefWidth="152.0" style="-fx-background-color: white; -fx-alignment: center;" text="Qty Ordered" />
+            <TableColumn fx:id="col_qtyRcv" onEditCommit="#editQtyRcv" prefWidth="145.0" style="-fx-background-color: white; -fx-alignment: center;" text="Qty Received" />
+            <TableColumn fx:id="col_qtyRem" prefWidth="150.0" style="-fx-background-color: white; -fx-alignment: center;" text="Qty Remaining" />
+            <TableColumn fx:id="col_expDate" onEditCommit="#editExpDate" prefWidth="153.0" style="-fx-background-color: white; -fx-alignment: center;" text="Expiry Date" />
         </columns>
       </TableView>
       <TextField fx:id="TF_keyword" layoutX="801.0" layoutY="60.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
@@ -51,10 +52,10 @@
          </font>
       </Button>
       <ComboBox fx:id="CB_field" layoutX="957.0" layoutY="59.0" prefHeight="30.0" prefWidth="150.0" promptText="Select Field" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
-      <Label layoutX="65.0" layoutY="59.0" prefHeight="25.0" prefWidth="76.0" text="PO Number:" />
-      <Label layoutX="65.0" layoutY="90.0" prefHeight="25.0" prefWidth="55.0" text="Supplier:" />
-      <Label fx:id="Lab_PONum" layoutX="134.0" layoutY="62.0" prefHeight="25.0" prefWidth="149.0" />
-      <Label fx:id="Lab_sup" layoutX="134.0" layoutY="93.0" prefHeight="25.0" prefWidth="149.0" />
+      <Label layoutX="65.0" layoutY="59.0" prefHeight="25.0" prefWidth="90.0" text="PO Number:" />
+      <Label layoutX="65.0" layoutY="90.0" prefHeight="25.0" prefWidth="60.0" text="Supplier:" />
+      <Label fx:id="Lab_PONum" layoutX="155.0" layoutY="63.0" prefHeight="25.0" prefWidth="149.0" />
+      <Label fx:id="Lab_sup" layoutX="155.0" layoutY="90.0" prefHeight="25.0" prefWidth="149.0" />
       <Button fx:id="updateBtn" layoutX="1070.0" layoutY="652.0" mnemonicParsing="false" onAction="#update" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Update" textFill="WHITE">
          <font>
             <Font name="Bodoni MT" size="14.0" />

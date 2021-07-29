@@ -4,11 +4,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Callback;
+import javafx.util.converter.DateStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.Optional;
 
@@ -42,6 +47,9 @@ public class RC_POView_Controller {
     private TableColumn<POin, Integer> col_qtyRem;
 
     @FXML
+    private TableColumn<POin, String> col_expDate;
+
+    @FXML
     private TextField TF_keyword;
 
     @FXML
@@ -60,6 +68,7 @@ public class RC_POView_Controller {
     private Button updateBtn;
 
     String Username,PONum;
+    Date expDate = Date.valueOf(java.time.LocalDate.now());
 
     ObservableList<POin> rcvOb = FXCollections.observableArrayList();
 
@@ -72,6 +81,7 @@ public class RC_POView_Controller {
         this.PONum =PONum;
 
         int count = 1;
+
 
         try{
             DatabaseConnection con = new DatabaseConnection();
@@ -88,7 +98,7 @@ public class RC_POView_Controller {
 
                 while(rsName.next()) {
                     rcvOb.add(new POin(count, queryResult.getString("upc"), rsName.getString("prod_name"),
-                            queryResult.getInt("qty_ordered"), queryResult.getInt("qty_rcv"),queryResult.getInt("qty_remaining")));
+                            queryResult.getInt("qty_ordered"), queryResult.getInt("qty_rcv"),queryResult.getInt("qty_remaining"),expDate));
                     count++;
                 }
             }
@@ -97,6 +107,37 @@ public class RC_POView_Controller {
             throwables.printStackTrace();
         }
 
+        Callback<TableColumn<POin, String>, TableCell<POin, String>> cellFactory
+                = //
+                new Callback<TableColumn<POin, String>, TableCell<POin, String>>() {
+                    @Override
+                    public TableCell call(final TableColumn<POin, String> param) {
+                        final TableCell<POin, String> cell = new TableCell<POin, String>() {
+
+                            final DatePicker btn = new DatePicker();
+
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    btn.setOnAction(event -> {
+                                        POin entry = getTableView().getItems().get(getIndex());
+                                        expDate = Date.valueOf(btn.getValue());
+                                        entry.expDate = expDate;
+
+                                    });
+                                    setGraphic(btn);
+                                    setText(null);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
         //fill table coloumn
         col_sn.setCellValueFactory((new PropertyValueFactory<>("sn")));
         col_upc.setCellValueFactory((new PropertyValueFactory<>("upc")));
@@ -104,6 +145,7 @@ public class RC_POView_Controller {
         col_qtyOrd.setCellValueFactory((new PropertyValueFactory<>("qty_ordered")));
         col_qtyRcv.setCellValueFactory((new PropertyValueFactory<>("qty_rcv")));
         col_qtyRem.setCellValueFactory((new PropertyValueFactory<>("qty_remaining")));
+        col_expDate.setCellFactory(cellFactory);
 
         tbl_PO.setItems(rcvOb);
 
@@ -120,7 +162,7 @@ public class RC_POView_Controller {
 
     @FXML
     void searchFunction(ActionEvent event) {
-
+        System.out.println("Date" + rcvOb.get(0).expDate);
     }
 
     @FXML
@@ -144,7 +186,7 @@ public class RC_POView_Controller {
         PreparedStatement pstDet = connectDB.prepareStatement(updateDet);
 
         //insert values to POin_rcv
-        String updateVal = "INSERT INTO POin_rcv (PONum,DONum,upc,qty,rcvBy,date_rcv) VALUES (?,?,?,?,?,?) " ;
+        String updateVal = "INSERT INTO POin_rcv (PONum,DONum,upc,qty,rcvBy,date_rcv,expiry_date) VALUES (?,?,?,?,?,?,?) " ;
         PreparedStatement pstupdateVal = connectDB.prepareStatement(updateVal);
 
         for(POin p:rcvOb){
@@ -154,6 +196,7 @@ public class RC_POView_Controller {
             pstupdateVal.setString(4, String.valueOf(p.qty_rcv));
             pstupdateVal.setString(5, Username);
             pstupdateVal.setString(6,String.valueOf(java.time.LocalDate.now()));
+            pstupdateVal.setString(7, String.valueOf(p.expDate));
 
             pstDet.setString(1,String.valueOf(p.qty_rcv));
             pstDet.setString(2,p.upc);
@@ -169,4 +212,11 @@ public class RC_POView_Controller {
         POin po = tbl_PO.getSelectionModel().getSelectedItem();
         po.qty_rcv(pOinIntegerCellEditEvent.getNewValue());
     }
+
+
+    public void editExpDate(TableColumn.CellEditEvent<POin, String> pOinDateCellEditEvent) {
+        POin po = tbl_PO.getSelectionModel().getSelectedItem();
+    }
+
+
 }
