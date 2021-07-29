@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Files.SP_DOOUT_Controller">
+   <children>
+      <Button fx:id="closeBtn" layoutX="1164.0" layoutY="1.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="X">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <ImageView fx:id="logoutBtn" fitHeight="22.0" fitWidth="36.0" layoutX="1128.0" layoutY="11.0" onMouseClicked="#logoutAcc" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/logout.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="14.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/logo192.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="welcomeLabel" layoutX="52.0" layoutY="2.0" prefHeight="36.0" prefWidth="312.0">
+         <font>
+            <Font name="Bodoni MT Condensed" size="24.0" />
+         </font>
+      </Label>
+      <Separator layoutY="33.0" prefHeight="12.0" prefWidth="1014.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <VBox layoutX="2.0" layoutY="45.0" prefHeight="656.0" prefWidth="258.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+         <children>
+            <Button fx:id="pickListBtn" mnemonicParsing="false" onAction="#Nav_pickList" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Picking List" textFill="WHITE">
+               <font>
+                  <Font name="Bodoni MT" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="WHEnvBtn" mnemonicParsing="false" onAction="#Nav_productMgt" prefHeight="25.0" prefWidth="278.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Product Management" textFill="WHITE">
+               <font>
+                  <Font name="Bodoni MT" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="POINBtn" mnemonicParsing="false" onAction="#Nav_PO_In" prefHeight="25.0" prefWidth="275.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Purchase Order (IN)" textFill="WHITE">
+               <font>
+                  <Font name="Bodoni MT" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="POOutBtn" mnemonicParsing="false" onAction="#Nav_DO_Out" prefHeight="25.0" prefWidth="285.0" style="-fx-background-color: #BF68FF; -fx-background-radius: 1em;" text="Delivery Order (OUT)" textFill="WHITE">
+               <font>
+                  <Font name="Bodoni MT" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </VBox.margin>
+            </Button>
+            <Separator prefHeight="12.0" prefWidth="1014.0" />
+            <Button fx:id="POBtn" mnemonicParsing="false" onAction="#Nav_viewDOOUT" prefHeight="25.0" prefWidth="275.0" style="-fx-background-color: #BF68FF; -fx-background-radius: 1em;" text="View Delivery Order" textFill="WHITE">
+               <font>
+                  <Font name="Bodoni MT" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+         <padding>
+            <Insets right="2.0" />
+         </padding>
+      </VBox>
+      <TableView fx:id="tbl_DO" layoutX="258.0" layoutY="90.0" prefHeight="611.0" prefWidth="938.0" style="-fx-background-color: white;">
+         <columns>
+            <TableColumn fx:id="col_sn" prefWidth="50.0" style="-fx-background-color: white; -fx-alignment: center;" text="S/N" />
+            <TableColumn fx:id="col_PONum" prefWidth="143.0" style="-fx-background-color: white; -fx-alignment: center;" text="PO Number" />
+            <TableColumn fx:id="col_DONum" prefWidth="130.0" style="-fx-background-color: white; -fx-alignment: center;" text="DO Number" />
+            <TableColumn fx:id="col_comp" prefWidth="151.0" style="-fx-background-color: white; -fx-alignment: center;" text="Company" />
+            <TableColumn fx:id="col_DateCreated" prefWidth="142.0" style="-fx-background-color: white; -fx-alignment: center;" text="Date Created" />
+            <TableColumn fx:id="col_DelDate" prefWidth="141.0" style="-fx-background-color: white; -fx-alignment: center;" text="Delivery Date" />
+            <TableColumn fx:id="col_action" prefWidth="180.0" style="-fx-background-color: white; -fx-alignment: center;" text="Action" />
+         </columns>
+      </TableView>
+      <TextField fx:id="TF_keyword" layoutX="804.0" layoutY="46.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
+         <font>
+            <Font name="Bodoni MT" size="12.0" />
+         </font>
+      </TextField>
+      <Button fx:id="searchBtn" layoutX="1118.0" layoutY="47.0" mnemonicParsing="false" onAction="#searchFunction" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Search" textFill="WHITE">
+         <font>
+            <Font name="Bodoni MT" size="14.0" />
+         </font>
+      </Button>
+      <ComboBox fx:id="CB_field" layoutX="960.0" layoutY="45.0" prefHeight="30.0" prefWidth="150.0" promptText="Select Field" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
+   </children>
+</AnchorPane>

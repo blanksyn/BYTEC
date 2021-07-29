@@ -1,0 +1,180 @@
+package Files;
+
+import java.sql.Date;
+
+public class POout {
+    int sn,qty;
+    String PONum,company,ppBy,status,upc,prod_name,sku,sku_scanned,reject,loc,DONum;
+    Date date_created,delivery_date;
+
+    public String getReject() {
+        return reject;
+    }
+
+    public void setReject(String reject) {
+        this.reject = reject;
+    }
+
+    public POout(int sn, String PONum, String company, Date date_created, String ppBy, String status, String reject) {
+        this.sn = sn;
+        this.PONum = PONum;
+        this.company = company;
+        this.date_created = date_created;
+        this.ppBy = ppBy;
+        this.status = status;
+        this.reject = reject;
+    }
+
+    public POout(int sn, String upc, String prod_name, String sku, String sku_scanned) {
+        this.sn = sn;
+        this.upc = upc;
+        this.prod_name = prod_name;
+        this.sku = sku;
+        this.sku_scanned = sku_scanned;
+        this.loc = sku_scanned;
+    }
+
+    public POout(String company, Date date_created) {
+        this.company = company;
+        this.date_created = date_created;
+
+    }
+
+    public POout(int sn, String PONum,String DONum,String company,Date date_created,Date delivery_date){
+        this.sn = sn;
+        this.PONum =PONum;
+        this.DONum = DONum;
+        this.company = company;
+        this.date_created=date_created;
+        this.delivery_date = delivery_date;
+    }
+
+    public POout(int sn,String upc,String prod_name,int qty){
+        this.sn=sn;
+        this.upc=upc;
+        this.prod_name=prod_name;
+        this.qty=qty;
+    }
+
+    public POout(int sn,String PONum,String company,Date date_created){
+        this.sn=sn;
+        this.PONum=PONum;
+        this.company=company;
+        this.date_created=date_created;
+    }
+
+    public int getQty() {
+        return qty;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
+    }
+
+    public String getDONum() {
+        return DONum;
+    }
+
+    public void setDONum(String DONum) {
+        this.DONum = DONum;
+    }
+
+    public Date getDelivery_date() {
+        return delivery_date;
+    }
+
+    public void setDelivery_date(Date delivery_date) {
+        this.delivery_date = delivery_date;
+    }
+
+    public String getLocation() {
+        return loc;
+    }
+
+    public void setLocation(String loc) {
+        this.loc = loc;
+    }
+
+    public POout(String upc) {
+    }
+
+    public String getUpc() {
+        return upc;
+    }
+
+    public void setUpc(String upc) {
+        this.upc = upc;
+    }
+
+    public String getProd_name() {
+        return prod_name;
+    }
+
+    public void setProd_name(String prod_name) {
+        this.prod_name = prod_name;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public String getSku_scanned() {
+        return sku_scanned;
+    }
+
+    public void setSku_scanned(String sku_scanned) {
+        this.sku_scanned = sku_scanned;
+    }
+
+    public int getSn() {
+        return sn;
+    }
+
+    public void setSn(int sn) {
+        this.sn = sn;
+    }
+
+    public String getPONum() {
+        return PONum;
+    }
+
+    public void setPONum(String PONum) {
+        this.PONum = PONum;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public Date getDate_created() {
+        return date_created;
+    }
+
+    public void setDate_created(Date date_created) {
+        this.date_created = date_created;
+    }
+
+    public String getPpBy() {
+        return ppBy;
+    }
+
+    public void setPpBy(String ppBy) {
+        this.ppBy = ppBy;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+}
