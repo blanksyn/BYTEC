@@ -16,7 +16,7 @@
 
 <AnchorPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Files.WM_Controller">
    <children>
-      <Button fx:id="closeBtn" layoutX="1164.0" layoutY="1.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="X">
+      <Button fx:id="closeBtn" layoutX="1168.0" layoutY="1.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="X">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -78,13 +78,14 @@
       </VBox>
       <TableView fx:id="tableAccount" layoutX="265.0" layoutY="83.0" prefHeight="611.0" prefWidth="938.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <columns>
-            <TableColumn fx:id="col_sn" prefWidth="50.0" style="-fx-background-color: white;" text="S/N" />
-            <TableColumn fx:id="col_username" prefWidth="117.0" style="-fx-background-color: white;" text="Username" />
-            <TableColumn fx:id="col_Name" prefWidth="178.0" style="-fx-background-color: white;" text="Name" />
-            <TableColumn fx:id="col_type" prefWidth="113.0" style="-fx-background-color: white;" text="Type" />
-            <TableColumn fx:id="col_location" prefWidth="228.0" style="-fx-background-color: white;" text="Location" />
-            <TableColumn prefWidth="128.0" style="-fx-background-color: white;" text="Date Created" />
-            <TableColumn fx:id="col_action" prefWidth="123.0" style="-fx-background-color: white;" text="Action" />
+            <TableColumn fx:id="col_sn" prefWidth="45.0" style="-fx-background-color: white; -fx-alignment: center;" text="S/N" />
+            <TableColumn fx:id="col_employeeID" prefWidth="99.0" style="-fx-background-color: white; -fx-alignment: center;" text="Employee ID" />
+            <TableColumn fx:id="col_Name" prefWidth="170.0" style="-fx-background-color: white; -fx-alignment: center;" text="Name" />
+            <TableColumn fx:id="col_type" prefWidth="127.0" style="-fx-background-color: white; -fx-alignment: center;" text="Type" />
+            <TableColumn fx:id="col_role" prefWidth="123.0" style="-fx-background-color: white; -fx-alignment: center;" text="Role" />
+            <TableColumn fx:id="col_location" prefWidth="164.0" style="-fx-background-color: white; -fx-alignment: center;" text="Location" />
+            <TableColumn fx:id="col_date" prefWidth="113.0" style="-fx-background-color: white; -fx-alignment: center;" text="Date Created" />
+            <TableColumn fx:id="col_action" prefWidth="96.0" style="-fx-background-color: white; -fx-alignment: center;" text="Action" />
          </columns>
       </TableView>
       <Button fx:id="addAccBtn" layoutX="262.0" layoutY="45.0" mnemonicParsing="false" onAction="#addAccFunction" prefHeight="0.0" prefWidth="178.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Add new account" textFill="WHITE">

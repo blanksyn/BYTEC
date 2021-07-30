@@ -65,7 +65,7 @@
       </Button>
       <Label layoutX="693.0" layoutY="350.0" prefHeight="25.0" prefWidth="149.0" text="Image" />
       <TextField fx:id="TF_fileLoc" layoutX="859.0" layoutY="354.0" promptText="File location" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
-      <Button fx:id="addBtn" layoutX="987.0" layoutY="573.0" mnemonicParsing="false" onAction="#addProduct" prefHeight="34.0" prefWidth="74.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Add" textFill="WHITE">
+      <Button fx:id="addBtn" layoutX="987.0" layoutY="573.0" mnemonicParsing="false" onAction="#editProduct" prefHeight="34.0" prefWidth="74.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Save" textFill="WHITE">
          <font>
             <Font name="Bodoni MT" size="18.0" />
          </font>
@@ -81,7 +81,11 @@
             <Font name="Bodoni MT" size="18.0" />
          </font>
       </Button>
-      <ComboBox fx:id="CB_location" layoutX="301.0" layoutY="216.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
       <ComboBox fx:id="CB_supplier" layoutX="859.0" layoutY="98.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
+      <Button fx:id="editLoc" layoutX="301.0" layoutY="216.0" mnemonicParsing="false" onAction="#locEdit" prefHeight="27.0" prefWidth="149.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Edit Location(s)" textFill="WHITE">
+         <font>
+            <Font name="Bodoni MT" size="13.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

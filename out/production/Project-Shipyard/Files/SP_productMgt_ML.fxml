@@ -84,19 +84,19 @@
       </VBox>
       <TableView fx:id="tableProductML" layoutX="282.0" layoutY="113.0" prefHeight="611.0" prefWidth="1212.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="285.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="103.0">
          <columns>
-            <TableColumn fx:id="col_sn" prefWidth="50.0" style="-fx-background-color: white;" text="S/N" />
-            <TableColumn fx:id="col_upc" prefWidth="117.66668701171875" style="-fx-background-color: white;" text="UPC" />
-            <TableColumn fx:id="col_Name" prefWidth="160.33331298828125" style="-fx-background-color: white;" text="Name" />
-            <TableColumn fx:id="col_qty" prefWidth="61.333343505859375" style="-fx-background-color: white;" text="Quantity" />
-            <TableColumn fx:id="col_unit" prefWidth="52.3333740234375" style="-fx-background-color: white;" text="Unit" />
-            <TableColumn fx:id="col_location" prefWidth="109.0" style="-fx-background-color: white;" text="Location" />
-            <TableColumn fx:id="col_supplier" minWidth="0.0" prefWidth="110.6666259765625" style="-fx-background-color: white;" text="Supplier" />
-            <TableColumn fx:id="col_category" prefWidth="118.3333740234375" style="-fx-background-color: white;" text="Category" />
-            <TableColumn fx:id="col_minQty" prefWidth="55.3333740234375" style="-fx-background-color: white;" text="Min Qty" />
-            <TableColumn fx:id="col_maxQty" prefWidth="55.33331298828125" style="-fx-background-color: white;" text="Max Qty" />
-            <TableColumn fx:id="col_ARStatus" prefWidth="112.99993896484375" style="-fx-background-color: white;" text="AR Status" />
-            <TableColumn fx:id="col_dateAdded" prefWidth="122.666748046875" style="-fx-background-color: white;" text="Date Added" />
-            <TableColumn fx:id="col_action" prefWidth="92.3333740234375" style="-fx-background-color: white;" text="Action" />
+            <TableColumn fx:id="col_sn" prefWidth="50.0" style="-fx-background-color: white; -fx-alignment: center;" text="S/N" />
+            <TableColumn fx:id="col_upc" prefWidth="95.33334350585938" style="-fx-background-color: white; -fx-alignment: center;" text="UPC" />
+            <TableColumn fx:id="col_Name" prefWidth="150.66668701171875" style="-fx-background-color: white; -fx-alignment: center;" text="Name" />
+            <TableColumn fx:id="col_qty" prefWidth="60.0" style="-fx-background-color: white; -fx-alignment: center;" text="Quantity" />
+            <TableColumn fx:id="col_unit" prefWidth="66.33331298828125" style="-fx-background-color: white; -fx-alignment: center;" text="Unit" />
+            <TableColumn fx:id="col_location" prefWidth="88.3333740234375" style="-fx-background-color: white; -fx-alignment: center;" text="Location" />
+            <TableColumn fx:id="col_supplier" minWidth="0.0" prefWidth="105.33331298828125" style="-fx-background-color: white; -fx-alignment: center;" text="Supplier" />
+            <TableColumn fx:id="col_category" prefWidth="92.66668701171875" style="-fx-background-color: white; -fx-alignment: center;" text="Category" />
+            <TableColumn fx:id="col_minQty" prefWidth="54.0" style="-fx-background-color: white; -fx-alignment: center;" text="Min Qty" />
+            <TableColumn fx:id="col_maxQty" prefWidth="56.0" style="-fx-background-color: white; -fx-alignment: center;" text="Max Qty" />
+            <TableColumn fx:id="col_ARStatus" prefWidth="85.0" style="-fx-background-color: white; -fx-alignment: center;" text="AR Status" />
+            <TableColumn fx:id="col_dateAdded" prefWidth="104.666748046875" style="-fx-background-color: white; -fx-alignment: center;" text="Date Added" />
+            <TableColumn fx:id="col_action" prefWidth="203.333251953125" style="-fx-background-color: white; -fx-alignment: center;" text="Action" />
          </columns>
       </TableView>
       <TextField fx:id="TF_keyword" layoutX="1115.0" layoutY="59.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">

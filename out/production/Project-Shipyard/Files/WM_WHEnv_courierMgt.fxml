@@ -108,9 +108,9 @@
       </VBox>
       <TableView fx:id="tableCourier" layoutX="275.0" layoutY="93.0" prefHeight="611.0" prefWidth="938.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="0.0">
          <columns>
-            <TableColumn fx:id="col_sn" prefWidth="50.0" style="-fx-background-color: white;" text="S/N" />
-            <TableColumn fx:id="col_Name" prefWidth="699.0" style="-fx-background-color: white;" text="Name" />
-            <TableColumn fx:id="col_action" prefWidth="188.0" style="-fx-background-color: white;" text="Action" />
+            <TableColumn fx:id="col_sn" prefWidth="50.0" style="-fx-background-color: white; -fx-alignment: center;" text="S/N" />
+            <TableColumn fx:id="col_Name" prefWidth="699.0" style="-fx-background-color: white; -fx-alignment: center;" text="Name" />
+            <TableColumn fx:id="col_action" prefWidth="188.0" style="-fx-background-color: white; -fx-alignment: center;" text="Action" />
          </columns>
       </TableView>
       <Button fx:id="addCourierBtn" layoutX="442.0" layoutY="51.0" mnemonicParsing="false" onAction="#addCourier" prefHeight="27.0" prefWidth="118.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Add new courier" textFill="WHITE">

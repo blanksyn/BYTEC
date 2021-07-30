@@ -125,7 +125,8 @@ public class Main_Controller {
 
             switch (userType){
                 case "WM":
-                    WM_Controller controllerwm = loader.getController();
+                    WM controllerwm = loader.getController();
+
                     break;
 
                 case "SP":

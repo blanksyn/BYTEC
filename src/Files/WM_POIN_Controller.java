@@ -86,7 +86,7 @@ public class WM_POIN_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_POIN_restock.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
 
@@ -101,7 +101,7 @@ public class WM_POIN_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_POIN.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
 
@@ -116,7 +116,7 @@ public class WM_POIN_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_POIN_create.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
 
@@ -131,7 +131,7 @@ public class WM_POIN_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_genRpt_inv.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
 
@@ -146,7 +146,7 @@ public class WM_POIN_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_POIN.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
 
@@ -162,7 +162,7 @@ public class WM_POIN_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_WHEnv_courierMgt.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
 
@@ -177,7 +177,7 @@ public class WM_POIN_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
 

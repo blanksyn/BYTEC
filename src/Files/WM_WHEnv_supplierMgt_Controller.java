@@ -15,8 +15,14 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.fxml.Initializable;
 
-public class WM_WHEnv_supplierMgt_Controller {
+public class WM_WHEnv_supplierMgt_Controller extends WM implements Initializable{
 
     @FXML
     private Button closeBtn;
@@ -49,22 +55,22 @@ public class WM_WHEnv_supplierMgt_Controller {
     private Button productMgtBtn;
 
     @FXML
-    private TableView<?> tableSupplier;
+    private TableView<setup_supplier> tableSupplier;
 
     @FXML
-    private TableColumn<?, ?> col_sn;
+    private TableColumn<setup_supplier, Integer> col_sn;
 
     @FXML
-    private TableColumn<?, ?> col_Name;
+    private TableColumn<setup_supplier, String> col_Name;
 
     @FXML
-    private TableColumn<?, ?> col_email;
+    private TableColumn<setup_supplier, String> col_email;
 
     @FXML
-    private TableColumn<?, ?> col_contactNo;
+    private TableColumn<setup_supplier, String> col_contactNo;
 
     @FXML
-    private TableColumn<?, ?> col_action;
+    private TableColumn<setup_supplier, setup_supplier> col_action;
 
     @FXML
     private Button addSupplierBtn;
@@ -80,10 +86,42 @@ public class WM_WHEnv_supplierMgt_Controller {
 
     @FXML
     private Button WHSpaceBtn;
+    
+    ObservableList<setup_supplier> ObserveList = FXCollections.observableArrayList();
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb){welcome(welcomeLabel);
+        ObserveList = viewSupplierWM(tableSupplier,ObserveList, col_sn, col_Name, col_email, col_contactNo, col_action);
+    }
 
     @FXML
     void Nav_WHSpace(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(getClass().getResource("WM_WHEnv_whSpace.fxml"));
+            Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            loginStage.setScene(scene);
+            loginStage.centerOnScreen();
+            loginStage.show();
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    loginStage.setX(event.getScreenX() - xOffset);
+                    loginStage.setY(event.getScreenY() - yOffset);
+                }
+            });
 
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 
     @FXML
@@ -91,9 +129,24 @@ public class WM_WHEnv_supplierMgt_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_genRpt_inv.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
+            loginStage.show();
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    loginStage.setX(event.getScreenX() - xOffset);
+                    loginStage.setY(event.getScreenY() - yOffset);
+                }
+            });
 
         }catch (Exception e){
             e.printStackTrace();
@@ -106,9 +159,24 @@ public class WM_WHEnv_supplierMgt_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_POIN.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
+            loginStage.show();
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    loginStage.setX(event.getScreenX() - xOffset);
+                    loginStage.setY(event.getScreenY() - yOffset);
+                }
+            });
 
         }catch (Exception e){
             e.printStackTrace();
@@ -122,8 +190,24 @@ public class WM_WHEnv_supplierMgt_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_WHEnv_courierMgt.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
+            loginStage.centerOnScreen();
+            loginStage.show();
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    loginStage.setX(event.getScreenX() - xOffset);
+                    loginStage.setY(event.getScreenY() - yOffset);
+                }
+            });
 
         }catch (Exception e){
             e.printStackTrace();
@@ -136,8 +220,24 @@ public class WM_WHEnv_supplierMgt_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
+            loginStage.centerOnScreen();
+            loginStage.show();
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    loginStage.setX(event.getScreenX() - xOffset);
+                    loginStage.setY(event.getScreenY() - yOffset);
+                }
+            });
 
         }catch (Exception e){
             e.printStackTrace();
@@ -150,8 +250,24 @@ public class WM_WHEnv_supplierMgt_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_WHEnv_courierMgt.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
+            loginStage.centerOnScreen();
+            loginStage.show();
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    loginStage.setX(event.getScreenX() - xOffset);
+                    loginStage.setY(event.getScreenY() - yOffset);
+                }
+            });
 
         }catch (Exception e){
             e.printStackTrace();
@@ -164,9 +280,24 @@ public class WM_WHEnv_supplierMgt_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_WHEnv_productMgt_ML.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1500, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
+            loginStage.show();
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    loginStage.setX(event.getScreenX() - xOffset);
+                    loginStage.setY(event.getScreenY() - yOffset);
+                }
+            });
 
         }catch (Exception e){
             e.printStackTrace();
@@ -179,8 +310,24 @@ public class WM_WHEnv_supplierMgt_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_WHEnv_supplierMgt.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
+            loginStage.centerOnScreen();
+            loginStage.show();
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    loginStage.setX(event.getScreenX() - xOffset);
+                    loginStage.setY(event.getScreenY() - yOffset);
+                }
+            });
 
         }catch (Exception e){
             e.printStackTrace();
@@ -195,6 +342,22 @@ public class WM_WHEnv_supplierMgt_Controller {
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root, 450, 500);
             loginStage.setScene(scene);
+            loginStage.centerOnScreen();
+            loginStage.show();
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    loginStage.setX(event.getScreenX() - xOffset);
+                    loginStage.setY(event.getScreenY() - yOffset);
+                }
+            });
 
         }catch (Exception e){
             e.printStackTrace();

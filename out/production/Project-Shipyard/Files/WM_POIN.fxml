@@ -80,7 +80,7 @@
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="viewPORESBtn" mnemonicParsing="false" onAction="#Nav_PO_Restock" prefHeight="25.0" prefWidth="275.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="View Restock PO (Approval)" textFill="WHITE">
+            <Button fx:id="viewPORESBtn" mnemonicParsing="false" onAction="#Nav_PO_Restock" prefHeight="25.0" prefWidth="275.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="View Restock PO" textFill="WHITE">
                <font>
                   <Font name="Bodoni MT" size="18.0" />
                </font>

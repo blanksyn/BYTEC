@@ -36,7 +36,22 @@ public class prod_master{
         this.sn = sn;
         this.location = location;
     }
-    
+
+    public prod_master(int sn, String upc, String prod_name, int qty, String unit, String location, String supplier, String category, int min_qty, int max_qty, String auto_restock_status, String date_added) {
+        this.sn = sn;
+        this.upc = upc;
+        this.prod_name = prod_name;
+        this.qty = qty;
+        this.unit = unit;
+        this.location = location;
+        this.supplier = supplier;
+        this.category = category;
+        this.min_qty = min_qty;
+        this.max_qty = max_qty;
+        this.auto_status = auto_restock_status;
+        this.date_added = date_added;
+    }
+
     public void setSN(int sn){
         this.sn = sn;
     }

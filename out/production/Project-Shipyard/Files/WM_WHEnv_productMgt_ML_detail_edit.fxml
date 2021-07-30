@@ -4,7 +4,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -29,35 +28,8 @@
          </font>
       </Label>
       <Separator layoutY="33.0" prefHeight="12.0" prefWidth="1014.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-      <TextField fx:id="TF_upc" layoutX="301.0" layoutY="103.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
-      <TextField fx:id="TF_name" layoutX="301.0" layoutY="143.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
-      <TextField fx:id="TF_weight" layoutX="302.0" layoutY="301.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
-      <TextField fx:id="TF_length" layoutX="302.0" layoutY="341.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
-      <TextField fx:id="TF_width" layoutX="302.0" layoutY="379.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
-      <TextField fx:id="TF_height" layoutX="302.0" layoutY="420.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
-      <Label layoutX="135.0" layoutY="103.0" prefHeight="25.0" prefWidth="149.0" text="UPC" />
-      <Label layoutX="135.0" layoutY="143.0" prefHeight="25.0" prefWidth="149.0" text="Name" />
-      <Label layoutX="132.0" layoutY="223.0" prefHeight="25.0" prefWidth="149.0" text="Unit" />
-      <Label layoutX="132.0" layoutY="260.0" prefHeight="25.0" prefWidth="149.0" text="Location" />
-      <Label layoutX="132.0" layoutY="302.0" prefHeight="25.0" prefWidth="149.0" text="Weight" />
-      <Label layoutX="132.0" layoutY="341.0" prefHeight="25.0" prefWidth="149.0" text="Product Length" />
-      <Label layoutX="132.0" layoutY="380.0" prefHeight="25.0" prefWidth="149.0" text="Product Width" />
-      <Label layoutX="132.0" layoutY="421.0" prefHeight="25.0" prefWidth="149.0" text="Product Height" />
-      <Label layoutX="132.0" layoutY="461.0" prefHeight="25.0" prefWidth="149.0" text="Description" />
-      <Label layoutX="693.0" layoutY="99.0" prefHeight="25.0" prefWidth="149.0" text="Supplier" />
-      <Label layoutX="693.0" layoutY="136.0" prefHeight="25.0" prefWidth="149.0" text="Category" />
-      <TextArea fx:id="TA_desc" layoutX="303.0" layoutY="461.0" prefHeight="110.0" prefWidth="299.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
-      <ComboBox fx:id="CB_unit" layoutX="302.0" layoutY="224.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
-      <ComboBox fx:id="CB_cat" layoutX="859.0" layoutY="138.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
-      <ImageView fx:id="IV_product" fitHeight="150.0" fitWidth="200.0" layoutX="693.0" layoutY="237.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="loadBtn" layoutX="1018.0" layoutY="188.0" mnemonicParsing="false" onAction="#loadImage" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Load" textFill="WHITE">
-         <font>
-            <Font name="Bodoni MT" size="13.0" />
-         </font>
-      </Button>
-      <Label layoutX="693.0" layoutY="184.0" prefHeight="25.0" prefWidth="149.0" text="Image" />
-      <TextField fx:id="TF_fileLoc" layoutX="859.0" layoutY="188.0" promptText="File location" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
-      <Button fx:id="addBtn" layoutX="987.0" layoutY="573.0" mnemonicParsing="false" onAction="#addProduct" prefHeight="34.0" prefWidth="74.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Add" textFill="WHITE">
+      <Label layoutX="132.0" layoutY="146.0" prefHeight="25.0" prefWidth="149.0" text="Location" />
+      <Button fx:id="addBtn" layoutX="987.0" layoutY="573.0" mnemonicParsing="false" onAction="#editProduct" prefHeight="34.0" prefWidth="74.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Save" textFill="WHITE">
          <font>
             <Font name="Bodoni MT" size="18.0" />
          </font>
@@ -72,9 +44,10 @@
             <Font name="Bodoni MT" size="18.0" />
          </font>
       </Button>
-      <TextField fx:id="TF_sku" layoutX="301.0" layoutY="180.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
-      <Label layoutX="132.0" layoutY="181.0" prefHeight="25.0" prefWidth="149.0" text="SKU" />
-      <ComboBox fx:id="CB_location" layoutX="302.0" layoutY="260.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
-      <ComboBox fx:id="CB_supplier" layoutX="859.0" layoutY="98.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
+      <TextField fx:id="TF_sku" layoutX="301.0" layoutY="103.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
+      <Label layoutX="132.0" layoutY="104.0" prefHeight="25.0" prefWidth="149.0" text="SKU" />
+      <ComboBox fx:id="CB_location" layoutX="301.0" layoutY="146.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
+      <Label layoutX="132.0" layoutY="187.0" prefHeight="25.0" prefWidth="149.0" text="Expiry Date" />
+      <TextField fx:id="TF_expDate" layoutX="301.0" layoutY="186.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
    </children>
 </AnchorPane>

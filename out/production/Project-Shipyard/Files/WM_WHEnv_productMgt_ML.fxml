@@ -14,14 +14,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1500.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Files.WM_WHEnv_productMgt_ML_Controller">
+<AnchorPane prefHeight="714.0" prefWidth="1625.0" style="-fx-background-color: white; -fx-alignment: center;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Files.WM_WHEnv_productMgt_ML_Controller">
    <children>
       <Button fx:id="closeBtn" layoutX="1465.0" layoutY="1.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="X" AnchorPane.rightAnchor="0.0">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Button>
-      <ImageView fx:id="logoutBtn" fitHeight="22.0" fitWidth="36.0" layoutX="1429.0" layoutY="11.0" onMouseClicked="#logoutAcc" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="logoutBtn" fitHeight="22.0" fitWidth="36.0" layoutX="1558.0" layoutY="11.0" onMouseClicked="#logoutAcc" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../image/logout.png" />
          </image>
@@ -115,21 +115,21 @@
          </padding>
       </VBox>
       <Separator layoutX="14.0" layoutY="34.0" prefHeight="12.0" prefWidth="1014.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="33.0" />
-      <TableView fx:id="tableProductML" layoutX="-199.0" layoutY="103.0" prefHeight="611.0" prefWidth="1683.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="285.0" AnchorPane.rightAnchor="0.0">
+      <TableView fx:id="tableProductML" layoutX="-199.0" layoutY="103.0" prefHeight="611.0" prefWidth="1683.0" style="-fx-background-color: white; -fx-alignment: center;" AnchorPane.leftAnchor="285.0" AnchorPane.rightAnchor="0.0">
          <columns>
-            <TableColumn fx:id="col_sn" prefWidth="50.0" style="-fx-background-color: white;" text="S/N" />
-            <TableColumn fx:id="col_upc" prefWidth="117.66668701171875" style="-fx-background-color: white;" text="UPC" />
-            <TableColumn fx:id="col_Name" prefWidth="160.33331298828125" style="-fx-background-color: white;" text="Name" />
-            <TableColumn fx:id="col_qty" prefWidth="61.333343505859375" style="-fx-background-color: white;" text="Quantity" />
-            <TableColumn fx:id="col_unit" prefWidth="52.3333740234375" style="-fx-background-color: white;" text="Unit" />
-            <TableColumn fx:id="col_location" prefWidth="109.0" style="-fx-background-color: white;" text="Location" />
-            <TableColumn fx:id="col_supplier" minWidth="0.0" prefWidth="110.6666259765625" style="-fx-background-color: white;" text="Supplier" />
-            <TableColumn fx:id="col_category" prefWidth="118.3333740234375" style="-fx-background-color: white;" text="Category" />
-            <TableColumn fx:id="col_minQty" prefWidth="55.3333740234375" style="-fx-background-color: white;" text="Min Qty" />
-            <TableColumn fx:id="col_maxQty" prefWidth="55.33331298828125" style="-fx-background-color: white;" text="Max Qty" />
-            <TableColumn fx:id="col_ARStatus" prefWidth="112.99993896484375" style="-fx-background-color: white;" text="AR Status" />
-            <TableColumn fx:id="col_dateAdded" prefWidth="122.666748046875" style="-fx-background-color: white;" text="Date Added" />
-            <TableColumn fx:id="col_action" prefWidth="92.3333740234375" style="-fx-background-color: white;" text="Action" />
+            <TableColumn fx:id="col_sn" prefWidth="50.0" style="-fx-background-color: white; -fx-alignment: center;" text="S/N" />
+            <TableColumn fx:id="col_upc" prefWidth="117.66668701171875" style="-fx-background-color: white; -fx-alignment: center;" text="UPC" />
+            <TableColumn fx:id="col_Name" prefWidth="205.66668701171875" style="-fx-background-color: white; -fx-alignment: center;" text="Name" />
+            <TableColumn fx:id="col_qty" prefWidth="62.33331298828125" style="-fx-background-color: white; -fx-alignment: center;" text="Quantity" />
+            <TableColumn fx:id="col_unit" prefWidth="71.0" style="-fx-background-color: white; -fx-alignment: center;" text="Unit" />
+            <TableColumn fx:id="col_location" prefWidth="83.6666259765625" style="-fx-background-color: white; -fx-alignment: center;" text="Location" />
+            <TableColumn fx:id="col_supplier" minWidth="0.0" prefWidth="126.0" style="-fx-background-color: white; -fx-alignment: center;" text="Supplier" />
+            <TableColumn fx:id="col_category" prefWidth="118.33331298828125" style="-fx-background-color: white; -fx-alignment: center;" text="Category" />
+            <TableColumn fx:id="col_minQty" prefWidth="74.666748046875" style="-fx-background-color: white; -fx-alignment: center;" text="Min Qty" />
+            <TableColumn fx:id="col_maxQty" prefWidth="88.0" style="-fx-background-color: white; -fx-alignment: center;" text="Max Qty" />
+            <TableColumn fx:id="col_ARStatus" prefWidth="76.0" style="-fx-background-color: white; -fx-alignment: center;" text="AR Status" />
+            <TableColumn fx:id="col_dateAdded" prefWidth="132.0" style="-fx-background-color: white; -fx-alignment: center;" text="Date Added" />
+            <TableColumn fx:id="col_action" prefWidth="131.0" style="-fx-background-color: white; -fx-alignment: center;" text="Action" />
          </columns>
       </TableView>
       <TextField fx:id="TF_keyword" layoutX="1105.0" layoutY="49.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
@@ -142,7 +142,7 @@
             <Font name="Bodoni MT" size="14.0" />
          </font>
       </Button>
-      <ComboBox fx:id="CB_field" layoutX="1261.0" layoutY="48.0" prefHeight="30.0" prefWidth="150.0" promptText="Select Field" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
+      <ComboBox fx:id="CB_field" layoutX="1261.0" layoutY="48.0" prefHeight="30.0" prefWidth="150.0" promptText="Select Field" style="-fx-background-color: white; -fx-alignment: center; -fx-border-color: #4B0082;" />
       <Button fx:id="addProductBtn" layoutX="302.0" layoutY="49.0" mnemonicParsing="false" onAction="#addProduct" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Add Product" textFill="WHITE">
          <font>
             <Font name="Bodoni MT" size="14.0" />

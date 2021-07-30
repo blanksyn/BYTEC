@@ -51,8 +51,8 @@
       <Label layoutX="693.0" layoutY="100.0" prefHeight="25.0" prefWidth="149.0" text="Supplier" />
       <Label layoutX="693.0" layoutY="137.0" prefHeight="25.0" prefWidth="149.0" text="Category" />
       <TextArea fx:id="TA_desc" layoutX="301.0" layoutY="432.0" prefHeight="110.0" prefWidth="299.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
-      <ComboBox fx:id="CB_unit" layoutX="301.0" layoutY="181.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
-      <ComboBox fx:id="CB_cat" layoutX="859.0" layoutY="139.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
+      <ComboBox fx:id="CB_unit" editable="true" layoutX="301.0" layoutY="181.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
+      <ComboBox fx:id="CB_cat" editable="true" layoutX="859.0" layoutY="139.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
       <Label layoutX="693.0" layoutY="226.0" prefHeight="25.0" prefWidth="149.0" text="Minimum Quantity" />
       <Label layoutX="693.0" layoutY="268.0" prefHeight="25.0" prefWidth="149.0" text="Maximum Quantity" />
       <Label layoutX="693.0" layoutY="312.0" prefHeight="25.0" prefWidth="149.0" text="Auto Restock" />
@@ -75,8 +75,12 @@
             <Font name="Bodoni MT" size="18.0" />
          </font>
       </Button>
-      <ComboBox fx:id="CB_specialHand" layoutX="860.0" layoutY="181.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
+      <ComboBox fx:id="CB_specialHand" editable="true" layoutX="860.0" layoutY="181.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
       <ComboBox fx:id="CB_location" layoutX="301.0" layoutY="217.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
       <ComboBox fx:id="CB_supplier" layoutX="859.0" layoutY="99.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
+      <Label layoutX="456.0" layoutY="261.0" prefHeight="25.0" prefWidth="21.0" text="g" />
+      <Label layoutX="456.0" layoutY="299.0" prefHeight="25.0" prefWidth="21.0" text="cm" />
+      <Label layoutX="456.0" layoutY="338.0" prefHeight="25.0" prefWidth="21.0" text="cm" />
+      <Label layoutX="456.0" layoutY="380.0" prefHeight="25.0" prefWidth="21.0" text="cm" />
    </children>
 </AnchorPane>

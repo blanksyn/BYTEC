@@ -30,7 +30,7 @@
       </Label>
       <Separator layoutY="33.0" prefHeight="12.0" prefWidth="1014.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
       <TextField fx:id="name" layoutX="58.0" layoutY="147.0" promptText="Name" style="-fx-border-color: #4B0082;" AnchorPane.topAnchor="147.0" />
-      <TextField fx:id="username" layoutX="58.0" layoutY="192.0" promptText="Username" style="-fx-border-color: #4B0082;" />
+      <TextField fx:id="employeeID" layoutX="58.0" layoutY="192.0" promptText="Employee ID" style="-fx-border-color: #4B0082;" />
       <PasswordField fx:id="pass" layoutX="58.0" layoutY="236.0" promptText="Password" style="-fx-border-color: #4B0082;" />
       <PasswordField fx:id="cPass" layoutX="58.0" layoutY="280.0" promptText="Confirm Password" style="-fx-border-color: #4B0082;" />
       <ComboBox fx:id="cb_accType" layoutX="58.0" layoutY="326.0" prefWidth="150.0" promptText="Account Type" style="-fx-border-color: #4B0082; -fx-background-color: white;" />

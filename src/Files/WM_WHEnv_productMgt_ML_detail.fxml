@@ -22,7 +22,7 @@
             <Image url="@../image/logo192.png" />
          </image>
       </ImageView>
-      <Label fx:id="welcomLabel" layoutX="52.0" layoutY="2.0" prefHeight="36.0" prefWidth="312.0">
+      <Label fx:id="welcomeLabel" layoutX="52.0" layoutY="2.0" prefHeight="36.0" prefWidth="312.0">
          <font>
             <Font name="Bodoni MT Condensed" size="24.0" />
          </font>
@@ -34,12 +34,12 @@
       <Label fx:id="name" layoutX="107.0" layoutY="104.0" prefHeight="25.0" prefWidth="149.0" />
       <TableView fx:id="tableVProduct" layoutY="146.0" prefHeight="538.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <columns>
-          <TableColumn fx:id="col_sn" prefWidth="75.0" style="-fx-background-color: white;" text="S/N" />
-          <TableColumn fx:id="col_sku" prefWidth="173.0" style="-fx-background-color: white;" text="SKU" />
-            <TableColumn fx:id="col_location" prefWidth="468.0" style="-fx-background-color: white;" text="Location" />
-            <TableColumn fx:id="col_expDate" prefWidth="164.0" style="-fx-background-color: white;" text="Expiry Date" />
-            <TableColumn fx:id="col_dateAdd" minWidth="5.0" prefWidth="187.0" style="-fx-background-color: white;" text="Date Added" />
-            <TableColumn fx:id="col_action" prefWidth="132.0" style="-fx-background-color: white;" text="Action" />
+          <TableColumn fx:id="col_sn" prefWidth="75.0" style="-fx-background-color: white; -fx-alignment: center;" text="S/N" />
+          <TableColumn fx:id="col_sku" prefWidth="173.0" style="-fx-background-color: white; -fx-alignment: center;" text="SKU" />
+            <TableColumn fx:id="col_location" prefWidth="468.0" style="-fx-background-color: white; -fx-alignment: center;" text="Location" />
+            <TableColumn fx:id="col_expDate" prefWidth="164.0" style="-fx-background-color: white; -fx-alignment: center;" text="Expiry Date" />
+            <TableColumn fx:id="col_dateAdd" minWidth="5.0" prefWidth="187.0" style="-fx-background-color: white; -fx-alignment: center;" text="Date Added" />
+            <TableColumn fx:id="col_action" prefWidth="132.0" style="-fx-background-color: white; -fx-alignment: center;" text="Action" />
         </columns>
       </TableView>
    </children>

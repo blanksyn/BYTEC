@@ -85,6 +85,11 @@ public class WM_genRpt_in_DO_Controller {
     private Button genRptBtn;
 
     @FXML
+    void initialize(){
+
+    }
+
+    @FXML
     void generate_Rpt(ActionEvent event) {
 
     }
@@ -94,7 +99,7 @@ public class WM_genRpt_in_DO_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_genRpt_inv.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
 
@@ -109,7 +114,7 @@ public class WM_genRpt_in_DO_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_genRpt_in_DO.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
 
@@ -124,7 +129,7 @@ public class WM_genRpt_in_DO_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_genRpt_in_PO.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
 
@@ -139,7 +144,7 @@ public class WM_genRpt_in_DO_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_genRpt_in_PO.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
 
@@ -154,7 +159,7 @@ public class WM_genRpt_in_DO_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_genRpt_inv.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
 
@@ -169,7 +174,7 @@ public class WM_genRpt_in_DO_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_genRpt_out_PO.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
 
@@ -184,7 +189,7 @@ public class WM_genRpt_in_DO_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_POIN.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
 
@@ -200,7 +205,7 @@ public class WM_genRpt_in_DO_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_WHEnv_courierMgt.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
 
@@ -215,7 +220,7 @@ public class WM_genRpt_in_DO_Controller {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 700);
+            Scene scene = new Scene(root);
             loginStage.setScene(scene);
             loginStage.centerOnScreen();
 
