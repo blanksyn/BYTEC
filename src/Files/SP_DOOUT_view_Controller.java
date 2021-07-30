@@ -72,7 +72,7 @@ public class SP_DOOUT_view_Controller {
     @FXML
     private Label Lab_DONum;
 
-    String Username,DONum;
+    String Username,DONum,PONum,company,delivery_date;
     ObservableList<POout> DOTbl = FXCollections.observableArrayList();
 
     @FXML
@@ -94,8 +94,11 @@ public class SP_DOOUT_view_Controller {
 
             while(rsLabels.next()){
                 Lab_comp.setText(rsLabels.getString("company"));
+                this.company=rsLabels.getString("company");
                 Lab_PONum.setText(rsLabels.getString("PONum"));
+                this.PONum=rsLabels.getString("PONum");
                 Lab_deliveryDate.setText(String.valueOf(rsLabels.getDate("delivery_date")));
+                this.delivery_date = String.valueOf(rsLabels.getDate("delivery_date"));
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -172,7 +175,27 @@ public class SP_DOOUT_view_Controller {
             headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
             headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index);
 
-            XSSFRow header = sheet.createRow(0);
+            XSSFRow title = sheet.createRow(0);
+            title.createCell(0).setCellValue("PO Number:");
+            title.createCell(1).setCellValue(PONum);
+            title.createCell(2).setCellValue("DO Number:");
+            title.createCell(3).setCellValue(DONum);
+
+            XSSFRow blankSpace = sheet.createRow(1);
+
+            XSSFRow title2 = sheet.createRow(2);
+            title2.createCell(0).setCellValue("Delivery Dater:");
+            title2.createCell(1).setCellValue(delivery_date);
+            title2.createCell(2).setCellValue("Company:");
+            title2.createCell(3).setCellValue(company);
+
+            XSSFRow title3 = sheet.createRow(3);
+            title3.createCell(0).setCellValue("Courier:");
+            title3.createCell(1).setCellValue(CB_courier.getValue());
+
+            XSSFRow blankSpace2 = sheet.createRow(4);
+
+            XSSFRow header = sheet.createRow(5);
             for(int i =0;i<colHeadings.length;i++){
                 XSSFCell cell = header.createCell(i);
                 cell.setCellValue(colHeadings[i]);
@@ -180,7 +203,7 @@ public class SP_DOOUT_view_Controller {
             }
 
 
-            int index = 1;
+            int index = 6;
             for(int i=0; i<DOTbl.size();i++){
                 XSSFRow row = sheet.createRow(index);
 

@@ -19,7 +19,7 @@ public class Main extends Application {
         primaryStage.setTitle("Login");
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setScene(scene);
-        Image image = new Image("image/logo192.png");
+        Image image = new Image("image/bytec_bg_cropped.png");
         primaryStage.getIcons().add(image);
         scene.setFill(Color.TRANSPARENT);
         primaryStage.centerOnScreen();

@@ -303,7 +303,7 @@ public class SP_POIN_new_Controller {
         pst.setString(2,supplier);
         pst.setString(3,Username);
         pst.setString(4, String.valueOf(java.time.LocalDate.now()));
-        pst.setString(5,"Unpicked");
+        pst.setString(5,"Not Received");
         pst.setString(6, String.valueOf(java.time.LocalDate.now().plusWeeks(1)));
         pst.execute();
 

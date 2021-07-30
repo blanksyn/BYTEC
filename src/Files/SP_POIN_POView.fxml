@@ -21,7 +21,7 @@
       </Button>
       <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="14.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../image/logo192.png" />
+            <Image url="@../image/bytec_bg_cropped.png" />
          </image>
       </ImageView>
       <Label fx:id="welcomeLabel" layoutX="52.0" layoutY="2.0" prefHeight="36.0" prefWidth="312.0">

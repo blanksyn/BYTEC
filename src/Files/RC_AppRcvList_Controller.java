@@ -83,7 +83,7 @@ public class RC_AppRcvList_Controller {
             DatabaseConnection con = new DatabaseConnection();
             Connection connectDB = con.getConnection();
 
-            String getValues = "SELECT PONum,supplier FROM POin WHERE status != 'Fully received' ORDER BY order_date ASC";
+            String getValues = "SELECT PONum,supplier FROM POin WHERE status != 'Not received' ORDER BY order_date ASC";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 
@@ -196,7 +196,7 @@ public class RC_AppRcvList_Controller {
             Scene scene = new Scene(root, 700, 650);
             logoutStage.setTitle("Login");
             logoutStage.setScene(scene);
-            Image image = new Image("image/logo192.png");
+            Image image = new Image("image/bytec_bg_cropped.png");
             logoutStage.getIcons().add(image);
             scene.setFill(Color.TRANSPARENT);
             logoutStage.centerOnScreen();

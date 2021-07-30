@@ -250,7 +250,7 @@ public class WM_genRpt_in_DO_Controller {
             Scene scene = new Scene(root, 700, 650);
             logoutStage.setTitle("Login");
             logoutStage.setScene(scene);
-            Image image = new Image("image/logo192.png");
+            Image image = new Image("image/bytec_bg_cropped.png");
             logoutStage.getIcons().add(image);
             scene.setFill(Color.TRANSPARENT);
             logoutStage.centerOnScreen();

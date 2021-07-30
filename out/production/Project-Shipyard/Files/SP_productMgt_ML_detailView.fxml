@@ -23,7 +23,7 @@
       </Button>
       <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="14.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../image/logo192.png" />
+            <Image url="@../image/bytec_bg_cropped.png" />
          </image>
       </ImageView>
       <Label fx:id="welcomeLabel" layoutX="52.0" layoutY="2.0" prefHeight="36.0" prefWidth="312.0">
@@ -153,7 +153,10 @@
                   <Insets bottom="10.0" top="8.0" />
                </VBox.margin>
             </Label>
-            <Label prefHeight="61.0" prefWidth="149.0" text="Image" />
+            <Label prefHeight="61.0" prefWidth="149.0" text="Image">
+               <VBox.margin>
+                  <Insets bottom="10.0" top="8.0" />
+               </VBox.margin></Label>
          </children>
       </VBox>
       <VBox layoutX="803.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0">

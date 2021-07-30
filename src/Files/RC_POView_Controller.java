@@ -151,6 +151,9 @@ public class RC_POView_Controller {
 
         tbl_PO.setEditable(true);
         col_qtyRcv.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        col_qtyRcv.setOnEditCommit(e->{
+            e.getTableView().getItems().get(e.getTablePosition().getRow()).setQty_rcv(e.getNewValue());
+        });
 
     }
 
@@ -180,37 +183,46 @@ public class RC_POView_Controller {
         if(result.isPresent()){
             DOnum = result.get();
             //System.out.println(result.get());
+
+            //update qty on POin_detail
+            String updateDet = "UPDATE POin_detail SET qty_rcv = ? WHERE PONum = '"+PONum+"' AND upc = ?";
+            PreparedStatement pstDet = connectDB.prepareStatement(updateDet);
+
+            //update status on POin
+            String updateStat = "UPDATE POin SET status = 'Not Approved' WHERE PONum = '"+PONum+"';";
+            PreparedStatement pstStat = connectDB.prepareStatement(updateStat);
+            pstStat.execute();
+
+            //insert values to POin_rcv
+            String updateVal = "INSERT INTO POin_rcv (PONum,DONum,upc,qty,rcvBy,date_rcv,expiry_date) VALUES (?,?,?,?,?,?,?) ;" ;
+            PreparedStatement pstupdateVal = connectDB.prepareStatement(updateVal);
+
+            for(POin p:rcvOb){
+                pstupdateVal.setString(1,PONum);
+                pstupdateVal.setString(2,DOnum);
+                pstupdateVal.setString(3,p.upc);
+                pstupdateVal.setString(4, String.valueOf(p.qty_rcv));
+                pstupdateVal.setString(5, Username);
+                pstupdateVal.setString(6,String.valueOf(java.time.LocalDate.now()));
+                pstupdateVal.setString(7, String.valueOf(p.expDate));
+                pstupdateVal.execute();
+
+                pstDet.setString(1,String.valueOf(p.qty_rcv));
+                pstDet.setString(2,p.upc);
+                pstDet.execute();
+            }
+
+            closeWindow(event);
+            System.out.println("Database updated.");
         }
-        //update qty on POin
-        String updateDet = "UPDATE POin_detail SET qty_rcv = ? WHERE PONum = '"+PONum+"' AND upc = ?";
-        PreparedStatement pstDet = connectDB.prepareStatement(updateDet);
 
-        //insert values to POin_rcv
-        String updateVal = "INSERT INTO POin_rcv (PONum,DONum,upc,qty,rcvBy,date_rcv,expiry_date) VALUES (?,?,?,?,?,?,?) " ;
-        PreparedStatement pstupdateVal = connectDB.prepareStatement(updateVal);
-
-        for(POin p:rcvOb){
-            pstupdateVal.setString(1,PONum);
-            pstupdateVal.setString(2,DOnum);
-            pstupdateVal.setString(3,p.upc);
-            pstupdateVal.setString(4, String.valueOf(p.qty_rcv));
-            pstupdateVal.setString(5, Username);
-            pstupdateVal.setString(6,String.valueOf(java.time.LocalDate.now()));
-            pstupdateVal.setString(7, String.valueOf(p.expDate));
-
-            pstDet.setString(1,String.valueOf(p.qty_rcv));
-            pstDet.setString(2,p.upc);
-            pstDet.execute();
-        }
-
-        closeWindow(event);
 
     }
 
 
-    public void editQtyRcv(TableColumn.CellEditEvent<POin, Integer> pOinIntegerCellEditEvent) {
-        POin po = tbl_PO.getSelectionModel().getSelectedItem();
-        po.qty_rcv(pOinIntegerCellEditEvent.getNewValue());
+    @FXML
+    void editQtyRcv(ActionEvent event) {
+
     }
 
 

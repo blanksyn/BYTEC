@@ -89,20 +89,25 @@ public class SP_POIN_RcvListView_Controller {
 
         //hide approve button
         try{
-            int appCount =0;
+
             String getValues = "SELECT approvedBy FROM POin_rcv WHERE DONum = "+ DONum;
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
-            System.out.println(appCount);
+            String ap = "";
 
             while (queryResult.next()){
-                appCount++;
+                ap = "Approved by: "+ queryResult.getString("approvedBy");
+                System.out.println("Approved by: " + queryResult.getString("approvedBy"));
             }
 
-            if(appCount>0){
+            if(ap.equals("Approved by: ")){
                 approvebtn.setVisible(false);
                 RejectBtn.setVisible(false);
+            }else {
+                System.out.println("Approved by: "+ ap);
             }
+
+
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -216,7 +221,7 @@ public class SP_POIN_RcvListView_Controller {
 
         while(rsQtyIndv.next()) {
             int remaining = Integer.parseInt(rsQtyIndv.getString("qty_remaining")) - Integer.parseInt(rsQtyIndv.getString("qty_rcv"));
-            String updateRem = "UPDATE Poin_detail SET (qty_rcv,qty_remaining) VALUES (?,?) WHERE PONum = "+ PONum+ " ;";
+            String updateRem = "UPDATE POin_detail SET qty_rcv =? ,qty_remaining =? WHERE PONum = "+ PONum+ " ;";
             PreparedStatement ps =connectDB.prepareStatement(updateRem);
             ps.setString(1,"0");
             ps.setString(2, String.valueOf(remaining));
@@ -270,6 +275,7 @@ public class SP_POIN_RcvListView_Controller {
     @FXML
     void reject(ActionEvent event) {
 
+        closeWindow(event);
     }
 
     @FXML
@@ -312,7 +318,7 @@ public class SP_POIN_RcvListView_Controller {
                     //check upc location
                     boolean locFilled = false;
                     String loc ="";
-                    String getLoc = "SELECT location,max_qty FROM upc_location WHERE upc = "+ upc + " ORDER BY ASC";
+                    String getLoc = "SELECT location,max_qty FROM upc_location WHERE upc = "+ upc + " ORDER BY location ASC";
                     Statement stLoc = connectDB.createStatement();
                     ResultSet rsLoc = stLoc.executeQuery(getLoc);
 
@@ -383,7 +389,7 @@ public class SP_POIN_RcvListView_Controller {
                     //check upc location
                     boolean locFilled = false;
                     String loc ="";
-                    String getLoc = "SELECT location,max_qty FROM upc_location WHERE upc = "+ upc + " ORDER BY ASC";
+                    String getLoc = "SELECT location,max_qty FROM upc_location WHERE upc = "+ upc + " ORDER BY location ASC";
                     Statement stLoc = connectDB.createStatement();
                     ResultSet rsLoc = stLoc.executeQuery(getLoc);
 

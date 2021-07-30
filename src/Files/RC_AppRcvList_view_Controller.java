@@ -11,7 +11,18 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -142,8 +153,99 @@ public class RC_AppRcvList_view_Controller {
     }
 
     @FXML
-    void printLabel(ActionEvent event) {
+    void printLabel(ActionEvent event) throws IOException {
+        XSSFWorkbook wb = new XSSFWorkbook();//for earlier version use HSSF
+        XSSFSheet sheet = wb.createSheet("Labels - to print"+ DONum);
 
+        String[] colHeadings ={"SN","UPC","Product Name", "Quantity"};
+
+        Font headerFont = wb.createFont();
+        headerFont.setBold(true);
+        headerFont.setFontHeightInPoints((short)12);
+        headerFont.setColor(IndexedColors.BLACK.index);
+
+        CellStyle headerStyle = wb.createCellStyle();
+        headerStyle.setFont(headerFont);
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index);
+
+        String[] colHeadings1 ={"SN","UPC","Product Name"};
+        String[] colHeadings2 ={"SKU", "Location"};
+
+        int index = 0;
+        for (int i = 0; i<rcvList.size();i++){
+
+            XSSFRow title = sheet.createRow(index);
+            title.createCell(0).setCellStyle(headerStyle);
+            title.getCell(0).setCellValue("PO Number:");
+            title.createCell(1).setCellStyle(headerStyle);
+            title.getCell(1).setCellValue(PONum);
+            title.createCell(2).setCellStyle(headerStyle);
+            title.getCell(2).setCellValue("DO Number:");
+            title.createCell(3).setCellStyle(headerStyle);
+            title.getCell(3).setCellValue(DONum);
+            index++;
+
+            XSSFRow title2 = sheet.createRow(index);
+            title2.createCell(0).setCellStyle(headerStyle);
+            title2.getCell(0).setCellValue("Date Received:");
+            title2.createCell(1).setCellStyle(headerStyle);
+            title2.getCell(1).setCellValue(date_rcv);
+            title2.createCell(2).setCellStyle(headerStyle);
+            title2.getCell(2).setCellValue("Supplier:");
+            title2.createCell(3).setCellStyle(headerStyle);
+            title2.getCell(3).setCellValue(supplier);
+            index++;
+
+            XSSFRow blankSpace3 = sheet.createRow(index);
+            index++;
+
+            XSSFRow header = sheet.createRow(index);
+            for(int j =0;j<colHeadings1.length;j++){
+                XSSFCell cell = header.createCell(j);
+                cell.setCellValue(colHeadings1[j]);
+                cell.setCellStyle(headerStyle);
+            }
+            index++;
+
+            XSSFRow row = sheet.createRow(index);
+            row.createCell(0).setCellValue(rcvList.get(i).sn);
+            row.createCell(1).setCellValue(rcvList.get(i).upc);
+            row.createCell(2).setCellValue(rcvList.get(i).prod_name);
+            index++;
+
+            XSSFRow header2 = sheet.createRow(index);
+            for(int k =0;k<colHeadings2.length;k++){
+                XSSFCell cell = header2.createCell(k);
+                cell.setCellValue(colHeadings2[k]);
+                cell.setCellStyle(headerStyle);
+            }
+            index++;
+
+            XSSFRow row2 = sheet.createRow(index);
+            row2.createCell(0).setCellValue(rcvList.get(i).sku);
+            row2.createCell(1).setCellValue(rcvList.get(i).loc);
+            index++;
+
+            XSSFRow blankSpace4 = sheet.createRow(index);
+            index++;
+            XSSFRow blankSpace5 = sheet.createRow(index);
+            index++;
+
+        }
+
+        for(int i=0; i<6;i++){
+            sheet.autoSizeColumn(i);
+        }
+
+
+
+        FileOutputStream fileOut = new FileOutputStream("Labels-"+DONum+".xlsx");// before 2007 version xls
+        wb.write(fileOut);
+        fileOut.close();
+        wb.close();
+        System.out.println("Labels created.");
+        closeWindow(event);
     }
 
     @FXML
