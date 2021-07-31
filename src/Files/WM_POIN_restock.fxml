@@ -121,5 +121,15 @@
          </font>
       </Button>
       <ComboBox fx:id="CB_field" layoutX="973.0" layoutY="58.0" prefHeight="30.0" prefWidth="150.0" promptText="Select Field" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
+      <Label layoutX="1089.0" layoutY="7.0" prefHeight="27.0" prefWidth="42.0" text="WM" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="399.0" layoutY="7.0" prefHeight="27.0" prefWidth="402.0" text="View Auto Restock Purchase Order (Inbound) List" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

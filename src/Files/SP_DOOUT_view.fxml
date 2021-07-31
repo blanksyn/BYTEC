@@ -63,5 +63,15 @@
       <ComboBox fx:id="CB_courier" layoutX="964.0" layoutY="187.0" prefWidth="150.0" promptText="Courier" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
       <Label layoutX="68.0" layoutY="87.0" prefHeight="25.0" prefWidth="71.0" text="DO Number:" />
       <Label fx:id="Lab_DONum" layoutX="139.0" layoutY="87.0" prefHeight="25.0" prefWidth="149.0" />
+      <Label layoutX="536.0" layoutY="7.0" prefHeight="27.0" prefWidth="129.0" text="Delivery Order " textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="1122.0" layoutY="7.0" prefHeight="27.0" prefWidth="36.0" text="SP" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

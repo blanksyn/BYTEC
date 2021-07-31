@@ -234,25 +234,7 @@ public class SP_POIN_RcvList_Controller {
 
     @FXML
     void logoutAcc(MouseEvent event) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Logout");
-        alert.setHeaderText("You're about to logout!");
-        alert.setContentText("Confirm logout?");
-
-        if(alert.showAndWait().get()== ButtonType.OK){
-
-            Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
-            Stage logoutStage = (Stage)logoutBtn.getScene().getWindow();
-            Scene scene = new Scene(root, 700, 650);
-            logoutStage.setTitle("Login");
-            logoutStage.setScene(scene);
-            Image image = new Image("image/bytec_bg_cropped.png");
-            logoutStage.getIcons().add(image);
-            scene.setFill(Color.TRANSPARENT);
-            logoutStage.centerOnScreen();
-            logoutStage.show();
-
-        }
+        Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
     }
 
     @FXML

@@ -49,5 +49,15 @@
       <ComboBox fx:id="CB_location" layoutX="301.0" layoutY="146.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
       <Label layoutX="132.0" layoutY="187.0" prefHeight="25.0" prefWidth="149.0" text="Expiry Date" />
       <TextField fx:id="TF_expDate" layoutX="301.0" layoutY="186.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
+      <Label layoutX="1122.0" layoutY="7.0" prefHeight="27.0" prefWidth="42.0" text="WM" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="471.0" layoutY="7.0" prefHeight="27.0" prefWidth="258.0" text="Product Masterlist - Detail (edit)" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

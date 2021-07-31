@@ -63,5 +63,15 @@
             <Font name="Bodoni MT" size="14.0" />
          </font>
       </Button>
+      <Label layoutX="501.0" layoutY="7.0" prefHeight="27.0" prefWidth="198.0" text="Approved Receiving List" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="1128.0" layoutY="7.0" prefHeight="27.0" prefWidth="36.0" text="RC" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -55,5 +55,15 @@
          </font>
       </Button>
       <ComboBox fx:id="CB_field" layoutX="957.0" layoutY="59.0" prefHeight="30.0" prefWidth="150.0" promptText="Select Field" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
+      <Label layoutX="554.0" layoutY="6.0" prefHeight="27.0" prefWidth="106.0" text="Picking List" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="1092.0" layoutY="7.0" prefHeight="27.0" prefWidth="36.0" text="PP" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
