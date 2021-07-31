@@ -59,5 +59,10 @@
             <Font name="Bodoni MT" size="14.0" />
          </font>
       </Button>
+      <Label layoutX="529.0" layoutY="7.0" prefHeight="27.0" prefWidth="142.0" text="Picking Products" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
