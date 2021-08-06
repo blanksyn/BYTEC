@@ -87,5 +87,15 @@
             <Font name="Bodoni MT" size="13.0" />
          </font>
       </Button>
+      <Label layoutX="1122.0" layoutY="7.0" prefHeight="27.0" prefWidth="42.0" text="WM" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="545.0" layoutY="7.0" prefHeight="27.0" prefWidth="111.0" text="Product Edit" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -42,5 +42,15 @@
             <TableColumn fx:id="col_action" prefWidth="132.0" style="-fx-background-color: white; -fx-alignment: center;" text="Action" />
         </columns>
       </TableView>
+      <Label layoutX="1122.0" layoutY="7.0" prefHeight="27.0" prefWidth="42.0" text="WM" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="491.0" layoutY="7.0" prefHeight="27.0" prefWidth="219.0" text="Product Masterlist - Detail" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

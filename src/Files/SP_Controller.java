@@ -3,6 +3,8 @@ package Files;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +27,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Locale;
 
 public class SP_Controller {
 
@@ -198,6 +201,43 @@ public class SP_Controller {
         col_status.setCellValueFactory((new PropertyValueFactory<>("status")));
 
         tbl_pickList.setItems(pickList);
+
+        FilteredList<POout> filteredData = new FilteredList<>(pickList, b-> true);
+
+        TF_keyword.textProperty().addListener((observable, oldValue,newValue)->{
+
+            //if no change detected then no change to list
+            filteredData.setPredicate(POout -> {
+
+                boolean s =false;
+                if(newValue.isEmpty() || newValue.isBlank() || newValue ==null){
+                    return true;
+                }
+
+                String searchKeyword = newValue.toLowerCase();
+
+                if(POout.getPONum().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(POout.getCompany().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(POout.getDate_created().toString().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(POout.getPpBy().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(POout.getStatus().toLowerCase().indexOf(searchKeyword)>-1){
+
+                }else
+                    s = false;//no match found
+                return s;
+            });
+        });
+
+        SortedList<POout> sortedData = new SortedList<>(filteredData);
+        //bind sorted results with tableview
+        sortedData.comparatorProperty().bind(tbl_pickList.comparatorProperty());
+        //apply filtered and sorted data to table view
+        tbl_pickList.setItems(sortedData);
+
     }
 
     public void welcomeMsg(String username){
@@ -260,7 +300,7 @@ public class SP_Controller {
     }
 
     @FXML
-    void searchFunction(ActionEvent event) {
+    void searchFunction(ActionEvent event){
 
     }
 

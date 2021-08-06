@@ -82,5 +82,15 @@
       <Label layoutX="456.0" layoutY="299.0" prefHeight="25.0" prefWidth="21.0" text="cm" />
       <Label layoutX="456.0" layoutY="338.0" prefHeight="25.0" prefWidth="21.0" text="cm" />
       <Label layoutX="456.0" layoutY="380.0" prefHeight="25.0" prefWidth="21.0" text="cm" />
+      <Label layoutX="1115.0" layoutY="7.0" prefHeight="27.0" prefWidth="42.0" text="WM" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="530.0" layoutY="7.0" prefHeight="27.0" prefWidth="142.0" text="Add New Product" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

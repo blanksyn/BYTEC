@@ -74,5 +74,15 @@
             <Font size="14.0" />
          </font>
       </Label>
+      <Label layoutX="529.0" layoutY="7.0" prefHeight="27.0" prefWidth="143.0" text="Inventory Report " textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="1127.0" layoutY="7.0" prefHeight="27.0" prefWidth="36.0" text="WM" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

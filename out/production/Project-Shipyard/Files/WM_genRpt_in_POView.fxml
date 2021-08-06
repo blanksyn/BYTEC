@@ -73,5 +73,15 @@
             <Font size="14.0" />
          </font>
       </Label>
+      <Label layoutX="416.0" layoutY="7.0" prefHeight="27.0" prefWidth="369.0" text="Purchase Order (Inbound) - Month" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="1127.0" layoutY="7.0" prefHeight="27.0" prefWidth="36.0" text="WM" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

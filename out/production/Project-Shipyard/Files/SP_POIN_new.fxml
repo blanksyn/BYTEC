@@ -66,5 +66,15 @@
       <Label layoutX="65.0" layoutY="296.0" prefHeight="17.0" prefWidth="151.0" text=" " textAlignment="CENTER" textFill="RED" />
       <TextField fx:id="TF_supEmail" layoutX="63.0" layoutY="155.0" promptText="Supplier Email" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
       <ComboBox fx:id="CB_supName" layoutX="63.0" layoutY="115.0" onAction="#fill_cb" prefWidth="150.0" promptText="Supplier Name" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
+      <Label layoutX="452.0" layoutY="7.0" prefHeight="27.0" prefWidth="298.0" text="Create New Purchase Order (Inbound)" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="1128.0" layoutY="7.0" prefHeight="27.0" prefWidth="36.0" text="SP" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

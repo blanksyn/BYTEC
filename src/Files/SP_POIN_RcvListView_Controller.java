@@ -90,21 +90,21 @@ public class SP_POIN_RcvListView_Controller {
         //hide approve button
         try{
 
-            String getValues = "SELECT approvedBy FROM POin_rcv WHERE DONum = "+ DONum;
+            String getValues = "SELECT approvedBy FROM POin_rcv WHERE DONum = '"+ DONum+"' LIMIT 1;";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
             String ap = "";
 
             while (queryResult.next()){
                 ap = "Approved by: "+ queryResult.getString("approvedBy");
-                System.out.println("Approved by: " + queryResult.getString("approvedBy"));
+
             }
 
             if(ap.equals("Approved by: ")){
                 approvebtn.setVisible(false);
                 RejectBtn.setVisible(false);
             }else {
-                System.out.println("Approved by: "+ ap);
+                System.out.println(ap);
             }
 
 
@@ -192,6 +192,7 @@ public class SP_POIN_RcvListView_Controller {
                 String updateQty = "UPDATE product_master SET qty =" + sum +" WHERE upc = " + rsQty.getString("upc");
                 PreparedStatement psUpdateQty = connectDB.prepareStatement(updateQty);
                 psUpdateQty.execute();
+                System.out.println("Product master quantity updated.");
             }
 
         }
@@ -202,14 +203,17 @@ public class SP_POIN_RcvListView_Controller {
         ResultSet rsSKU = stSKU.executeQuery(getSKUstatus);
 
         while(rsSKU.next()){
-            String getSKUindv = "SELECT count(upc) FROM POin_rcv WHERE DONum = "+ DONum;
+            String getSKUindv = "SELECT count(upc) AS c FROM product_indv WHERE upc = "+ rsSKU.getString("upc");
             Statement stSKUindv = connectDB.createStatement();
             ResultSet rsSKUindv = stSKUindv.executeQuery(getSKUindv);
-
-            if(rsSKUindv.getRow()>0) {
-                generateExistingSKU(rsSKU.getString("upc"),rsSKU.getInt("qty"));
-            }else{
-                generateNewSKU(rsSKU.getString("upc"),rsSKU.getInt("qty"));
+            while(rsSKUindv.next()) {
+                if (rsSKUindv.getInt("c") > 0) {
+                    generateExistingSKU(rsSKU.getString("upc"), rsSKU.getInt("qty"));
+                    System.out.println("SKU generated.");
+                } else {
+                    generateNewSKU(rsSKU.getString("upc"), rsSKU.getInt("qty"));
+                    System.out.println("NEW SKU generated.");
+                }
             }
 
         }
@@ -226,6 +230,7 @@ public class SP_POIN_RcvListView_Controller {
             ps.setString(1,"0");
             ps.setString(2, String.valueOf(remaining));
             ps.execute();
+            System.out.println("POin_detail updated.");
         }
         boolean st = false;
         String getValues = "SELECT * FROM POin_detail WHERE PONum = "+ PONum;
@@ -248,6 +253,7 @@ public class SP_POIN_RcvListView_Controller {
         String statusUp = "UPDATE POin SET status = '" + update + "' WHERE PONum = " + PONum;
         PreparedStatement ps = connectDB.prepareStatement(statusUp);
         ps.execute();
+        System.out.println("PO status updated.");
 
         //update approved by
         String appBy = "UPDATE POin_rcv SET approvedBy = '" + Username + "' WHERE DONum = " + DONum;
@@ -267,6 +273,7 @@ public class SP_POIN_RcvListView_Controller {
 
             Navigation nav = new Navigation();
             nav.stageSetup(event, root);
+            System.out.println("Closing window...");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -274,7 +281,6 @@ public class SP_POIN_RcvListView_Controller {
 
     @FXML
     void reject(ActionEvent event) {
-
         closeWindow(event);
     }
 
@@ -336,7 +342,7 @@ public class SP_POIN_RcvListView_Controller {
                         }
                     }
 
-                    String getExpDate = "SELECT expiry_date FROM POin_rcv WHERE upc = '"+ upc + "' AND PONum = '"+ PONum + "' ;";
+                    String getExpDate = "SELECT expiry_date FROM POin_rcv WHERE upc = '"+ upc + "' AND DONum = '"+ DONum + "' ;";
                     Statement stExpDate = connectDB.createStatement();
                     ResultSet rsExpDate = stExpDate.executeQuery(getExpDate);
 
@@ -380,8 +386,8 @@ public class SP_POIN_RcvListView_Controller {
             while(rsSKUIndv.next()) {
                 String latestSKU = rsSKUIndv.getString("sku");
                 //get product code
-                String PC = latestSKU.substring(0,2);
-                int num = Integer.parseInt(latestSKU.substring(2,latestSKU.length()+1));
+                String PC = latestSKU.substring(0,6);
+                int num = Integer.parseInt(latestSKU.substring(6));
 
                 for(int i = 1; i<qty+1;i++){
                     String result = PC.concat(String.valueOf(num+i));
@@ -399,6 +405,7 @@ public class SP_POIN_RcvListView_Controller {
                         ResultSet rsLocQty = stLocQty.executeQuery(getLocQty);
 
                         while(rsLocQty.next()) {
+                            loc = rsLoc.getString("location");
                             if((Integer.parseInt(rsLocQty.getString("val"))<= Integer.parseInt(rsLoc.getString("max_qty"))) && !locFilled){
                                 locFilled=true;
                                 loc = rsLoc.getString("location");
@@ -408,12 +415,12 @@ public class SP_POIN_RcvListView_Controller {
                     }
 
                     //insert sku in product_indv
-                    String prodIndv = "INSERT INTO product_indv(upc,sku,date_added) VALUES (?,?,?,?)";
+                    String prodIndv = "INSERT INTO product_indv(upc,sku,date_added,location) VALUES (?,?,?,?)";
                     PreparedStatement pstindv = connectDB.prepareStatement(prodIndv);
                     pstindv.setString(1, upc);
                     pstindv.setString(2, result);
                     pstindv.setString(3, String.valueOf(java.time.LocalDate.now()));
-                    pstindv.setString(4,loc);
+                    pstindv.setString(4, loc);
                     pstindv.execute();
 
                     String prodrcvDet = "INSERT INTO POin_rcv_detail(DONum,upc,sku) VALUES (?,?,?)";

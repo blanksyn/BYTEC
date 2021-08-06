@@ -193,5 +193,15 @@
             </CheckBox>
          </children>
       </VBox>
+      <Label layoutX="538.0" layoutY="7.0" prefHeight="27.0" prefWidth="125.0" text="Product Details" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="1128.0" layoutY="7.0" prefHeight="27.0" prefWidth="36.0" text="SP" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

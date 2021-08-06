@@ -91,5 +91,15 @@
             <Insets left="2.0" right="2.0" />
          </padding>
       </Label>
+      <Label layoutX="1115.0" layoutY="7.0" prefHeight="27.0" prefWidth="42.0" text="WM" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="495.0" layoutY="7.0" prefHeight="27.0" prefWidth="210.0" text="Purchase Order (Inbound)" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

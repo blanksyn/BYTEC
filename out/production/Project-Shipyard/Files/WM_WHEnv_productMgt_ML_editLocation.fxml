@@ -40,5 +40,15 @@
             <TableColumn fx:id="col_newloc" prefWidth="183.0" style="-fx-background-color: white; -fx-alignment: center;" text="New Location" />
         </columns>
       </TableView>
+      <Label layoutX="1122.0" layoutY="7.0" prefHeight="27.0" prefWidth="42.0" text="WM" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="498.0" layoutY="7.0" prefHeight="27.0" prefWidth="205.0" text="Product Location (Edit)" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

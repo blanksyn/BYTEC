@@ -60,5 +60,10 @@
             <Font name="Bodoni MT" size="18.0" />
          </font>
       </Label>
+      <Label layoutX="1092.0" layoutY="7.0" prefHeight="27.0" prefWidth="36.0" text="PP" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

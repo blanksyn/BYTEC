@@ -154,13 +154,22 @@ public class SP_picklistView_Controller {
             psUpDo.execute();
 
             //update status
+            //remove all old status
             String upProd = "UPDATE product_indv SET status = '' WHERE sku = '" + rsProd.getString("sku")+"';";
             PreparedStatement psUpProd = connectDB.prepareStatement(upProd);
             psUpProd.execute();
 
-            String upProdSKU = "UPDATE product_indv SET status = 'Picked' WHERE sku = '" + rsProd.getString("sku_scanned")+"';";
-            PreparedStatement psUpProdSKU = connectDB.prepareStatement(upProdSKU);
-            psUpProdSKU.execute();
+            String getDelDate = "SELECT delivery_date FROM POout WHERE PONum = '" +PONum +"' AND DONum = '"+DO+"';";
+            Statement stDelDate = connectDB.createStatement();
+            ResultSet rsDelDate = stDelDate.executeQuery(getDelDate);
+            while(rsDelDate.next()) {
+
+                //update new scanned sku with delivered
+                String upProdSKU = "UPDATE product_indv SET status = 'Delivered',delivery_date = ? WHERE sku = '" + rsProd.getString("sku_scanned") + "';";
+                PreparedStatement psUpProdSKU = connectDB.prepareStatement(upProdSKU);
+                psUpProdSKU.setString(1, rsDelDate.getString("delivery_date"));
+                psUpProdSKU.execute();
+            }
         }
 
         System.out.println("Purchase Order Approved.");

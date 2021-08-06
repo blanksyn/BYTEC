@@ -39,7 +39,7 @@
       <Separator layoutY="33.0" prefHeight="12.0" prefWidth="1014.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
       <VBox layoutX="2.0" layoutY="45.0" prefHeight="656.0" prefWidth="258.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
          <children>
-            <Button fx:id="pickListBtn" mnemonicParsing="false" onAction="#Nav_pickList" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Picking List" textFill="WHITE">
+            <Button fx:id="pickListBtn" mnemonicParsing="false" onAction="#Nav_pickList" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Sales Order (OUT)" textFill="WHITE">
                <font>
                   <Font name="Bodoni MT" size="18.0" />
                </font>
@@ -107,5 +107,15 @@
          </font>
       </Button>
       <ComboBox fx:id="CB_field" layoutX="960.0" layoutY="45.0" prefHeight="30.0" prefWidth="150.0" promptText="Select Field" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
+      <Label layoutX="477.0" layoutY="7.0" prefHeight="27.0" prefWidth="252.0" text="Delivery Order (Outbound) List" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="1095.0" layoutY="7.0" prefHeight="27.0" prefWidth="36.0" text="SP" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
