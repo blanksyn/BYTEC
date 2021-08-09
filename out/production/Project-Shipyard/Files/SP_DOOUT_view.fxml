@@ -38,17 +38,11 @@
             <TableColumn fx:id="col_qty" prefWidth="148.0" style="-fx-background-color: white; -fx-alignment: Center;" text="Quantity" />
          </columns>
       </TableView>
-      <TextField fx:id="TF_keyword" layoutX="808.0" layoutY="58.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
+      <TextField fx:id="TF_keyword" layoutX="1033.0" layoutY="55.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
          <font>
             <Font name="Bodoni MT" size="12.0" />
          </font>
       </TextField>
-      <Button fx:id="searchBtn" layoutX="1122.0" layoutY="59.0" mnemonicParsing="false" onAction="#searchFunction" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Search" textFill="WHITE">
-         <font>
-            <Font name="Bodoni MT" size="14.0" />
-         </font>
-      </Button>
-      <ComboBox fx:id="CB_field" layoutX="964.0" layoutY="57.0" prefHeight="30.0" prefWidth="150.0" promptText="Select Field" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
       <Label layoutX="68.0" layoutY="57.0" prefHeight="25.0" prefWidth="71.0" text="PO Number:" />
       <Label layoutX="364.0" layoutY="87.0" prefHeight="25.0" prefWidth="60.0" text="Company:" />
       <Label fx:id="Lab_PONum" layoutX="139.0" layoutY="57.0" prefHeight="25.0" prefWidth="149.0" />

@@ -2,6 +2,8 @@ package Files;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -141,6 +143,40 @@ public class RC_AppRcvList_view_Controller {
         col_location.setCellValueFactory((new PropertyValueFactory<>("loc")));
 
         tbl_rcvList.setItems(rcvList);
+
+        FilteredList<product_indv> filteredData = new FilteredList<>(rcvList, b-> true);
+
+        TF_keyword.textProperty().addListener((observable, oldValue,newValue)->{
+
+            //if no change detected then no change to list
+            filteredData.setPredicate(product_indv -> {
+
+                boolean s =false;
+                if(newValue.isEmpty() || newValue.isBlank() || newValue ==null){
+                    return true;
+                }
+
+                String searchKeyword = newValue.toLowerCase();
+
+                if(product_indv.getUpc().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(product_indv.getProd_name().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(product_indv.getSku().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(product_indv.getLoc().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else
+                    s = false;//no match found
+                return s;
+            });
+        });
+
+        SortedList<product_indv> sortedData = new SortedList<>(filteredData);
+        //bind sorted results with tableview
+        sortedData.comparatorProperty().bind(tbl_rcvList.comparatorProperty());
+        //apply filtered and sorted data to table view
+        tbl_rcvList.setItems(sortedData);
 
     }
 

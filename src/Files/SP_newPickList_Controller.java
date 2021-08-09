@@ -182,7 +182,7 @@ public class SP_newPickList_Controller {
             alert.setContentText("Please enter quantity.");
 
             alert.showAndWait();
-        }else if((!upc.equals("") || upc==null) && (!prod_name.equals("") || prod_name == null)) {
+        }else if((!upc.isEmpty()||upc==null) && (!prod_name.isEmpty()||prod_name==null)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("An error has occurred");
             alert.setHeaderText("Both fields are filled! ");
@@ -385,6 +385,25 @@ public class SP_newPickList_Controller {
             pstDetUP.setString(1, p.sku);
             pstDetUP.execute();
         }
+        System.out.println("Status successfully updated.");
+
+        //find current quantity in master list and update
+        for(product_indv p:newList) {
+            String getValues = "SELECT qty FROM product_master WHERE upc = '" + p.upc + "';";
+            Statement statement = connectDB.createStatement();
+            ResultSet queryResult = statement.executeQuery(getValues);
+
+            while (queryResult.next()) {
+                int num = queryResult.getInt("qty");
+                num--;
+                String updateQty = "UPDATE product_master SET qty = '"+ num + "' WHERE upc = '"+ p.upc+"';";
+                PreparedStatement pstQty = connectDB.prepareStatement(updateQty);
+                pstQty.execute();
+                System.out.println("Master list quantity successfully updated.");
+            }
+        }
+
+        System.out.println("New sales order created.");
 
         closeWindow(event);
     }

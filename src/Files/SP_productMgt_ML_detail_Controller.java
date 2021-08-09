@@ -2,6 +2,8 @@ package Files;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -73,7 +75,7 @@ public class SP_productMgt_ML_detail_Controller {
             DatabaseConnection con = new DatabaseConnection();
             Connection connectDB = con.getConnection();
 
-            String getValues = "SELECT * FROM product_indv WHERE upc = '"+ upc+ "' ORDER BY upc ASC";
+            String getValues = "SELECT * FROM product_indv WHERE upc = '"+ upc+ "' AND (status != 'Delivered' OR status is null) ORDER BY upc ASC";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 
@@ -104,6 +106,40 @@ public class SP_productMgt_ML_detail_Controller {
 
 
         tblViewProd.setItems(upcProd);
+
+        FilteredList<product_indv> filteredData = new FilteredList<>(upcProd, b-> true);
+
+        TF_keyword.textProperty().addListener((observable, oldValue,newValue)->{
+
+            //if no change detected then no change to list
+            filteredData.setPredicate(product_indv -> {
+
+                boolean s =false;
+                if(newValue.isEmpty() || newValue.isBlank() || newValue ==null){
+                    return true;
+                }
+
+                String searchKeyword = newValue.toLowerCase();
+
+                if(product_indv.getSku().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(product_indv.getExpiry_date().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(product_indv.getDate_added().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(product_indv.getLoc().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else
+                    s = false;//no match found
+                return s;
+            });
+        });
+
+        SortedList<product_indv> sortedData = new SortedList<>(filteredData);
+        //bind sorted results with tableview
+        sortedData.comparatorProperty().bind(tblViewProd.comparatorProperty());
+        //apply filtered and sorted data to table view
+        tblViewProd.setItems(sortedData);
     }
 
     @FXML

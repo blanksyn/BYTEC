@@ -2,6 +2,8 @@ package Files;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -98,6 +100,40 @@ public class PP_view_Controller {
 
         tbl_pickingList.setEditable(true);
         col_skuScanned.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        FilteredList<POout> filteredData = new FilteredList<>(scanList, b-> true);
+
+        TF_keyword.textProperty().addListener((observable, oldValue,newValue)->{
+
+            //if no change detected then no change to list
+            filteredData.setPredicate(POout -> {
+
+                boolean s =false;
+                if(newValue.isEmpty() || newValue.isBlank() || newValue ==null){
+                    return true;
+                }
+
+                String searchKeyword = newValue.toLowerCase();
+
+                if(POout.getUpc().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(POout.getProd_name().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(POout.getSku().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(POout.getSku_scanned().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else
+                    s = false;//no match found
+                return s;
+            });
+        });
+
+        SortedList<POout> sortedData = new SortedList<>(filteredData);
+        //bind sorted results with tableview
+        sortedData.comparatorProperty().bind(tbl_pickingList.comparatorProperty());
+        //apply filtered and sorted data to table view
+        tbl_pickingList.setItems(sortedData);
 
     }
 

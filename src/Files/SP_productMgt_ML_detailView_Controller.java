@@ -117,11 +117,15 @@ public class SP_productMgt_ML_detailView_Controller {
                 TA_desc.setText(queryResult.getString("description"));
                 TA_desc.setEditable(false);
 
+                checkBox_restock.setSelected(Boolean.parseBoolean((queryResult.getString("auto_restock_status"))));
+                checkBox_restock.setDisable(true);
+
                 CB_specialHand.setValue(queryResult.getString("special_handling"));
                 CB_specialHand.setEditable(false);
 
+                CB_cat.setValue(queryResult.getString("category"));
+                CB_cat.setEditable(false);
 
-                //checkBox_restock;
                 //IV_product
 
 

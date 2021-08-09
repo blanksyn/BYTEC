@@ -3,6 +3,8 @@ package Files;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -220,6 +222,54 @@ public class SP_productMgt_ML_Controller {
         col_dateAdded.setCellValueFactory((new PropertyValueFactory<>("date_added")));
 
         tableProductML.setItems(allProd);
+
+        FilteredList<prod_master> filteredData = new FilteredList<>(allProd, b-> true);
+
+        TF_keyword.textProperty().addListener((observable, oldValue,newValue)->{
+
+            //if no change detected then no change to list
+            filteredData.setPredicate(prod_master -> {
+
+                boolean s =false;
+                if(newValue.isEmpty() || newValue.isBlank() || newValue ==null){
+                    return true;
+                }
+
+                String searchKeyword = newValue.toLowerCase();
+
+                if(prod_master.getUPC().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(prod_master.getProdName().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(String.valueOf(prod_master.getQty()).toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(prod_master.getUnit().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(prod_master.getLocation().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(prod_master.getSupplier().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(prod_master.getCategory().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(String.valueOf(prod_master.getMin_qty()).toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(String.valueOf(prod_master.getMax_qty()).toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(prod_master.getAuto_status().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(prod_master.getDate_added().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else
+                    s = false;//no match found
+                return s;
+            });
+        });
+
+        SortedList<prod_master> sortedData = new SortedList<>(filteredData);
+        //bind sorted results with tableview
+        sortedData.comparatorProperty().bind(tableProductML.comparatorProperty());
+        //apply filtered and sorted data to table view
+        tableProductML.setItems(sortedData);
     }
 
 

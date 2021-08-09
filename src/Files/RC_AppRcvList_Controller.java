@@ -3,6 +3,8 @@ package Files;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -157,6 +159,42 @@ public class RC_AppRcvList_Controller {
 
         col_action.setCellFactory(cellFactory);
         tbl_pickList.setItems(rcvList);
+
+        FilteredList<POin> filteredData = new FilteredList<>(rcvList, b-> true);
+
+        TF_keyword.textProperty().addListener((observable, oldValue,newValue)->{
+
+            //if no change detected then no change to list
+            filteredData.setPredicate(POin -> {
+
+                boolean s =false;
+                if(newValue.isEmpty() || newValue.isBlank() || newValue ==null){
+                    return true;
+                }
+
+                String searchKeyword = newValue.toLowerCase();
+
+                if(POin.getPONum().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(POin.getDONum().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(POin.getSupplier().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(String.valueOf(POin.getDate_rcv()).toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(POin.getRcvBy().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else
+                    s = false;//no match found
+                return s;
+            });
+        });
+
+        SortedList<POin> sortedData = new SortedList<>(filteredData);
+        //bind sorted results with tableview
+        sortedData.comparatorProperty().bind(tbl_pickList.comparatorProperty());
+        //apply filtered and sorted data to table view
+        tbl_pickList.setItems(sortedData);
     }
 
     public void welcomeMsg(String username){

@@ -2,6 +2,8 @@ package Files;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -155,6 +157,42 @@ public class RC_POView_Controller {
             e.getTableView().getItems().get(e.getTablePosition().getRow()).setQty_rcv(e.getNewValue());
         });
 
+        FilteredList<POin> filteredData = new FilteredList<>(rcvOb, b-> true);
+
+        TF_keyword.textProperty().addListener((observable, oldValue,newValue)->{
+
+            //if no change detected then no change to list
+            filteredData.setPredicate(POin -> {
+
+                boolean s =false;
+                if(newValue.isEmpty() || newValue.isBlank() || newValue ==null){
+                    return true;
+                }
+
+                String searchKeyword = newValue.toLowerCase();
+
+                if(POin.getUpc().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(POin.getProd_name().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(String.valueOf(POin.getQty_ordered()).toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(String.valueOf(POin.getQty_rcv()).toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(String.valueOf(POin.getQty_remaining()).toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else
+                    s = false;//no match found
+                return s;
+            });
+        });
+
+        SortedList<POin> sortedData = new SortedList<>(filteredData);
+        //bind sorted results with tableview
+        sortedData.comparatorProperty().bind(tbl_PO.comparatorProperty());
+        //apply filtered and sorted data to table view
+        tbl_PO.setItems(sortedData);
+
     }
 
     @FXML
@@ -170,6 +208,7 @@ public class RC_POView_Controller {
 
     @FXML
     void update(ActionEvent event) throws SQLException {
+
         DatabaseConnection con = new DatabaseConnection();
         Connection connectDB = con.getConnection();
         String DOnum = "";
