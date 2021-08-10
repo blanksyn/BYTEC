@@ -44,9 +44,9 @@
          </font>
       </TextField>
       <Label layoutX="68.0" layoutY="57.0" prefHeight="25.0" prefWidth="71.0" text="PO Number:" />
-      <Label layoutX="68.0" layoutY="88.0" prefHeight="25.0" prefWidth="71.0" text="Company:" />
+      <Label layoutX="364.0" layoutY="88.0" prefHeight="25.0" prefWidth="71.0" text="Company:" />
       <Label fx:id="Lab_PONum" layoutX="139.0" layoutY="57.0" prefHeight="25.0" prefWidth="149.0" />
-      <Label fx:id="Lab_comp" layoutX="139.0" layoutY="88.0" prefHeight="25.0" prefWidth="149.0" />
+      <Label fx:id="Lab_SONum" layoutX="139.0" layoutY="88.0" prefHeight="25.0" prefWidth="149.0" />
       <Label layoutX="364.0" layoutY="57.0" prefHeight="25.0" prefWidth="82.0" text="Date Created:" />
       <Label fx:id="Lab_dateCreated" layoutX="448.0" layoutY="57.0" prefHeight="25.0" prefWidth="149.0" />
       <Button fx:id="approveBtn" layoutX="1005.0" layoutY="528.0" mnemonicParsing="false" onAction="#approvePL" prefHeight="34.0" prefWidth="109.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Approve" textFill="WHITE">
@@ -59,7 +59,7 @@
             <Font name="Bodoni MT" size="18.0" />
          </font>
       </Button>
-      <Label layoutX="486.0" layoutY="7.0" prefHeight="27.0" prefWidth="228.0" text="Edit Sales Order (Outbound)" textAlignment="CENTER">
+      <Label layoutX="505.0" layoutY="7.0" prefHeight="27.0" prefWidth="185.0" text="Sales Order (Outbound)" textAlignment="CENTER">
          <font>
             <Font name="Bodoni MT" size="18.0" />
          </font>
@@ -69,5 +69,7 @@
             <Font name="Bodoni MT" size="18.0" />
          </font>
       </Label>
+      <Label layoutX="68.0" layoutY="88.0" prefHeight="25.0" prefWidth="71.0" text="SO Number:" />
+      <Label fx:id="Lab_comp" layoutX="448.0" layoutY="88.0" prefHeight="25.0" prefWidth="149.0" />
    </children>
 </AnchorPane>

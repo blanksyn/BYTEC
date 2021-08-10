@@ -42,14 +42,9 @@ public class PP_view_Controller {
     @FXML
     private TextField TF_keyword;
 
-    @FXML
-    private Button searchBtn;
 
     @FXML
-    private ComboBox<String> CB_field;
-
-    @FXML
-    private Label Lab_PONum;
+    private Label Lab_SONum;
 
     @FXML
     private Label Lab_Comp;
@@ -58,16 +53,16 @@ public class PP_view_Controller {
     private Button confirmBtn;
 
     String Username ="";
-    String PONum;
+    String SONum;
     ObservableList<POout> scanList = FXCollections.observableArrayList();
 
     @FXML
-    void initialize(String username,String PONum,String comp){
+    void initialize(String username,String SONum,String comp){
         welcomeLabel.setText("User: "+ username);
         this.Username =username;
         Lab_Comp.setText(comp);
-        Lab_PONum.setText(PONum);
-        this.PONum =PONum;
+        Lab_SONum.setText(SONum);
+        this.SONum =SONum;
 
         int count = 1;
 
@@ -75,7 +70,7 @@ public class PP_view_Controller {
             DatabaseConnection con = new DatabaseConnection();
             Connection connectDB = con.getConnection();
 
-            String getValues = "SELECT upc,prod_name,sku,sku_scanned FROM pickingList_detail WHERE PONum = " +PONum +" AND (sku_scanned is null or sku_scanned = '')";
+            String getValues = "SELECT upc,prod_name,sku,sku_scanned FROM pickingList_detail WHERE SONum = " +SONum +" AND (sku_scanned is null or sku_scanned = '')";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 
@@ -121,8 +116,6 @@ public class PP_view_Controller {
                     s = true;
                 }else if(POout.getSku().toLowerCase().indexOf(searchKeyword)>-1){
                     s = true;
-                }else if(POout.getSku_scanned().toLowerCase().indexOf(searchKeyword)>-1){
-                    s = true;
                 }else
                     s = false;//no match found
                 return s;
@@ -143,10 +136,6 @@ public class PP_view_Controller {
         nav.PP_home(event,Username);
     }
 
-    @FXML
-    void searchFunction(ActionEvent event) {
-
-    }
 
     @FXML
     void updatePO(ActionEvent event) throws SQLException {
@@ -158,7 +147,7 @@ public class PP_view_Controller {
         PreparedStatement pstDetUP = connectDB.prepareStatement(updateDataDet);
         String updateDataDetsku = "UPDATE product_indv SET status = 'Picked' WHERE sku = ?";
         PreparedStatement pstDetUPsku = connectDB.prepareStatement(updateDataDetsku);
-        String updatePL = "UPDATE pickingList_detail SET sku_scanned = ? WHERE sku = ? AND PONum = '"+ PONum+"';"  ;
+        String updatePL = "UPDATE pickingList_detail SET sku_scanned = ? WHERE sku = ? AND SONum = '"+ SONum+"';"  ;
         PreparedStatement pstupdatePL = connectDB.prepareStatement(updatePL);
         for(POout p:scanList){
             pstDetUP.setString(1, p.sku);
@@ -170,7 +159,7 @@ public class PP_view_Controller {
             pstupdatePL.execute();
         }
 
-        String updatepickSt = "UPDATE POout SET status = 'Not Approved', ppBy = '"+Username+"' WHERE PONum = '"+ PONum+"';"  ;
+        String updatepickSt = "UPDATE POout SET status = 'Not Approved', ppBy = '"+Username+"' WHERE SONum = '"+ SONum+"';"  ;
         PreparedStatement pstupdatepickSt = connectDB.prepareStatement(updatepickSt);
         pstupdatepickSt.execute();
 

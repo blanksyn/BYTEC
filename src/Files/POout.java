@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class POout {
     int sn,qty;
-    String PONum,company,ppBy,status,upc,prod_name,sku,sku_scanned,reject,loc,DONum;
+    String SONum,PONum,company,ppBy,status,upc,prod_name,sku,sku_scanned,reject,loc,DONum;
     Date date_created,delivery_date;
 
     public String getReject() {
@@ -15,8 +15,9 @@ public class POout {
         this.reject = reject;
     }
 
-    public POout(int sn, String PONum, String company, Date date_created, String ppBy, String status, String reject) {
+    public POout(int sn,String PONum, String SONum, String company, Date date_created, String ppBy, String status, String reject) {
         this.sn = sn;
+        this.SONum = SONum;
         this.PONum = PONum;
         this.company = company;
         this.date_created = date_created;
@@ -40,9 +41,10 @@ public class POout {
 
     }
 
-    public POout(int sn, String PONum,String DONum,String company,Date date_created,Date delivery_date){
+    public POout(int sn, String PONum,String SONum,String DONum,String company,Date date_created,Date delivery_date){
         this.sn = sn;
         this.PONum =PONum;
+        this.SONum =SONum;
         this.DONum = DONum;
         this.company = company;
         this.date_created=date_created;
@@ -56,11 +58,27 @@ public class POout {
         this.qty=qty;
     }
 
-    public POout(int sn,String PONum,String company,Date date_created){
+    public POout(int sn,String SONum,String company,Date date_created){
         this.sn=sn;
-        this.PONum=PONum;
+        this.SONum=SONum;
         this.company=company;
         this.date_created=date_created;
+    }
+
+    public String getSONum() {
+        return SONum;
+    }
+
+    public void setSONum(String SONum) {
+        this.SONum = SONum;
+    }
+
+    public String getLoc() {
+        return loc;
+    }
+
+    public void setLoc(String loc) {
+        this.loc = loc;
     }
 
     public int getQty() {

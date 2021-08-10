@@ -65,6 +65,9 @@ public class SP_Controller {
     private TableColumn<POout, Integer> col_PONum;
 
     @FXML
+    private TableColumn<POout, Integer> col_SONum;
+
+    @FXML
     private TableColumn<POout, String> col_comp;
 
     @FXML
@@ -110,7 +113,7 @@ public class SP_Controller {
             ResultSet queryResult = statement.executeQuery(getValues);
 
             while(queryResult.next()){
-                pickList.add(new POout(count,queryResult.getString("PONum"),queryResult.getString("company"),
+                pickList.add(new POout(count,queryResult.getString("PONum"),queryResult.getString("SONum"),queryResult.getString("company"),
                         queryResult.getDate("date_created"),queryResult.getString("ppBy"),queryResult.getString("status"),queryResult.getString("reject")));
                 count++;
             }
@@ -148,7 +151,7 @@ public class SP_Controller {
                                             Parent root = loader.load();
 
                                             SP_picklistView_Controller controllersp = loader.getController();
-                                            controllersp.initialize(Username,data.PONum, data.status);
+                                            controllersp.initialize(Username,data.SONum, data.status);
 
                                             Navigation nav = new Navigation();
                                             nav.stageSetup(event,root);
@@ -170,7 +173,7 @@ public class SP_Controller {
                                             Parent root = loader.load();
 
                                             SP_editPickList_Controller controllersp = loader.getController();
-                                            controllersp.initialize(Username,data.PONum);
+                                            controllersp.initialize(Username,data.SONum);
 
                                             Navigation nav = new Navigation();
                                             nav.stageSetup(event,root);
@@ -195,6 +198,7 @@ public class SP_Controller {
 
         col_sn.setCellValueFactory((new PropertyValueFactory<>("sn")));
         col_PONum.setCellValueFactory((new PropertyValueFactory<>("PONum")));
+        col_SONum.setCellValueFactory((new PropertyValueFactory<>("SONum")));
         col_comp.setCellValueFactory((new PropertyValueFactory<>("company")));
         col_dateCreate.setCellValueFactory((new PropertyValueFactory<>("date_created")));
         col_pickPack.setCellValueFactory((new PropertyValueFactory<>("ppBy")));

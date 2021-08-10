@@ -87,12 +87,13 @@
       <TableView fx:id="tbl_pickList" layoutX="264.0" layoutY="113.0" prefHeight="611.0" prefWidth="940.0" style="-fx-background-color: white;">
          <columns>
             <TableColumn fx:id="col_sn" prefWidth="50.0" style="-fx-background-color: white; -fx-alignment: Center;" text="S/N" />
-            <TableColumn fx:id="col_PONum" prefWidth="143.0" style="-fx-background-color: white; -fx-alignment: Center;" text="PO Number" />
-            <TableColumn fx:id="col_comp" prefWidth="174.0" style="-fx-background-color: white; -fx-alignment: Center;" text="Company" />
-            <TableColumn fx:id="col_dateCreate" prefWidth="130.0" style="-fx-background-color: white; -fx-alignment: Center;" text="Date Created" />
-            <TableColumn fx:id="col_pickPack" prefWidth="132.0" style="-fx-background-color: white; -fx-alignment: Center;" text="Picked/Packed By" />
-            <TableColumn fx:id="col_status" prefWidth="149.0" style="-fx-background-color: white; -fx-alignment: Center;" text="Status" />
-            <TableColumn fx:id="col_action" prefWidth="170.0" style="-fx-background-color: white; -fx-alignment: Center;" text="Action" />
+            <TableColumn fx:id="col_PONum" prefWidth="92.0" style="-fx-background-color: white; -fx-alignment: Center;" text="PO Number" />
+            <TableColumn fx:id="col_SONum" prefWidth="102.0" style="-fx-background-color: white; -fx-alignment: Center;" text="SO Number" />
+            <TableColumn fx:id="col_comp" prefWidth="150.0" style="-fx-background-color: white; -fx-alignment: Center;" text="Company" />
+            <TableColumn fx:id="col_dateCreate" prefWidth="136.0" style="-fx-background-color: white; -fx-alignment: Center;" text="Date Created" />
+            <TableColumn fx:id="col_pickPack" prefWidth="140.0" style="-fx-background-color: white; -fx-alignment: Center;" text="Picked/Packed By" />
+            <TableColumn fx:id="col_status" prefWidth="147.0" style="-fx-background-color: white; -fx-alignment: Center;" text="Status" />
+            <TableColumn fx:id="col_action" prefWidth="122.0" style="-fx-background-color: white; -fx-alignment: Center;" text="Action" />
          </columns>
       </TableView>
       <TextField fx:id="TF_keyword" layoutX="1033.0" layoutY="66.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">

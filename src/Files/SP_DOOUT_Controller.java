@@ -58,6 +58,9 @@ public class SP_DOOUT_Controller {
     private TableColumn<POout, String> col_PONum;
 
     @FXML
+    private TableColumn<POout, String> col_SONum;
+
+    @FXML
     private TableColumn<POout, String> col_DONum;
 
     @FXML
@@ -97,7 +100,7 @@ public class SP_DOOUT_Controller {
             ResultSet rsStatus = stStatus.executeQuery(getStatus);
 
             while(rsStatus.next()) {
-                DOList.add(new POout(count,rsStatus.getString("PONum"),rsStatus.getString("DONum"),rsStatus.getString("company"),
+                DOList.add(new POout(count,rsStatus.getString("PONum"),rsStatus.getString("SONum"),rsStatus.getString("DONum"),rsStatus.getString("company"),
                         rsStatus.getDate("date_created"),rsStatus.getDate("delivery_date")));
                 count++;
             }
@@ -159,6 +162,7 @@ public class SP_DOOUT_Controller {
 
         col_sn.setCellValueFactory((new PropertyValueFactory<>("sn")));
         col_PONum.setCellValueFactory((new PropertyValueFactory<>("PONum")));
+        col_SONum.setCellValueFactory((new PropertyValueFactory<>("SONum")));
         col_DONum.setCellValueFactory((new PropertyValueFactory<>("DONum")));
         col_comp.setCellValueFactory((new PropertyValueFactory<>("company")));
         col_DateCreated.setCellValueFactory((new PropertyValueFactory<>("date_created")));
@@ -248,12 +252,6 @@ public class SP_DOOUT_Controller {
     void logoutAcc(MouseEvent event) throws IOException {
         Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
     }
-
-    @FXML
-    void searchFunction(ActionEvent event) {
-
-    }
-
 
 
 }

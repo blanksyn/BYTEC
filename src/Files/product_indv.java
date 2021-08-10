@@ -3,7 +3,7 @@ package Files;
 public class product_indv {
 
     int sn;
-    String upc,sku,loc,prod_name,sku_scanned,date_added,expiry_date, delivery_date;
+    String upc,sku,loc,prod_name,sku_scanned,date_added,expiry_date, delivery_date,qty;
 
     public product_indv(int sn, String upc, String prod_name, String sku, String loc) {
         this.sn = sn;
@@ -28,6 +28,13 @@ public class product_indv {
         this.loc = loc;
         this.date_added = date_added;
         this.expiry_date = expiry_date;
+    }
+
+    public product_indv(int sn, String upc, String prod_name, String qty) {
+        this.sn =sn;
+        this.upc = upc;
+        this.prod_name = prod_name;
+        this.qty = qty;
     }
 
     public String getDelivery_date() {
@@ -56,6 +63,14 @@ public class product_indv {
 
     public String getUpc() {
         return upc;
+    }
+
+    public String getQty() {
+        return qty;
+    }
+
+    public void setQty(String qty) {
+        this.qty = qty;
     }
 
     public void setUpc(String upc) {

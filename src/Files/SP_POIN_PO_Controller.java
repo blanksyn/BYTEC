@@ -84,11 +84,6 @@ public class SP_POIN_PO_Controller {
     @FXML
     private TextField TF_keyword;
 
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<?> CB_field;
 
     @FXML
     private Button createPOINBtn;
@@ -99,14 +94,14 @@ public class SP_POIN_PO_Controller {
 
     @FXML
     void initialize(){
-        createPOINBtn.setVisible(false);
+        createPOINBtn.setVisible(true);
         int count = 1;
 
         try{
             DatabaseConnection con = new DatabaseConnection();
             Connection connectDB = con.getConnection();
 
-            String getValues = "SELECT * FROM POin";
+            String getValues = "SELECT * FROM POin WHERE status != 'Fully Received';";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 

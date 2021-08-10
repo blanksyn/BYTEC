@@ -2,6 +2,8 @@ package Files;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -81,28 +83,45 @@ public class SP_editPickList_Controller {
     @FXML
     private Label errorAdd;
 
+    @FXML
+    private TextField TF_keyword;
+
     private double xOffset = 0;
     private double yOffset = 0;
-    private String Username, PONum;
+    private String Username, PONum ,SONum;
 
     ObservableList<product_indv> newList = FXCollections.observableArrayList();
 
     @FXML
-    void initialize(String username, String PONum){
+    void initialize(String username, String SONum){
         int count = 1;
         welcomeLabel.setText("User: "+ username);
         Username = username;
-        this.PONum = PONum;
+        this.SONum = SONum;
 
         CB_UPC.setEditable(true);
         CB_productName.setEditable(true);
-        TF_PONum.setText(PONum);
+
+        DatabaseConnection con = new DatabaseConnection();
+        Connection connectDB = con.getConnection();
+
+        //get PONum
+        try {
+            String getValues = "SELECT PONum FROM POout WHERE SONum = '"+ SONum +"' LIMIT 1;";
+            Statement statement = connectDB.createStatement();
+            ResultSet queryResult = statement.executeQuery(getValues);
+
+            while (queryResult.next()) {
+
+                this.PONum = queryResult.getString("PONum");
+                TF_PONum.setText(PONum);
+            }
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
         try {
             //fill combobox and text fields
-            DatabaseConnection con = new DatabaseConnection();
-            Connection connectDB = con.getConnection();
-
             String getValues = "SELECT upc,prod_name FROM product_master";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
@@ -116,10 +135,7 @@ public class SP_editPickList_Controller {
         }
 
         try{
-            DatabaseConnection con = new DatabaseConnection();
-            Connection connectDB = con.getConnection();
-
-            String getValues = "SELECT company,company_add FROM POout WHERE PONum ="+ PONum;
+            String getValues = "SELECT company,company_add FROM POout WHERE SONum ="+ SONum;
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 
@@ -135,15 +151,13 @@ public class SP_editPickList_Controller {
 
         //fill table coloumn
         try{
-            DatabaseConnection con = new DatabaseConnection();
-            Connection connectDB = con.getConnection();
 
-            String getValues = "SELECT sn,upc,prod_name,sku,sku_scanned FROM pickingList_detail WHERE PONum ="+ PONum;
+            String getValues = "SELECT sn,upc,prod_name,sku,sku_scanned FROM pickingList_detail WHERE SONum = '"+ SONum+"';";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 
             while(queryResult.next()){
-                String getLoc = "SELECT location FROM product_indv WHERE sku ="+ queryResult.getString("sku");
+                String getLoc = "SELECT location FROM product_indv WHERE sku = '"+ queryResult.getString("sku")+"';";
                 Statement stLoc = connectDB.createStatement();
                 ResultSet queryResultLoc = stLoc.executeQuery(getLoc);
 
@@ -186,6 +200,13 @@ public class SP_editPickList_Controller {
                                 } else {
                                     btn.setOnAction(event -> {
                                         product_indv entry = getTableView().getItems().get(getIndex());
+                                        try {
+                                            String updateStat = "UPDATE product_indv SET status = '' WHERE sku = '" + entry.getSku() + "';";
+                                            PreparedStatement pstStat = connectDB.prepareStatement(updateStat);
+                                            pstStat.execute();
+                                        }catch (Exception e){
+                                            e.printStackTrace();
+                                        }
                                         newList.remove(entry);
 
                                     });
@@ -200,18 +221,55 @@ public class SP_editPickList_Controller {
 
         col_action.setCellFactory(cellFactory);
         tbl_EpickList.setItems(newList);
+
+        FilteredList<product_indv> filteredData = new FilteredList<>(newList, b-> true);
+
+        TF_keyword.textProperty().addListener((observable, oldValue,newValue)->{
+
+            //if no change detected then no change to list
+            filteredData.setPredicate(product_indv -> {
+
+                boolean s =false;
+                if(newValue.isEmpty() || newValue.isBlank() || newValue ==null){
+                    return true;
+                }
+
+                String searchKeyword = newValue.toLowerCase();
+
+                if(product_indv.getUpc().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(product_indv.getProd_name().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(product_indv.getSku().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else if(product_indv.getLoc().toLowerCase().indexOf(searchKeyword)>-1){
+                    s = true;
+                }else
+                    s = false;//no match found
+                return s;
+            });
+        });
+
+        SortedList<product_indv> sortedData = new SortedList<>(filteredData);
+        //bind sorted results with tableview
+        sortedData.comparatorProperty().bind(tbl_EpickList.comparatorProperty());
+        //apply filtered and sorted data to table view
+        tbl_EpickList.setItems(sortedData);
     }
 
     @FXML
     void addToList(ActionEvent event) throws SQLException {
         int count = newList.size()+1;
-        String upc;
-        if(CB_UPC.getValue()==null){
-            upc = "";
-        }else{
-            upc = CB_UPC.getValue();
+        String upc,qty,prod_name;
+        upc = CB_UPC.getValue();
+        prod_name = CB_productName.getValue();
+
+        if(prod_name==null){
+            prod_name="";
         }
-        String prod_name = CB_productName.getValue();
+        if(upc==null){
+            upc="";
+        }
 
         if(PONum != null) {
             PONum = TF_PONum.getText();
@@ -228,60 +286,80 @@ public class SP_editPickList_Controller {
             alert.setContentText("Please enter quantity.");
 
             alert.showAndWait();
-        }else if(!upc.equals("") && !prod_name.equals("")) {
+        }else if((!upc.isEmpty()||!upc.isBlank()) && (!prod_name.isEmpty()|| !prod_name.isBlank())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("An error has occurred");
             alert.setHeaderText("Both fields are filled! ");
             alert.setContentText("Select only one field.");
 
             alert.showAndWait();
-        }else if(!upc.equals("")){
-            String getValues = "SELECT sku,location FROM product_indv WHERE upc = '"+ upc + "'AND status is null ORDER BY date_added ASC LIMIT "+ TF_qty.getText()+ ";";
-            Statement statement = connectDB.createStatement();
-            ResultSet queryResult = statement.executeQuery(getValues);
+        }else if((!upc.equals("") || !upc.isBlank()) &&(prod_name==null || prod_name.isBlank())){
+            qty = TF_qty.getText();
 
-            while(queryResult.next()){
-                String getPDL = "SELECT prod_name FROM product_master WHERE upc = "+ upc ;
-                Statement statementPDL = connectDB.createStatement();
-                ResultSet queryResultPDL = statementPDL.executeQuery(getPDL);
-                while(queryResultPDL.next()) {
-                    newList.add(new product_indv(count, upc,
-                            queryResultPDL.getString("prod_name"), queryResult.getString("sku"), queryResult.getString("location")));
-                    count++;
-                    System.out.println("UPC: " + upc);
-                    System.out.println("Product name: " + queryResultPDL.getString("prod_name"));
-                    System.out.println("Sku: " + queryResult.getString("sku"));
-                    System.out.println("Location: " + queryResult.getString("location"));
-                    noStock=false;
-                }
-            }
-
-
-        }else if(!prod_name.equals("")){
-
-            String getUpc = "SELECT upc FROM product_master WHERE prod_name = '"+ prod_name + "' LIMIT 1;";
-            Statement statementUpc = connectDB.createStatement();
-            ResultSet queryResultUpc = statementUpc.executeQuery(getUpc);
-            while(queryResultUpc.next()) {
-
-                String getValues = "SELECT sku,location FROM product_indv WHERE upc = " + queryResultUpc.getString("upc") + " AND (status = '' or status is null) ORDER BY date_added ASC LIMIT " + TF_qty.getText() + ";";
+            if(isStringInt(qty)== true) {
+                String getValues = "SELECT sku,location FROM product_indv WHERE upc = '" + upc + "'AND status is null ORDER BY date_added ASC LIMIT " + qty + ";";
                 Statement statement = connectDB.createStatement();
                 ResultSet queryResult = statement.executeQuery(getValues);
 
                 while (queryResult.next()) {
-                    newList.add(new product_indv(count,
-                            queryResultUpc.getString("upc"), prod_name, queryResult.getString("sku"), queryResult.getString("location")));
-                    count++;
-                    System.out.println("UPC: " + queryResultUpc.getString("upc"));
-                    System.out.println("Product name: " + prod_name);
-                    System.out.println("Sku: " + queryResult.getString("sku"));
-                    System.out.println("Location: " + queryResult.getString("location"));
-                    noStock=false;
+                    String getPDL = "SELECT prod_name FROM product_master WHERE upc = " + upc;
+                    Statement statementPDL = connectDB.createStatement();
+                    ResultSet queryResultPDL = statementPDL.executeQuery(getPDL);
+                    while (queryResultPDL.next()) {
+                        newList.add(new product_indv(count, upc,
+                                queryResultPDL.getString("prod_name"), queryResult.getString("sku"), queryResult.getString("location")));
+                        count++;
+                        System.out.println("UPC: " + upc);
+                        System.out.println("Product name: " + queryResultPDL.getString("prod_name"));
+                        System.out.println("Sku: " + queryResult.getString("sku"));
+                        System.out.println("Location: " + queryResult.getString("location"));
+                        noStock = false;
+                    }
+                }
+            }else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("An error has occurred");
+                alert.setHeaderText("Quantity field is not a number! ");
+                alert.setContentText("Please enter a valid number.");
+
+                alert.showAndWait();
+            }
+
+        }else if((!prod_name.equals("") ||!prod_name.isBlank()) && (upc==null || upc.isBlank())){
+            qty=TF_qty.getText();
+
+            if(isStringInt(qty)==true) {
+                String getUpc = "SELECT upc FROM product_master WHERE prod_name = '" + prod_name + "' LIMIT 1;";
+                Statement statementUpc = connectDB.createStatement();
+                ResultSet queryResultUpc = statementUpc.executeQuery(getUpc);
+                while (queryResultUpc.next()) {
+
+                    String getValues = "SELECT sku,location FROM product_indv WHERE upc = " + queryResultUpc.getString("upc") + " AND (status = '' or status is null) ORDER BY date_added ASC LIMIT " + TF_qty.getText() + ";";
+                    Statement statement = connectDB.createStatement();
+                    ResultSet queryResult = statement.executeQuery(getValues);
+
+                    while (queryResult.next()) {
+                        newList.add(new product_indv(count,
+                                queryResultUpc.getString("upc"), prod_name, queryResult.getString("sku"), queryResult.getString("location")));
+                        count++;
+                        System.out.println("UPC: " + queryResultUpc.getString("upc"));
+                        System.out.println("Product name: " + prod_name);
+                        System.out.println("Sku: " + queryResult.getString("sku"));
+                        System.out.println("Location: " + queryResult.getString("location"));
+                        noStock = false;
+
+                    }
 
                 }
 
-            }
+            }else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("An error has occurred");
+                alert.setHeaderText("Quantity field is not a number! ");
+                alert.setContentText("Please enter a valid number.");
 
+                alert.showAndWait();
+            }
 
         }else{
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -301,7 +379,6 @@ public class SP_editPickList_Controller {
             alert.showAndWait();
         }
 
-        refreshTable();
         CB_UPC.getSelectionModel().getSelectedIndex();
         CB_UPC.setValue(null);
         CB_productName.getSelectionModel().getSelectedIndex();
@@ -309,51 +386,18 @@ public class SP_editPickList_Controller {
         TF_qty.setText(null);
     }
 
-    void refreshTable(){
-
-        //fill table coloumn
-        col_sn.setCellValueFactory((new PropertyValueFactory<>("sn")));
-        col_upc.setCellValueFactory((new PropertyValueFactory<>("upc")));
-        col_productName.setCellValueFactory((new PropertyValueFactory<>("prod_name")));
-        col_sku.setCellValueFactory((new PropertyValueFactory<>("sku")));
-        col_skuScan.setCellValueFactory((new PropertyValueFactory<>("sku_scanned")));
-        col_location.setCellValueFactory((new PropertyValueFactory<>("loc")));
-
-
-        //delete button
-        Callback<TableColumn<product_indv, String>, TableCell<product_indv, String>> cellFactory
-                = //
-                new Callback<TableColumn<product_indv, String>, TableCell<product_indv, String>>() {
-                    @Override
-                    public TableCell call(final TableColumn<product_indv, String> param) {
-                        final TableCell<product_indv, String> cell = new TableCell<product_indv, String>() {
-
-                            final Button btn = new Button("Delete");
-
-                            @Override
-                            public void updateItem(String item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (empty) {
-                                    setGraphic(null);
-                                    setText(null);
-                                } else {
-                                    btn.setOnAction(event -> {
-                                        product_indv entry = getTableView().getItems().get(getIndex());
-                                        newList.remove(entry);
-
-                                    });
-                                    setGraphic(btn);
-                                    setText(null);
-                                }
-                            }
-                        };
-                        return cell;
-                    }
-                };
-
-        col_action.setCellFactory(cellFactory);
-        tbl_EpickList.setItems(newList);
+    public boolean isStringInt(String s)
+    {
+        try
+        {
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException ex)
+        {
+            return false;
+        }
     }
+
 
     @FXML
     void closeWindow(ActionEvent event) {
@@ -374,35 +418,37 @@ public class SP_editPickList_Controller {
             Connection connectDB = con.getConnection();
 
             //delete PO entry
-            String deletePO = "DELETE FROM POout WHERE PONum = " + PONum;
+            String deletePO = "DELETE FROM POout WHERE SONum = '" + SONum+"';";
             PreparedStatement ps = connectDB.prepareStatement(deletePO);
             ps.execute();
 
             //change standby status to ''
-            String getValues = "SELECT sku_scanned FROM pickingList_detail WHERE PONum = " + PONum;
+            String getValues = "SELECT sku_scanned FROM pickingList_detail WHERE SONum = '" + SONum +"';";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
-
+            String sku_scanned ="";
             while(queryResult.next()){
-                String sku_scanned = queryResult.getString("sku_scanned");
-
-                if(sku_scanned.equals("") || sku_scanned ==null) {
-                    String getsku = "SELECT sku FROM pickingList_detail WHERE PONum = " + PONum;
+                if (queryResult.getString("sku_scanned")==null ||sku_scanned.equals("")){
+                    String getsku = "SELECT sku FROM pickingList_detail WHERE SONum = '" + SONum + "';";
                     Statement stSku = connectDB.createStatement();
                     ResultSet queryResultSku = stSku.executeQuery(getsku);
+                    while(queryResultSku.next()) {
+                        String deletePLD = "UPDATE product_indv SET status = '' WHERE sku = '" + queryResultSku.getString("sku")+"';";
+                        PreparedStatement pstDet = connectDB.prepareStatement(deletePLD);
+                        pstDet.execute();
+                    }
+                }
+                else if(!queryResult.getString("sku_scanned").equals("") || queryResult.getString("sku_scanned") !=null) {
+                    sku_scanned = queryResult.getString("sku_scanned");
+                    String deletePLD = "UPDATE product_indv SET status = '' WHERE sku = '" + queryResult.getString("sku_scanned")+"';";
+                    PreparedStatement pstDet = connectDB.prepareStatement(deletePLD);
+                    pstDet.execute();
 
-                    String deletePLD = "UPDATE product_indv SET status = '' WHERE sku = " + queryResultSku.getString("sku");
-                    PreparedStatement pstDet = connectDB.prepareStatement(deletePLD);
-                    pstDet.execute();
-                }else{
-                    String deletePLD = "UPDATE product_indv SET status = '' WHERE sku = " + queryResult.getString("sku_scanned");
-                    PreparedStatement pstDet = connectDB.prepareStatement(deletePLD);
-                    pstDet.execute();
                 }
             }
 
             //delete all entry in picking list detail that has the PO number
-            String deletePLD = "DELETE FROM pickingList_detail WHERE PONum = " + PONum;
+            String deletePLD = "DELETE FROM pickingList_detail WHERE SONum = '" + SONum+"';";
             PreparedStatement pstDet = connectDB.prepareStatement(deletePLD);
             pstDet.execute();
         }
@@ -422,7 +468,7 @@ public class SP_editPickList_Controller {
         String delivery_date = "";
 
         //get original creator and original date
-        String getdate = "SELECT date_created,createdBy,status,delivery_date FROM POout WHERE PONum = " + PONum + " LIMIT 1";
+        String getdate = "SELECT date_created,createdBy,status,delivery_date FROM POout WHERE SONum = '" + SONum + "' LIMIT 1";
         Statement statementDate = connectDB.createStatement();
         ResultSet queryResultDate = statementDate.executeQuery(getdate);
 
@@ -436,36 +482,36 @@ public class SP_editPickList_Controller {
         //remove all fields in db
 
         //delete PO entry
-        String deletePO = "DELETE FROM POout WHERE PONum = " + PONum;
+        String deletePO = "DELETE FROM POout WHERE SONum = '" + SONum+"';";
         PreparedStatement ps = connectDB.prepareStatement(deletePO);
         ps.execute();
 
         //change standby status to ''
         if(beforeStatus.equals("Unpicked")){
-            String getsku = "SELECT sku FROM pickingList_detail WHERE PONum = " + PONum;
+            String getsku = "SELECT sku FROM pickingList_detail WHERE SONum = '" + SONum+"';";
             Statement stSku = connectDB.createStatement();
             ResultSet queryResultSku = stSku.executeQuery(getsku);
 
             while(queryResultSku.next()) {
-                String deletePLD = "UPDATE product_indv SET status = '' WHERE sku = " + queryResultSku.getString("sku");
+                String deletePLD = "UPDATE product_indv SET status = '' WHERE sku = '" + queryResultSku.getString("sku")+ "';";
                 PreparedStatement pstDet = connectDB.prepareStatement(deletePLD);
                 pstDet.execute();
             }
 
         }else{
-            String getValues = "SELECT sku_scanned FROM pickingList_detail WHERE PONum = " + PONum;
+            String getValues = "SELECT sku_scanned FROM pickingList_detail WHERE SONum = " + SONum+"';";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 
             while(queryResult.next()) {
-               String deletePLD = "UPDATE product_indv SET status = '' WHERE sku = " + queryResult.getString("sku_scanned");
+               String deletePLD = "UPDATE product_indv SET status = '' WHERE sku = '" + queryResult.getString("sku_scanned")+"';";
                PreparedStatement pstDet = connectDB.prepareStatement(deletePLD);
                pstDet.execute();
             }
         }
 
         //delete all entry in picking list detail that has the PO number
-        String deletePLD = "DELETE FROM pickingList_detail WHERE PONum = " + PONum;
+        String deletePLD = "DELETE FROM pickingList_detail WHERE SONum = '" + SONum+"';";
         PreparedStatement pstDetail = connectDB.prepareStatement(deletePLD);
         pstDetail.execute();
 
@@ -477,7 +523,7 @@ public class SP_editPickList_Controller {
         String comp_add = TA_compAdd.getText();
 
         //insert new PO in POout
-        String insertData = "INSERT INTO POout (PONum,company,company_add,date_created,createdBy,status,last_edit,date_edited,delivery_date) VALUES (?,?,?,?,?,?,?,?,?);";
+        String insertData = "INSERT INTO POout (PONum,company,company_add,date_created,createdBy,status,last_edit,date_edited,delivery_date,SONum) VALUES (?,?,?,?,?,?,?,?,?,?);";
         PreparedStatement pst = connectDB.prepareStatement(insertData);
         pst.setString(1, PO);
         pst.setString(2,comp_name);
@@ -488,16 +534,17 @@ public class SP_editPickList_Controller {
         pst.setString(7,Username);
         pst.setString(8,String.valueOf(java.time.LocalDate.now()));
         pst.setString(9,delivery_date);
+        pst.setString(10,SONum);
         pst.execute();
 
         //insert new data into pickingList _detail
-        String insertDataDet = "INSERT INTO pickingList_detail (PONum,company,date_created,upc,prod_name,sku) VALUES (?,?,?,?,?,?);";
+        String insertDataDet = "INSERT INTO pickingList_detail (SONum,company,date_created,upc,prod_name,sku) VALUES (?,?,?,?,?,?);";
         PreparedStatement pstDet = connectDB.prepareStatement(insertDataDet);
         for(product_indv p:newList){
             String upc = p.upc;
             String prod_name = p.prod_name;
             String sku = p.sku;
-            pstDet.setString(1, PO);
+            pstDet.setString(1, SONum);
             pstDet.setString(2,comp_name);
             pstDet.setString(3, String.valueOf(java.time.LocalDate.now()));
             pstDet.setString(4, upc);

@@ -37,7 +37,7 @@
       <TableView fx:id="tbl_pick" layoutX="341.0" layoutY="110.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="132.0">
         <columns>
           <TableColumn fx:id="col_sn" prefWidth="75.0" style="-fx-background-color: white; -fx-alignment: center;" text="S/N" />
-          <TableColumn fx:id="col_PONum" prefWidth="255.0" style="-fx-background-color: white; -fx-alignment: center;" text="PO Number" />
+          <TableColumn fx:id="col_SONum" prefWidth="255.0" style="-fx-background-color: white; -fx-alignment: center;" text="SO Number" />
             <TableColumn fx:id="col_comp" prefWidth="473.0" style="-fx-background-color: white; -fx-alignment: center;" text="Company" />
             <TableColumn fx:id="col_dateCreated" prefWidth="201.0" style="-fx-background-color: white; -fx-alignment: center;" text="Date Created" />
             <TableColumn fx:id="col_action" prefWidth="195.0" style="-fx-background-color: white; -fx-alignment: center;" text="Action" />

@@ -31,14 +31,12 @@
          </font>
       </Label>
       <Separator layoutY="33.0" prefHeight="12.0" prefWidth="1014.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-      <TableView fx:id="tbl_NpickList" layoutX="269.0" layoutY="115.0" prefHeight="610.0" prefWidth="932.0" style="-fx-background-color: white;">
+      <TableView fx:id="tbl_NpickList" layoutX="269.0" layoutY="115.0" prefHeight="610.0" prefWidth="930.0" style="-fx-background-color: white;">
          <columns>
             <TableColumn fx:id="col_sn" prefWidth="50.0" style="-fx-background-color: white; -fx-alignment: center;" text="S/N" />
             <TableColumn fx:id="col_upc" prefWidth="135.0" style="-fx-background-color: white; -fx-alignment: center;" text="UPC" />
-            <TableColumn fx:id="col_productName" prefWidth="366.0" style="-fx-background-color: white; -fx-alignment: center;" text="Product Name" />
-            <TableColumn fx:id="col_sku" prefWidth="138.0" style="-fx-background-color: white; -fx-alignment: center;" text="SKU" />
-            <TableColumn fx:id="col_location" prefWidth="106.0" style="-fx-background-color: white; -fx-alignment: center;" text="Location" />
-            <TableColumn fx:id="col_action" prefWidth="136.0" style="-fx-background-color: white; -fx-alignment: center;" text="Action" />
+            <TableColumn fx:id="col_productName" prefWidth="624.0" style="-fx-background-color: white; -fx-alignment: center;" text="Product Name" />
+            <TableColumn fx:id="col_qty" prefWidth="122.0" style="-fx-background-color: white; -fx-alignment: center;" text="Quantity" />
          </columns>
       </TableView>
       <ComboBox fx:id="CB_UPC" layoutX="64.0" layoutY="115.0" prefWidth="150.0" promptText="UPC" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
@@ -68,7 +66,7 @@
          </font>
       </Button>
       <Label layoutX="65.0" layoutY="296.0" prefHeight="17.0" prefWidth="151.0" text=" " textAlignment="CENTER" textFill="RED" />
-      <Label layoutX="508.0" layoutY="7.0" prefHeight="27.0" prefWidth="185.0" text="Sales Order (Outbound)" textAlignment="CENTER">
+      <Label layoutX="483.0" layoutY="7.0" prefHeight="27.0" prefWidth="234.0" text="Create Sales Order (Outbound)" textAlignment="CENTER">
          <font>
             <Font name="Bodoni MT" size="18.0" />
          </font>

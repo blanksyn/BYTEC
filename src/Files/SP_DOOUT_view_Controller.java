@@ -50,11 +50,6 @@ public class SP_DOOUT_view_Controller {
     @FXML
     private TextField TF_keyword;
 
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<?> CB_field;
 
     @FXML
     private Label Lab_PONum;
@@ -74,7 +69,7 @@ public class SP_DOOUT_view_Controller {
     @FXML
     private Label Lab_DONum;
 
-    String Username,DONum,PONum,company,delivery_date;
+    String Username,DONum,PONum,SONum,company,delivery_date;
     ObservableList<POout> DOTbl = FXCollections.observableArrayList();
 
     @FXML
@@ -90,16 +85,18 @@ public class SP_DOOUT_view_Controller {
 
         //fill labels
         try {
-            String getLabels = "SELECT PONum,company,delivery_date FROM POout WHERE DONum = " + DONum +" LIMIT 1";
+            String getLabels = "SELECT PONum,SONum, company,delivery_date FROM POout WHERE DONum = " + DONum +" LIMIT 1";
             Statement stLabels = connectDB.createStatement();
             ResultSet rsLabels = stLabels.executeQuery(getLabels);
 
             while(rsLabels.next()){
+                String POSO = rsLabels.getString("PONum")+"/"+ rsLabels.getString("SONum");
                 Lab_comp.setText(rsLabels.getString("company"));
-                this.company=rsLabels.getString("company");
-                Lab_PONum.setText(rsLabels.getString("PONum"));
-                this.PONum=rsLabels.getString("PONum");
                 Lab_deliveryDate.setText(String.valueOf(rsLabels.getDate("delivery_date")));
+                Lab_PONum.setText(POSO);
+                this.company=rsLabels.getString("company");
+                this.PONum=rsLabels.getString("PONum");
+                this.SONum=rsLabels.getString("SONum");
                 this.delivery_date = String.valueOf(rsLabels.getDate("delivery_date"));
             }
         }catch (SQLException e){
@@ -210,8 +207,8 @@ public class SP_DOOUT_view_Controller {
             headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index);
 
             XSSFRow title = sheet.createRow(0);
-            title.createCell(0).setCellValue("PO Number:");
-            title.createCell(1).setCellValue(PONum);
+            title.createCell(0).setCellValue("PO/SO Number:");
+            title.createCell(1).setCellValue(PONum + "/"+ SONum);
             title.createCell(2).setCellValue("DO Number:");
             title.createCell(3).setCellValue(DONum);
 

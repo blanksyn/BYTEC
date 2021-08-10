@@ -40,7 +40,7 @@ public class PP_Controller {
     private TableColumn<POout, Integer> col_sn;
 
     @FXML
-    private TableColumn<POout, String> col_PONum;
+    private TableColumn<POout, String> col_SONum;
 
     @FXML
     private TableColumn<POout, String> col_comp;
@@ -77,7 +77,7 @@ public class PP_Controller {
             ResultSet queryResult = statement.executeQuery(getValues);
 
             while(queryResult.next()){
-                pickingList.add(new POout(count,queryResult.getString("PONum"),queryResult.getString("company"),
+                pickingList.add(new POout(count,queryResult.getString("SONum"),queryResult.getString("company"),
                         queryResult.getDate("date_created")));
                 count++;
             }
@@ -88,7 +88,7 @@ public class PP_Controller {
 
         //fill table coloumn
         col_sn.setCellValueFactory((new PropertyValueFactory<>("sn")));
-        col_PONum.setCellValueFactory((new PropertyValueFactory<>("PONum")));
+        col_SONum.setCellValueFactory((new PropertyValueFactory<>("SONum")));
         col_comp.setCellValueFactory((new PropertyValueFactory<>("company")));
         col_dateCreated.setCellValueFactory((new PropertyValueFactory<>("date_created")));
 
@@ -114,7 +114,7 @@ public class PP_Controller {
                                         POout entry = getTableView().getItems().get(getIndex());
                                         //pass username and ponum
                                         Navigation nav = new Navigation();
-                                        nav.PP_view(event,Username,entry.PONum,entry.company);
+                                        nav.PP_view(event,Username,entry.SONum,entry.company);
 
                                     });
                                     setGraphic(btn);
@@ -178,9 +178,5 @@ public class PP_Controller {
         Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
     }
 
-    @FXML
-    void searchFunction(ActionEvent event) {
-
-    }
 
 }

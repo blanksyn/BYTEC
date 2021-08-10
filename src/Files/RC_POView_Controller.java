@@ -89,7 +89,7 @@ public class RC_POView_Controller {
             DatabaseConnection con = new DatabaseConnection();
             Connection connectDB = con.getConnection();
 
-            String getValues = "SELECT upc,qty_ordered,qty_rcv,qty_remaining FROM POin_detail WHERE PONum = '" +PONum +"' ";
+            String getValues = "SELECT upc,qty_ordered,qty_rcv,qty_remaining FROM POin_detail WHERE PONum = '" +PONum +"' AND qty_remaining != '0'";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 
@@ -201,10 +201,6 @@ public class RC_POView_Controller {
         nav.RC_purchaseOrderIn(event,Username);
     }
 
-    @FXML
-    void searchFunction(ActionEvent event) {
-        System.out.println("Date" + rcvOb.get(0).expDate);
-    }
 
     @FXML
     void update(ActionEvent event) throws SQLException {

@@ -105,7 +105,7 @@ public class SP_POIN_RcvList_Controller {
 
             while(rsStatus.next()) {
 
-                String getValues = "SELECT * FROM POin_rcv WHERE PONum = "+ rsStatus.getString("PONum")+ " GROUP BY DONum ";
+                String getValues = "SELECT * FROM POin_rcv WHERE PONum = '"+ rsStatus.getString("PONum")+ "' AND approvedBy is null GROUP BY DONum ";
                 Statement statement = connectDB.createStatement();
                 ResultSet queryResult = statement.executeQuery(getValues);
 
@@ -153,7 +153,7 @@ public class SP_POIN_RcvList_Controller {
                                             Parent root = loader.load();
 
                                             SP_POIN_RcvListView_Controller controllersp = loader.getController();
-                                            controllersp.initialize(Username,data.DONum);
+                                            controllersp.initialize(Username,data.DONum,data.PONum);
 
                                             Navigation nav = new Navigation();
                                             nav.stageSetup(event,root);

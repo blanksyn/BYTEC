@@ -52,12 +52,6 @@ public class SP_POIN_RcvListView_Controller {
     private TextField TF_keyword;
 
     @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<?> CB_field;
-
-    @FXML
     private Label Lab_PONum;
 
     @FXML
@@ -79,11 +73,13 @@ public class SP_POIN_RcvListView_Controller {
     ObservableList<POin> rcvListView = FXCollections.observableArrayList();
 
     @FXML
-    void initialize(String username,String DONum){
+    void initialize(String username,String DONum,String PONum){
         welcomeLabel.setText("User: "+ username);
         Lab_DONum.setText(DONum);
         this.DONum = DONum;
         this.Username = username;
+        Lab_PONum.setText(PONum);
+        this.PONum = PONum;
         int count = 1;
 
         DatabaseConnection con = new DatabaseConnection();
@@ -118,17 +114,15 @@ public class SP_POIN_RcvListView_Controller {
         //fill labels
         try{
 
-            String getValues = "SELECT * FROM POin_rcv WHERE DONum = "+ DONum +" LIMIT 1";
+            String getValues = "SELECT date_rcv FROM POin_rcv WHERE DONum = '"+ DONum +"' AND PONum = '"+ PONum +"' LIMIT 1";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 
             while(queryResult.next()){
                 Lab_dateRcv.setText(String.valueOf(queryResult.getDate("date_rcv")));
-                Lab_PONum.setText(queryResult.getString("PONum"));
-                this.PONum = queryResult.getString("PONum");
             }
 
-            String getSup = "SELECT supplier FROM POin WHERE PONum = " + PONum;
+            String getSup = "SELECT supplier FROM POin WHERE PONum = '" + PONum +"';";
             Statement stSup = connectDB.createStatement();
             ResultSet rsSup = stSup.executeQuery(getSup);
             while(rsSup.next()) {
@@ -257,13 +251,13 @@ public class SP_POIN_RcvListView_Controller {
         }
 
         //update and check for partial or complete delivery
-        String getQtyIndv = "SELECT qty_remaining,qty_rcv FROM POin_detail WHERE PONum = "+ PONum+ " ;";
+        String getQtyIndv = "SELECT qty_remaining,qty_rcv,upc FROM POin_detail WHERE PONum = "+ PONum+ " ;";
         Statement stQtyIndv = connectDB.createStatement();
         ResultSet rsQtyIndv = stQtyIndv.executeQuery(getQtyIndv);
 
         while(rsQtyIndv.next()) {
             int remaining = Integer.parseInt(rsQtyIndv.getString("qty_remaining")) - Integer.parseInt(rsQtyIndv.getString("qty_rcv"));
-            String updateRem = "UPDATE POin_detail SET qty_rcv =? ,qty_remaining =? WHERE PONum = "+ PONum+ " ;";
+            String updateRem = "UPDATE POin_detail SET qty_rcv =? ,qty_remaining =? WHERE PONum = '"+ PONum + "' AND upc = '" + rsQtyIndv.getString("upc") + "';";
             PreparedStatement ps =connectDB.prepareStatement(updateRem);
             ps.setString(1,"0");
             ps.setString(2, String.valueOf(remaining));

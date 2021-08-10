@@ -56,6 +56,9 @@ public class SP_picklistView_Controller {
     private Label Lab_PONum;
 
     @FXML
+    private Label Lab_SONum;
+
+    @FXML
     private Label Lab_comp;
 
     @FXML
@@ -69,19 +72,20 @@ public class SP_picklistView_Controller {
 
     private double xOffset = 0;
     private double yOffset = 0;
-    String Username;
-    String PONum;
+    String Username,PONum;
+    String SONum ="";
     ObservableList<POout> pickList = FXCollections.observableArrayList();
 
     @FXML
-    void initialize(String username, String PONum, String status){
+    void initialize(String username, String SONum, String status){
         int count =1;
 
         //initialize PONum and Username
         welcomeLabel.setText("User: "+ username);
         Lab_PONum.setText(String.valueOf(PONum));
         this.Username = username;
-        this.PONum = PONum;
+        this.SONum = SONum;
+        Lab_SONum.setText(SONum);
 
         //System.out.println("PONum: "+ PONum);
         //System.out.println("Username: " + Username);
@@ -96,7 +100,25 @@ public class SP_picklistView_Controller {
             Connection connectDB = con.getConnection();
 
             //fill table
-            String getValues = "SELECT sn,upc,prod_name,sku,sku_scanned FROM pickingList_detail WHERE PONum = "+ PONum ;
+            String getSO = "SELECT PONum FROM POout WHERE SONum = "+ SONum ;
+            Statement stSO = connectDB.createStatement();
+            ResultSet rsSO = stSO.executeQuery(getSO);
+
+            while(rsSO.next()){
+                PONum = rsSO.getString("PONum");
+            }
+            Lab_PONum.setText(PONum);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        try{
+            DatabaseConnection con = new DatabaseConnection();
+            Connection connectDB = con.getConnection();
+
+            //fill table
+            String getValues = "SELECT sn,upc,prod_name,sku,sku_scanned FROM pickingList_detail WHERE SONum = "+ SONum ;
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 
@@ -106,7 +128,7 @@ public class SP_picklistView_Controller {
                 count++;
             }
 
-            String getLabel = "SELECT company,date_created FROM pickingList_detail WHERE PONum = '"+ PONum + "' LIMIT 1";
+            String getLabel = "SELECT company,date_created FROM pickingList_detail WHERE SONum = '"+ SONum + "' LIMIT 1";
             Statement statement2 = connectDB.createStatement();
             ResultSet queryResult2 = statement2.executeQuery(getLabel);
 
@@ -173,18 +195,18 @@ public class SP_picklistView_Controller {
 
         String DO = generateDONum();
         //update picking list status to approved
-        String getLabel = "UPDATE POout SET status = 'Approved',DONum = ? WHERE PONum = '"+ PONum + "'";
+        String getLabel = "UPDATE POout SET status = 'Approved',DONum = ? WHERE SONum = '"+ SONum + "'";
         PreparedStatement ps = connectDB.prepareStatement(getLabel);
         ps.setString(1,DO);
         ps.execute();
 
         //update product_indv status
-        String getProd = "SELECT sku,sku_scanned FROM pickingList_detail WHERE PONum = " +PONum +" AND (DONum ='' or DONum is null)";
+        String getProd = "SELECT sku,sku_scanned FROM pickingList_detail WHERE SONum = " +SONum +" AND (DONum ='' or DONum is null)";
         Statement stProd = connectDB.createStatement();
         ResultSet rsProd = stProd.executeQuery(getProd);
         while(rsProd.next()) {
             //update DONum
-            String upDO = "UPDATE pickingList_detail SET DONum = ? WHERE sku_scanned = '" +rsProd.getString("sku_scanned") + "' AND PONum = "+ PONum ;
+            String upDO = "UPDATE pickingList_detail SET DONum = ? WHERE sku_scanned = '" +rsProd.getString("sku_scanned") + "' AND SONum = "+ SONum ;
             PreparedStatement psUpDo = connectDB.prepareStatement(upDO);
             psUpDo.setString(1,DO);
             psUpDo.execute();
@@ -195,7 +217,7 @@ public class SP_picklistView_Controller {
             PreparedStatement psUpProd = connectDB.prepareStatement(upProd);
             psUpProd.execute();
 
-            String getDelDate = "SELECT delivery_date FROM POout WHERE PONum = '" +PONum +"' AND DONum = '"+DO+"';";
+            String getDelDate = "SELECT delivery_date FROM POout WHERE SONum = '" + SONum +"' AND DONum = '"+DO+"';";
             Statement stDelDate = connectDB.createStatement();
             ResultSet rsDelDate = stDelDate.executeQuery(getDelDate);
             while(rsDelDate.next()) {
@@ -259,7 +281,7 @@ public class SP_picklistView_Controller {
         DatabaseConnection con = new DatabaseConnection();
         Connection connectDB = con.getConnection();
         String rejectCouunt ="0";
-        String getReject = "SELECT reject FROM POout WHERE PONum = '"+ PONum + "' LIMIT 1";
+        String getReject = "SELECT reject FROM POout WHERE SONum = '"+ SONum + "' LIMIT 1";
         Statement statement = connectDB.createStatement();
         ResultSet queryResult = statement.executeQuery(getReject);
         while(queryResult.next()){
@@ -267,7 +289,7 @@ public class SP_picklistView_Controller {
         }
         int count = Integer.parseInt(rejectCouunt) + 1;
 
-        String getRejectC = "UPDATE POout SET reject = "+count +" WHERE PONum = '"+ PONum + "' LIMIT 1";
+        String getRejectC = "UPDATE POout SET reject = "+count +" WHERE SONum = '"+ SONum + "' LIMIT 1";
         Statement statement2 = connectDB.createStatement();
         statement2.executeUpdate(getRejectC);
 
@@ -301,11 +323,6 @@ public class SP_picklistView_Controller {
             e.printStackTrace();
             e.getCause();
         }
-    }
-
-    @FXML
-    void searchFunction(ActionEvent event) {
-
     }
 
 }
