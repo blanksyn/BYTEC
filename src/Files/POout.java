@@ -51,11 +51,12 @@ public class POout {
         this.delivery_date = delivery_date;
     }
 
-    public POout(int sn,String upc,String prod_name,int qty){
+    public POout(int sn,String upc,String prod_name,int qty,String sku_scanned){
         this.sn=sn;
         this.upc=upc;
         this.prod_name=prod_name;
         this.qty=qty;
+        this.sku_scanned=sku_scanned;
     }
 
     public POout(int sn,String SONum,String company,Date date_created){

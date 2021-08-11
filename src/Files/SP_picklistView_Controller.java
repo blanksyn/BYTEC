@@ -90,7 +90,7 @@ public class SP_picklistView_Controller {
         //System.out.println("PONum: "+ PONum);
         //System.out.println("Username: " + Username);
 
-        if(status.equals("Unpicked")){
+        if(status.equals("Unpicked") || status.equals("Delivered")){
             approveBtn.setVisible(false);
             rejectBtn.setVisible(false);
         }

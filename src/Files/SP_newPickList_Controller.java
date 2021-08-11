@@ -197,7 +197,7 @@ public class SP_newPickList_Controller {
                         System.out.println("Qty: " + qty);
                         countNum++;
                     }
-                    getProd(upc, qty);
+
                 }
             }else{
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -248,7 +248,7 @@ public class SP_newPickList_Controller {
                         System.out.println("Qty: " + qty);
                         countNum++;
                     }
-                    getProd(tempUpc, qty);
+
                 }
             }else{
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -358,6 +358,9 @@ public class SP_newPickList_Controller {
         DatabaseConnection con = new DatabaseConnection();
         Connection connectDB = con.getConnection();
 
+        for(product_indv p:temp){
+            getProd(p.upc, p.qty);
+        }
 
         //send data to database
         String PO = "";

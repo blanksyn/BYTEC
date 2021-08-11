@@ -108,7 +108,7 @@ public class SP_Controller {
             DatabaseConnection con = new DatabaseConnection();
             Connection connectDB = con.getConnection();
 
-            String getValues = "SELECT * FROM POout WHERE status != 'Approved' ORDER BY reject DESC, status ASC, date_created ASC";
+            String getValues = "SELECT * FROM POout WHERE status != 'Approved' AND status != 'Delivered' ORDER BY reject DESC, status ASC, date_created ASC";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 
@@ -183,10 +183,12 @@ public class SP_Controller {
                                             e.getCause();
                                         }
                                     });
+
                                     HBox pane = new HBox(btn,btn2);
                                     pane.setAlignment(Pos.CENTER);
                                     setGraphic(pane);
                                     setText(null);
+
                                 }
                             }
                         };

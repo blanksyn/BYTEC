@@ -102,12 +102,12 @@ public class SP_DOOUT_view_Controller {
 
         //fill tables
         try {
-            String getTblVal = "SELECT DISTINCT upc,prod_name,count(upc) as qty FROM pickingList_detail WHERE DONum = " + DONum;
+            String getTblVal = "SELECT upc,prod_name,count(upc) as qty,sku_scanned FROM pickingList_detail WHERE DONum = '" + DONum + "' GROUP BY upc;";
             Statement stTblVal = connectDB.createStatement();
             ResultSet rsTblVal = stTblVal.executeQuery(getTblVal);
 
             while(rsTblVal.next()){
-                DOTbl.add(new POout(count,rsTblVal.getString("upc"),rsTblVal.getString("prod_name"),rsTblVal.getInt("qty")));
+                DOTbl.add(new POout(count,rsTblVal.getString("upc"),rsTblVal.getString("prod_name"),rsTblVal.getInt("qty"),rsTblVal.getString("sku_scanned")));
                 count++;
             }
         }catch (SQLException e){
@@ -192,10 +192,9 @@ public class SP_DOOUT_view_Controller {
 
             }catch (Exception e){
                 e.printStackTrace();
+                System.out.println("Status not changed");
             }
         }
-
-
 
         if(CB_courier.getValue() == null || CB_courier.getValue().equals("")){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -217,6 +216,7 @@ public class SP_DOOUT_view_Controller {
                 e.printStackTrace();
             }
 
+            //create Delivery order
             XSSFWorkbook wb = new XSSFWorkbook();//for earlier version use HSSF
             XSSFSheet sheet = wb.createSheet("Delivery Order (Out)");
 

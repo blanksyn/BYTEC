@@ -152,10 +152,15 @@ public class RC_POView_Controller {
         tbl_PO.setItems(rcvOb);
 
         tbl_PO.setEditable(true);
+
         col_qtyRcv.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-        col_qtyRcv.setOnEditCommit(e->{
-            e.getTableView().getItems().get(e.getTablePosition().getRow()).setQty_rcv(e.getNewValue());
-        });
+        try {
+            col_qtyRcv.setOnEditCommit(e -> {
+                e.getTableView().getItems().get(e.getTablePosition().getRow()).setQty_rcv(e.getNewValue());
+            });
+        }catch (NumberFormatException ex){
+            System.out.println("Invalid number format");
+        }
 
         FilteredList<POin> filteredData = new FilteredList<>(rcvOb, b-> true);
 
@@ -199,6 +204,18 @@ public class RC_POView_Controller {
     void closeWindow(ActionEvent event) {
         Navigation nav = new Navigation();
         nav.RC_purchaseOrderIn(event,Username);
+    }
+
+    public boolean isStringInt(String s)
+    {
+        try
+        {
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException ex)
+        {
+            return false;
+        }
     }
 
 
