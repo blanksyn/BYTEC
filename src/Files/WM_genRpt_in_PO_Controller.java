@@ -15,8 +15,22 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.Initializable;
 
-public class WM_genRpt_in_PO_Controller {
+public class WM_genRpt_in_PO_Controller extends WM implements Initializable{
 
     @FXML
     private Button closeBtn;
@@ -55,22 +69,22 @@ public class WM_genRpt_in_PO_Controller {
     private Button DOBtn;
 
     @FXML
-    private TableView<?> tableCourier;
+    private TableView<POin> tableCourier;
 
     @FXML
-    private TableColumn<?, ?> col_sn;
+    private TableColumn<POin, Integer> col_sn;
 
     @FXML
-    private TableColumn<?, ?> col_month;
+    private TableColumn<POin, String> col_month;
 
     @FXML
-    private TableColumn<?, ?> col_year;
+    private TableColumn<POin, Integer> col_year;
 
     @FXML
-    private TableColumn<?, ?> col_total;
+    private TableColumn<POin, Integer> col_total;
 
     @FXML
-    private TableColumn<?, ?> col_action;
+    private TableColumn<POin, POin> col_action;
 
     @FXML
     private TextField TF_keyword;
@@ -83,10 +97,84 @@ public class WM_genRpt_in_PO_Controller {
 
     @FXML
     private Button genRptBtn;
+    
+    String month;
+    
+    ObservableList<POin> ObserveList = FXCollections.observableArrayList();
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb){
+        viewPOinReportMonthWM(tableCourier, ObserveList, col_sn, col_month, col_year, col_total, col_action);
+        //Calendar now = Calendar.getInstance();
+        //String year = (String.valueOf(now.get(Calendar.YEAR)));
+        //String monthNum = (String.valueOf(now.get(Calendar.MONTH) + 1));
+        //String dayNum = (String.valueOf(now.get(Calendar.DAY_OF_MONTH)));
+        //String dateToday = year + "-" + monthNum + "-" + dayNum;
+        //String firstDate = year + "-" + monthNum + "-" + "01";
+        //String lastDate = year + "-" + monthNum + "-" + "31";
+        //System.out.println(dateToday);
+        //System.out.println(firstDate);
+       // System.out.println(lastDate);
+    }
 
     @FXML
     void generate_Rpt(ActionEvent event) {
+        //welcome(welcomeLabel);
+        Calendar now = Calendar.getInstance();
+        String year = (String.valueOf(now.get(Calendar.YEAR)));
+        int monthNum = now.get(Calendar.MONTH) + 1;
+        switch(monthNum){
+            case 1:
+                month = "January";
+                break;
+            case 2:
+                month = "February";
+                break;
+            case 3:
+                month = "March";
+                break;
+            case 4:
+                month = "April";
+                break;
+            case 5:
+                month = "May";
+                break;
+            case 6:
+                month = "June";
+                break;
+            case 7:
+                month = "July";
+                break;
+            case 8:
+                month = "August";
+                break;
+            case 9:
+                month = "September";
+                break;
+            case 10:
+                month = "October";
+                break;
+            case 11:
+                month = "November";
+                break;
+            case 12:
+                month = "December";
+                break;
+            
+        }
+        
+        WM_genRpt_in_POView_Controller.getme(year, month);
+        try{
+            Parent root = FXMLLoader.load(getClass().getResource("WM_genRpt_in_POView.fxml"));
+            Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            loginStage.setScene(scene);
+            loginStage.centerOnScreen();
 
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 
     @FXML
@@ -232,7 +320,25 @@ public class WM_genRpt_in_PO_Controller {
 
     @FXML
     void logoutAcc(MouseEvent event) throws IOException {
-        Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("You're about to logout!");
+        alert.setContentText("Confirm logout?");
+
+        if(alert.showAndWait().get()== ButtonType.OK){
+
+            Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            Stage logoutStage = (Stage)logoutBtn.getScene().getWindow();
+            Scene scene = new Scene(root, 700, 650);
+            logoutStage.setTitle("Login");
+            logoutStage.setScene(scene);
+            Image image = new Image("image/logo192.png");
+            logoutStage.getIcons().add(image);
+            scene.setFill(Color.TRANSPARENT);
+            logoutStage.centerOnScreen();
+            logoutStage.show();
+
+        }
     }
 
     @FXML
