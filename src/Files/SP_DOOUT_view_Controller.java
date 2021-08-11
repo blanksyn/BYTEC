@@ -19,10 +19,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class SP_DOOUT_view_Controller {
 
@@ -85,7 +82,7 @@ public class SP_DOOUT_view_Controller {
 
         //fill labels
         try {
-            String getLabels = "SELECT PONum,SONum, company,delivery_date FROM POout WHERE DONum = " + DONum +" LIMIT 1";
+            String getLabels = "SELECT PONum,SONum, company,delivery_date FROM POout WHERE DONum = " + DONum +" AND status != 'Delivered' LIMIT 1";
             Statement stLabels = connectDB.createStatement();
             ResultSet rsLabels = stLabels.executeQuery(getLabels);
 
@@ -181,6 +178,25 @@ public class SP_DOOUT_view_Controller {
     @FXML
     void print(ActionEvent event) throws IOException {
 
+        //change status to delivered
+        DatabaseConnection con = new DatabaseConnection();
+        Connection connectDB = con.getConnection();
+
+        //update new scanned sku with delivered and delivered date
+        for(POout p:DOTbl) {
+            try {
+                String upProdSKU = "UPDATE product_indv SET status = 'Delivered',delivery_date = ? WHERE sku = '" + p.sku_scanned + "';";
+                PreparedStatement psUpProdSKU = connectDB.prepareStatement(upProdSKU);
+                psUpProdSKU.setString(1, String.valueOf(java.time.LocalDate.now()));
+                psUpProdSKU.execute();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+
+
         if(CB_courier.getValue() == null || CB_courier.getValue().equals("")){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("An error has occurred");
@@ -190,6 +206,16 @@ public class SP_DOOUT_view_Controller {
             alert.showAndWait();
         }else{
             System.out.println("Courier: "+CB_courier.getValue());
+
+            //update actual delivery date
+            try{
+                String updateDate = "UPDATE POout SET delivery_date = ?, status = 'Delivered',courier = '" + CB_courier.getValue() + "' WHERE SONum = '" + SONum + "';";
+                PreparedStatement psUpdateDate = connectDB.prepareStatement(updateDate);
+                psUpdateDate.setString(1, String.valueOf(java.time.LocalDate.now()));
+                psUpdateDate.execute();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
             XSSFWorkbook wb = new XSSFWorkbook();//for earlier version use HSSF
             XSSFSheet sheet = wb.createSheet("Delivery Order (Out)");
@@ -257,11 +283,6 @@ public class SP_DOOUT_view_Controller {
             closeWindow(event);
         }
 
-
-    }
-
-    @FXML
-    void searchFunction(ActionEvent event) {
 
     }
 
