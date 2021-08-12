@@ -1,9 +1,12 @@
 package Files;
 
+import java.sql.Date;
+
 public class product_indv {
 
-    int sn;
-    String upc,sku,loc,prod_name,sku_scanned,date_added,expiry_date, delivery_date,qty;
+    int sn,qtyMonth;
+    String upc,sku,loc,prod_name,sku_scanned,date_added,expiry_date,delivery_date,qty,unit,category,supplier,year,month;
+    Date startDate,endDate;
 
     public product_indv(int sn, String upc, String prod_name, String sku, String loc) {
         this.sn = sn;
@@ -29,20 +32,31 @@ public class product_indv {
         this.date_added = date_added;
         this.expiry_date = expiry_date;
     }
-
+    
     public product_indv(int sn, String upc, String prod_name, String qty) {
         this.sn =sn;
         this.upc = upc;
         this.prod_name = prod_name;
         this.qty = qty;
     }
-
-    public String getDelivery_date() {
-        return delivery_date;
+    
+    public product_indv(int sn, String upc, String sku, String prod_name, String unit, String loc, String supplier, String category, String expiry_date) {
+        this.sn = sn;
+        this.upc = upc;
+        this.sku = sku;
+        this.prod_name = prod_name;
+        this.unit = unit;
+        this.loc = loc;
+        this.supplier = supplier;
+        this.category = category;
+        this.expiry_date = expiry_date;
     }
-
-    public void setDelivery_date(String delivery_date) {
-        this.delivery_date = delivery_date;
+    
+    public product_indv(int sn, String month, int qtyMonth, String year) {
+        this.sn = sn;
+        this.month = month;
+        this.qtyMonth = qtyMonth;
+        this.year = year;
     }
 
     public String getSku_scanned() {
@@ -63,14 +77,6 @@ public class product_indv {
 
     public String getUpc() {
         return upc;
-    }
-
-    public String getQty() {
-        return qty;
-    }
-
-    public void setQty(String qty) {
-        this.qty = qty;
     }
 
     public void setUpc(String upc) {
@@ -115,5 +121,85 @@ public class product_indv {
 
     public void setExpiry_date(String expiry_date) {
         this.expiry_date = expiry_date;
+    }
+    
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+    
+    public String getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(String supplier) {
+        this.supplier = supplier;
+    }
+    
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+    
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+    
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+    
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+    
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+    
+     public int getQtyMonth() {
+        return qtyMonth;
+    }
+
+    public void setQtyMonth(int qtyMonth) {
+        this.qtyMonth = qtyMonth;
+    }
+    
+    public String getDelivery_date() {
+        return delivery_date;
+    }
+
+    public void setDelivery_date(String delivery_date) {
+        this.delivery_date = delivery_date;
+    }
+    
+    public String getQty() {
+        return qty;
+    }
+
+    public void setQty(String qty) {
+        this.qty = qty;
     }
 }

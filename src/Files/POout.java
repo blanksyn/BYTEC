@@ -3,9 +3,9 @@ package Files;
 import java.sql.Date;
 
 public class POout {
-    int sn,qty;
-    String SONum,PONum,company,ppBy,status,upc,prod_name,sku,sku_scanned,reject,loc,DONum;
-    Date date_created,delivery_date;
+    int sn,qty,qtyMonth;
+    String SONum,PONum,company,ppBy,status,upc,prod_name,sku,sku_scanned,reject,loc,DONum,year,month,createdBy;
+    Date date_created,delivery_date,startDate,endDate;
 
     public String getReject() {
         return reject;
@@ -64,6 +64,42 @@ public class POout {
         this.SONum=SONum;
         this.company=company;
         this.date_created=date_created;
+    }
+    
+    public POout(int sn, String month, int qtyMonth, String year) {
+        this.sn = sn;
+        this.month = month;
+        this.qtyMonth = qtyMonth;
+        this.year = year;
+    }
+    
+    public POout(int sn,String PONum, String SONum, String company, String createdBy, Date date_created, Date delivery_date ,String status) {
+        this.sn = sn;
+        this.SONum = SONum;
+        this.PONum = PONum;
+        this.company = company;
+        this.createdBy = createdBy;
+        this.date_created = date_created;
+        this.delivery_date = delivery_date;
+        this.status = status;
+    }
+    
+    public POout(String DONum, int sn, String SONum, String company, String createdBy, Date date_created, Date delivery_date ,String status) {
+        this.sn = sn;
+        this.SONum = SONum;
+        this.DONum = DONum;
+        this.company = company;
+        this.createdBy = createdBy;
+        this.date_created = date_created;
+        this.delivery_date = delivery_date;
+        this.status = status;
+    }
+    
+    public POout(int sn, String upc, String prod_name, String sku_scanned) {
+        this.sn = sn;
+        this.upc = upc;
+        this.prod_name = prod_name;
+        this.sku_scanned = sku_scanned;
     }
 
     public String getSONum() {
@@ -195,5 +231,53 @@ public class POout {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    
+    public int getQtyMonth() {
+        return qtyMonth;
+    }
+
+    public void setQtyMonth(int qtyMonth) {
+        this.qtyMonth = qtyMonth;
+    }
+    
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+    
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+    
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+    
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+    
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }
