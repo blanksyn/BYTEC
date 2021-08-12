@@ -8,11 +8,11 @@ import java.sql.Date;
 
 public class POin {
 
-    int sn,qty_ordered,qty_rcv,qty_remaining,qty;
+    int sn,qty_ordered,qty_rcv,qty_remaining,qty,qtyMonth;
     String PONum,supplier,orderBy,status;
     String upc,prod_name;
-    String DONum, rcvBy,appBy;
-    Date date_rcv,orderDate,eta,expDate;
+    String DONum, rcvBy,appBy,year,month;
+    Date date_rcv,orderDate,eta,expDate,startDate,endDate;
 
     public POin(int sn, String PONum, String supplier, String orderBy, Date orderDate, String status) {
         this.sn = sn;
@@ -86,6 +86,47 @@ public class POin {
         this.supplier =supplier;
         this.rcvBy=rcvBy;
         this.date_rcv=date_rcv;
+    }
+    
+    public POin(int sn, String PONum, String supplier, Date orderDate) {
+        this.sn = sn;
+        this.PONum = PONum;
+        this.supplier = supplier;
+        this.orderDate = orderDate;
+    }
+    
+    public POin(String upc,int sn,String prod_name, int qty_ordered){
+        this.sn = sn;
+        this.upc = upc;
+        this.prod_name = prod_name;
+        this.qty_ordered = qty_ordered;
+    }
+    
+    public POin(int sn, String PONum, String supplier, String orderBy, Date orderDate, Date date_rcv, String status) {
+        this.sn = sn;
+        this.PONum = PONum;
+        this.supplier = supplier;
+        this.orderBy = orderBy;
+        this.orderDate = orderDate;
+        this.date_rcv = date_rcv;
+        this.status = status;
+    }
+    
+    public POin(String DONum, int sn, String supplier, String orderBy, Date orderDate, Date date_rcv, String status) {
+        this.DONum = DONum;
+        this.sn = sn;
+        this.supplier = supplier;
+        this.orderBy = orderBy;
+        this.orderDate = orderDate;
+        this.date_rcv = date_rcv;
+        this.status = status;
+    }
+    
+    public POin(int sn, String month, int qtyMonth, String year) {
+        this.sn = sn;
+        this.month = month;
+        this.qtyMonth = qtyMonth;
+        this.year = year;
     }
 
     public Date getExpDate() {
@@ -236,5 +277,45 @@ public class POin {
     }
 
     public void expDate(String newValue) {
+    }
+    
+    public int getQtyMonth() {
+        return qtyMonth;
+    }
+
+    public void setQtyMonth(int qtyMonth) {
+        this.qtyMonth = qtyMonth;
+    }
+    
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+    
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+    
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+    
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }
