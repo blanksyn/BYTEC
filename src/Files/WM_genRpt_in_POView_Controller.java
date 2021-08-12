@@ -146,8 +146,8 @@ public class WM_genRpt_in_POView_Controller extends WM implements Initializable{
             
         }*/
         labelMonth.setText(thisMonth);
-        viewPOinReportWM(thisMonth, thisYear, tbl_POinRpt, ObserveList, col_sn, col_PONum, col_supplier, col_OrdBy,
-            col_dateOrd, col_compDate, col_status, col_action);
+        //viewPOinReportWM(thisMonth, thisYear, tbl_POinRpt, ObserveList, col_sn, col_PONum, col_supplier, col_OrdBy,
+        //    col_dateOrd, col_compDate, col_status, col_action);
     }
 
     @FXML

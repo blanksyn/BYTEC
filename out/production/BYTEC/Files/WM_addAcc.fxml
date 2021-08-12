@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="450.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Files.WM_addAcc_Controller">
+   <children>
+      <Button fx:id="closeBtn" layoutX="399.0" layoutY="1.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="X" AnchorPane.topAnchor="1.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="14.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/bytec_bg_cropped.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="welcomeLabel" layoutX="50.0" layoutY="2.0" prefHeight="36.0" prefWidth="312.0">
+         <font>
+            <Font name="Bodoni MT Condensed" size="24.0" />
+         </font>
+      </Label>
+      <Separator layoutY="33.0" prefHeight="12.0" prefWidth="1014.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <TextField fx:id="name" layoutX="58.0" layoutY="147.0" promptText="Name" style="-fx-border-color: #4B0082;" AnchorPane.topAnchor="147.0" />
+      <TextField fx:id="employeeID" layoutX="58.0" layoutY="192.0" promptText="Employee ID" style="-fx-border-color: #4B0082;" />
+      <PasswordField fx:id="pass" layoutX="58.0" layoutY="236.0" promptText="Password" style="-fx-border-color: #4B0082;" />
+      <PasswordField fx:id="cPass" layoutX="58.0" layoutY="280.0" promptText="Confirm Password" style="-fx-border-color: #4B0082;" />
+      <ComboBox fx:id="cb_accType" layoutX="58.0" layoutY="326.0" prefWidth="150.0" promptText="Account Type" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
+      <Button fx:id="addBtn" layoutX="351.0" layoutY="427.0" mnemonicParsing="false" onAction="#addAccount" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Add" textFill="WHITE">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="cancelBtn" layoutX="266.0" layoutY="427.0" mnemonicParsing="false" onAction="#closeAdd" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Cancel" textFill="WHITE">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Button>
+      <Label layoutX="123.0" layoutY="63.0" prefHeight="44.0" prefWidth="211.0" text="Add Account" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="119.0">
+         <font>
+            <Font name="Bodoni MT" size="36.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="cb_role" layoutX="58.0" layoutY="370.0" prefWidth="150.0" promptText="Role" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
+   </children>
+</AnchorPane>
