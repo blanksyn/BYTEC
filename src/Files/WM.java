@@ -1,6 +1,7 @@
 package Files;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -1014,10 +1015,11 @@ public class WM extends User{
                                     if (ObserveList.get(i).getSN() == Integer.parseInt(col_sn.getCellData(setupC).toString()))
                                     {
                                         int sn =(ObserveList.get(i).getSN());
+                                        String loc = (ObserveList.get(i).getLocation());
                                         //System.out.println(sn);
-                                        //WM_WHEnv_supplierMgt_edit_Controller.getmeSN(sn);
+                                        WM_WHEnv_whSpaceEditAll_Controller.getme(loc);
                                         try {
-                                            Parent fxml2 = FXMLLoader.load(getClass().getResource("WM_WHEnv_supplierMgt_edit.fxml"));
+                                            Parent fxml2 = FXMLLoader.load(getClass().getResource("WM_WHEnv_whSpaceEditAll.fxml"));
                                             Scene window3 = new Scene(fxml2);
                                             Stage parentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
                                             parentStage.setScene(window3);
@@ -1204,11 +1206,17 @@ public class WM extends User{
                                         }
                                     }
 
-                                            }
-                                    }
-                                    catch (Exception e){
-                                            JOptionPane.showMessageDialog(null, e);
-                                        }
+                                }
+                                Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                                alert2.setTitle(null);
+                                alert2.initStyle(StageStyle.UTILITY);;
+                                alert2.setHeaderText(null);
+                                alert2.setContentText("Storage added.");
+                                
+                            }
+                            catch (Exception e){
+                                    JOptionPane.showMessageDialog(null, e);
+                                }
                                     /*if(cbName_Convention.equals("Alphabetical")){
                                         try{
                                             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
@@ -1241,6 +1249,7 @@ public class WM extends User{
                                     }*/
                         
                     }
+                    
                     try{
                         Parent root = FXMLLoader.load(getClass().getResource("WM_WHEnv_whSpace.fxml"));
                         Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -1271,6 +1280,343 @@ public class WM extends User{
                 }
             }
          
+        }
+    }
+    
+    //View Edit Information for Edit Acc for WM
+    public void editViewStorageWM(String locName, TextField name, TextField length, TextField width, TextField height){
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT length, width, height FROM storage WHERE location like '" + locName + "%';");
+            while (rs.next()) {
+                name.setText(locName);
+                length.setText(rs.getString("length")); 
+                width.setText(rs.getString("width")); 
+                height.setText(rs.getString("height"));
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+    }
+    
+    //Edit Storage for WM
+    public void editStorageWM(String locName, ActionEvent event, String name, String length, String width, String height){
+        if(name.equals(""))
+        {
+            JOptionPane.showMessageDialog( null,"Name field is blank");
+        }
+        else if (length.equals(""))
+        {
+            JOptionPane.showMessageDialog( null,"Length field is blank");
+        }
+        else if (width.equals(""))
+        {
+            JOptionPane.showMessageDialog( null,"Width field is blank");
+        }
+        else if (height.equals(""))
+        {
+            JOptionPane.showMessageDialog( null,"Height field is blank");
+        }
+        else{
+            String check = "no";
+            if(!name.equals(locName)){
+                try{
+                    DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                    String newName = name + " ";
+                    String[] parts = newName.split(" ");
+                    String newnewName = parts[0];
+                    ResultSet rs = connectDB.createStatement().executeQuery("SELECT location FROM storage WHERE location like '" + name + "%' AND name = '" + newnewName + "';");
+                    while (rs.next()) {
+                        if(!rs.getString("location").equals("null")){
+                            JOptionPane.showMessageDialog( null,"Location with the name '"+name+"' already exist!");
+                            check = "yes";
+                            break;
+                        }
+                    }
+
+                    }catch(SQLException ex){
+                        Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+                    }
+            }
+            
+            if(check.equals("no")){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle(null);
+                alert.initStyle(StageStyle.UTILITY);;
+                alert.setHeaderText(null);
+                alert.setContentText("Confirm?");
+
+                Optional<ButtonType> action = alert.showAndWait();
+
+                if(action.get() == ButtonType.OK)
+                {
+                    try{
+                        DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                        
+                        ResultSet rs7 = connectDB.createStatement().executeQuery("SELECT name, name_conv, level, col, location, vol, vol_avail FROM storage WHERE location like '" + locName + "%';");
+                        while (rs7.next()) {
+                            String newName = locName + " ";
+                            String[] parts = newName.split(" ");
+                            String newnewName = parts[0];
+                            String locB = rs7.getString("location");
+                            PreparedStatement pst =connectDB.prepareStatement("UPDATE storage SET name = ?, length = ?, width = ?, height = ?, location = ?, vol = ?, vol_avail = ?, name_conv = ? WHERE location like '" + locB + "' AND name = '" + newnewName + "';");
+                            //String newnewName = newName.split(" ")[0];
+                            String newNameConv = rs7.getString("name_conv");
+                            String newName2 = name + " ";
+                            String[] parts2 = newName2.split(" ");
+                            String newnewName2 = parts2[0];
+                            String locationNew = newnewName2 + " " + rs7.getString("name_conv") + "." + rs7.getString("level") + "." + rs7.getString("col");
+                            if(parts.length>1){
+                                newNameConv = parts[1];
+                                locationNew = newnewName2 + " " + newNameConv + "." + rs7.getString("level") + "." + rs7.getString("col");
+                            }
+                            pst.setString(1,newnewName2); 
+                            pst.setString(2,length); 
+                            pst.setString(3,width); 
+                            pst.setString(4,height);
+                            
+                            pst.setString(5,locationNew); 
+                            Double volume = Double.parseDouble(length) * Double.parseDouble(width) * Double.parseDouble(height);
+                            pst.setString(6,String.valueOf(volume));
+                            if(rs7.getString("vol_avail").equals(rs7.getString("vol")))
+                                pst.setString(7,String.valueOf(volume));
+                            else{
+                                double newVol = volume - Double.parseDouble(rs7.getString("vol")) + Double.parseDouble(rs7.getString("vol_avail"));
+                                pst.setString(7,String.valueOf(newVol));
+                            }
+                            if(!rs7.getString("name_conv").equals(newNameConv))
+                                pst.setString(8,newNameConv);
+                            else
+                                pst.setString(8,rs7.getString("name_conv"));
+                            pst.execute();
+                            PreparedStatement pst2 =connectDB.prepareStatement("UPDATE upc_location SET location = ? WHERE location like '" + locB + "';");
+                            pst2.setString(1,locationNew);
+                            pst2.execute();
+                        }
+                    }catch(SQLException ex){
+                        Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+                    }
+                    try{
+                        Parent root = FXMLLoader.load(getClass().getResource("WM_WHEnv_whSpace.fxml"));
+                        Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        loginStage.setScene(scene);
+                        loginStage.centerOnScreen();
+                        loginStage.show();
+
+                        root.setOnMousePressed((MouseEvent event1) -> {
+                                                xOffset = event1.getSceneX();
+                                                yOffset = event1.getSceneY();
+                                            });
+
+                        root.setOnMouseDragged((MouseEvent event1) -> {
+                                    loginStage.setX(event1.getScreenX() - xOffset);
+                                    loginStage.setY(event1.getScreenY() - yOffset);
+                                            });
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        e.getCause();
+                    }
+                }
+            }
+        }
+    }
+    
+    //Delete Storage for WM
+    public void deleteStorageWM(String locName, ActionEvent event){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(null);
+        alert.initStyle(StageStyle.UTILITY);;
+        alert.setHeaderText(null);
+        alert.setContentText("Confirm?");
+        Optional<ButtonType> action = alert.showAndWait();
+        if(action.get() == ButtonType.OK)
+        {
+            
+            try{
+                DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                ResultSet rs7 = connectDB.createStatement().executeQuery("SELECT sn, name, location FROM storage WHERE location like '" + locName + " %';");
+                while (rs7.next()) {
+                    String newName = locName + " ";
+                    String[] parts = newName.split(" ");
+                    String newnewName = parts[0];
+                    String locB = rs7.getString("location");
+                    PreparedStatement pst =connectDB.prepareStatement("DELETE FROM storage WHERE location like '" + locB + "'AND name = '" + newnewName + "';");
+                    pst.execute();
+                    PreparedStatement pst2 =connectDB.prepareStatement("DELETE FROM upc_location WHERE location like '" + locB + " %';");
+                    pst2.execute();
+                    
+                    int sn = Integer.valueOf(rs7.getString("sn"));
+                    ResultSet rs = connectDB.createStatement().executeQuery("SELECT MAX(SN) as MaxSN FROM storage;");
+                    while (rs.next()) {
+                        int sna = rs.getInt("MaxSN");
+                        for(int q = sn; q < sna+1; q++){
+                            int newi = q - 1;
+                            PreparedStatement pst3 =connectDB.prepareStatement("UPDATE storage SET SN = ? WHERE (`SN` = '"+q+"');");
+                            pst3.setString(1,String.valueOf(newi));
+                            pst3.execute();
+                        }
+                    }
+                }
+                
+                
+            }catch(SQLException ex){
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+            }
+            Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+            alert2.setTitle(null);
+            alert2.initStyle(StageStyle.UTILITY);;
+            alert2.setHeaderText(null);
+            alert2.setContentText("Storage deleted.");
+            try{
+                Parent root = FXMLLoader.load(getClass().getResource("WM_WHEnv_whSpace.fxml"));
+                Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                Scene scene = new Scene(root);
+                loginStage.setScene(scene);
+                loginStage.centerOnScreen();
+                loginStage.show();
+
+                root.setOnMousePressed((MouseEvent event1) -> {
+                                        xOffset = event1.getSceneX();
+                                        yOffset = event1.getSceneY();
+                                    });
+
+                root.setOnMouseDragged((MouseEvent event1) -> {
+                            loginStage.setX(event1.getScreenX() - xOffset);
+                            loginStage.setY(event1.getScreenY() - yOffset);
+                                    });
+
+            }catch (Exception e){
+                e.printStackTrace();
+                e.getCause();
+            }
+        }
+    }
+    
+    //Edit Storage for WM
+    public void editStorageSpecificWM(String locName, ActionEvent event, String name, String length, String width, String height){
+        if(name.equals(""))
+        {
+            JOptionPane.showMessageDialog( null,"Name field is blank");
+        }
+        else if (length.equals(""))
+        {
+            JOptionPane.showMessageDialog( null,"Length field is blank");
+        }
+        else if (width.equals(""))
+        {
+            JOptionPane.showMessageDialog( null,"Width field is blank");
+        }
+        else if (height.equals(""))
+        {
+            JOptionPane.showMessageDialog( null,"Height field is blank");
+        }
+        else{
+            String check = "no";
+            if(!name.equals(locName)){
+                try{
+                    DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                    String newName = name + " ";
+                    String[] parts = newName.split(" ");
+                    String newnewName = parts[0];
+                    ResultSet rs = connectDB.createStatement().executeQuery("SELECT location FROM storage WHERE location like '" + name + "%' AND name = '" + newnewName + "';");
+                    while (rs.next()) {
+                        if(!rs.getString("location").equals("null")){
+                            JOptionPane.showMessageDialog( null,"Location with the name '"+name+"' already exist!");
+                            check = "yes";
+                            break;
+                        }
+                    }
+
+                    }catch(SQLException ex){
+                        Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+                    }
+            }
+            
+            if(check.equals("no")){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle(null);
+                alert.initStyle(StageStyle.UTILITY);;
+                alert.setHeaderText(null);
+                alert.setContentText("Confirm?");
+
+                Optional<ButtonType> action = alert.showAndWait();
+
+                if(action.get() == ButtonType.OK)
+                {
+                    try{
+                        DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                        
+                        ResultSet rs7 = connectDB.createStatement().executeQuery("SELECT name, name_conv, level, col, location, vol, vol_avail FROM storage WHERE location like '" + locName + "%';");
+                        while (rs7.next()) {
+                            String newName = locName + " ";
+                            String[] parts = newName.split(" ");
+                            String newnewName = parts[0];
+                            String locB = rs7.getString("location");
+                            PreparedStatement pst =connectDB.prepareStatement("UPDATE storage SET name = ?, length = ?, width = ?, height = ?, location = ?, vol = ?, vol_avail = ?, name_conv = ? WHERE location like '" + locB + "' AND name = '" + newnewName + "';");
+                            //String newnewName = newName.split(" ")[0];
+                            String newNameConv = rs7.getString("name_conv");
+                            String newName2 = name + " ";
+                            String[] parts2 = newName2.split(" ");
+                            String newnewName2 = parts2[0];
+                            String newnewName3 = parts2[1];
+                            String[] parts3 = newnewName3.split(".");
+                            String newNameConv2 = parts3[0];
+                            String newLvl = parts3[1];
+                            String newCol = parts3[2];
+                            String locationNew = newnewName2 + " " + newNameConv2 + "." + newLvl + "." + newCol;
+
+                            pst.setString(1,newnewName2); 
+                            pst.setString(2,length); 
+                            pst.setString(3,width); 
+                            pst.setString(4,height);
+                            
+                            pst.setString(5,locationNew); 
+                            Double volume = Double.parseDouble(length) * Double.parseDouble(width) * Double.parseDouble(height);
+                            pst.setString(6,String.valueOf(volume));
+                            if(rs7.getString("vol_avail").equals(rs7.getString("vol")))
+                                pst.setString(7,String.valueOf(volume));
+                            else{
+                                double newVol = volume - Double.parseDouble(rs7.getString("vol")) + Double.parseDouble(rs7.getString("vol_avail"));
+                                pst.setString(7,String.valueOf(newVol));
+                            }
+                            if(!rs7.getString("name_conv").equals(newNameConv2))
+                                pst.setString(8,newNameConv2);
+                            else
+                                pst.setString(8,rs7.getString("name_conv"));
+                            pst.execute();
+                            PreparedStatement pst2 =connectDB.prepareStatement("UPDATE upc_location SET location = ? WHERE location like '" + locB + "';");
+                            pst2.setString(1,locationNew);
+                            pst2.execute();
+                        }
+                    }catch(SQLException ex){
+                        Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+                    }
+                    try{
+                        Parent root = FXMLLoader.load(getClass().getResource("WM_WHEnv_whSpace.fxml"));
+                        Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        loginStage.setScene(scene);
+                        loginStage.centerOnScreen();
+                        loginStage.show();
+
+                        root.setOnMousePressed((MouseEvent event1) -> {
+                                                xOffset = event1.getSceneX();
+                                                yOffset = event1.getSceneY();
+                                            });
+
+                        root.setOnMouseDragged((MouseEvent event1) -> {
+                                    loginStage.setX(event1.getScreenX() - xOffset);
+                                    loginStage.setY(event1.getScreenY() - yOffset);
+                                            });
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        e.getCause();
+                    }
+                }
+            }
         }
     }
     
@@ -1612,6 +1958,8 @@ public class WM extends User{
                                     pst2.setString(2,TF_upc); 
                                     pst2.setString(3,rs3.getString("location"));
                                     int qtyLoc = (int)(rs3.getDouble("vol_avail")/volume);
+                                    if (qtyLoc > Integer.valueOf(TF_maxQty))
+                                        qtyLoc = Integer.valueOf(TF_maxQty);
                                     pst2.setString(4,String.valueOf(qtyLoc));
                                     pst2.execute();
                                     String loca = rs3.getString("location");
@@ -1821,6 +2169,8 @@ public class WM extends User{
                                 double volB = rs8.getDouble("vol_avail");
                                 double volAdd = volB + oriVol * maxQty;
                                 qtyLoc = (int)(volAdd/volume);
+                                if (qtyLoc > maxQty)
+                                    qtyLoc = maxQty;
                                 System.out.println(volAdd);
                                 System.out.println(oriVol);
                                 System.out.println(volume);
@@ -2145,7 +2495,1323 @@ public class WM extends User{
             }
         }
     }
-
-
     
+    //POin Table for WM
+    public ObservableList viewPOWM(TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_PONumber, TableColumn col_supplierName, TableColumn col_orderedBy,
+            TableColumn col_orderedDate, TableColumn col_status, TableColumn<POin,POin> col_action){       
+        
+        col_action.setCellValueFactory(
+                param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        col_action.setCellFactory(param -> new TableCell<POin, POin>() {
+            private final Button moreButton = new Button();
+
+            //@Override
+            protected void updateItem(POin user, boolean empty) {
+                super.updateItem(user, empty);
+                if (user == null) {
+                    setGraphic(null);
+                    return;
+                }
+                else
+                {
+                    //moreButton.getStyleClass().add("moreButton");
+                    setGraphic(moreButton);
+                    moreButton.setText("View");
+                    moreButton.setOnAction(
+                            event -> {
+                                for (int i = 0; i < ObserveList.size(); i++)
+                                {
+                                    if (ObserveList.get(i).getSn() == Integer.parseInt(col_sn.getCellData(user).toString()))
+                                    {
+                                        int sn =(ObserveList.get(i).getSn());
+                                        String oriPOnum =(ObserveList.get(i).getPONum());
+                                        String oriSup =(ObserveList.get(i).getSupplier());
+                                        Date oriDate =(ObserveList.get(i).getOrderDate());
+                                        WM_POIN_view_Controller.getme(sn,oriPOnum,oriSup,oriDate);
+                                        try {
+                                            Parent fxml2 = FXMLLoader.load(getClass().getResource("WM_POIN_view.fxml"));
+                                            Scene window3 = new Scene(fxml2);
+                                            Stage parentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                                            parentStage.setScene(window3);
+                                            parentStage.centerOnScreen();
+                                            parentStage.show();
+
+                                            fxml2.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    xOffset = event.getSceneX();
+                                                    yOffset = event.getSceneY();
+                                                }
+                                            });
+                                            fxml2.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    parentStage.setX(event.getScreenX() - xOffset);
+                                                    parentStage.setY(event.getScreenY() - yOffset);
+                                                }
+                                            });
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                            e.getCause();
+                                        }
+                                    }
+
+                                }
+                            }
+                    );
+                }
+            }
+        });
+        
+        table.setItems(ObserveList);
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, supplier, orderBy, order_date, status FROM POin WHERE status != 'Not Approved' AND status != 'Fully Received';");
+            while (rs.next()) {
+                ObserveList.add(new POin(count, rs.getString("PONum"),rs.getString("supplier"),rs.getString("orderBy"), rs.getDate("order_date"),rs.getString("status")));
+                count++;
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_PONumber.setCellValueFactory((new PropertyValueFactory<>("PONum")));
+        col_supplierName.setCellValueFactory((new PropertyValueFactory<>("Supplier")));
+        col_orderedBy.setCellValueFactory((new PropertyValueFactory<>("OrderBy")));
+        col_orderedDate.setCellValueFactory((new PropertyValueFactory<>("OrderDate")));
+        col_status.setCellValueFactory((new PropertyValueFactory<>("Status")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return ObserveList;  
+    }
+    
+    //View POin for WM
+    public ObservableList ViewPOinWM(int sn, String PONum, String Sup, Date oriDate, TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_QtyOrder, TableColumn col_rcv, TableColumn col_qtyRem,
+            TableColumn col_UPC, TableColumn col_prodName){
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT * FROM POin_detail WHERE PONum = '" + PONum +"';");
+            while (rs.next()) {
+                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT prod_name FROM product_master WHERE upc = '" + rs.getString("upc") +"';");
+                while (rs2.next()) {
+                    ResultSet rs4 = connectDB.createStatement().executeQuery("SELECT status FROM POin WHERE PONum = '" + PONum +"';");
+                    while (rs4.next()) {
+                        if(rs4.getString("status").equals("Not Received"))
+                            ObserveList.add(new POin(rs.getString("upc"), count ,rs2.getString("prod_name"),rs.getInt("qty_ordered"),rs.getInt("qty_rcv"),rs.getInt("qty_remaining")));
+                        else{
+                            ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT qty FROM POin_rcv WHERE upc = '" + rs.getString("upc") +"' AND PONum = '" + PONum + "';");
+                            while (rs3.next()) {
+                                ObserveList.add(new POin(rs.getString("upc"), count ,rs2.getString("prod_name"),rs.getInt("qty_ordered"),rs3.getInt("qty"),rs.getInt("qty_remaining")));
+                            }
+                        }
+                    }
+                    
+                    
+                }
+                count++;
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_QtyOrder.setCellValueFactory((new PropertyValueFactory<>("Qty_ordered")));
+        col_rcv.setCellValueFactory((new PropertyValueFactory<>("Qty_rcv")));
+        col_qtyRem.setCellValueFactory((new PropertyValueFactory<>("Qty_remaining")));
+        col_UPC.setCellValueFactory((new PropertyValueFactory<>("Upc")));
+        col_prodName.setCellValueFactory((new PropertyValueFactory<>("Prod_name")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return ObserveList;
+    }
+    
+    //POin restock Table for WM
+    public ObservableList viewPOApprovalWM(TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_PONumber, TableColumn col_supplierName, TableColumn col_dateCreated,
+            TableColumn<POin,POin> col_action){       
+        
+        col_action.setCellValueFactory(
+                param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        col_action.setCellFactory(param -> new TableCell<POin, POin>() {
+            private final Button moreButton = new Button();
+
+            //@Override
+            protected void updateItem(POin user, boolean empty) {
+                super.updateItem(user, empty);
+                if (user == null) {
+                    setGraphic(null);
+                    return;
+                }
+                else
+                {
+                    //moreButton.getStyleClass().add("moreButton");
+                    setGraphic(moreButton);
+                    moreButton.setText("View");
+                    moreButton.setOnAction(
+                            event -> {
+                                for (int i = 0; i < ObserveList.size(); i++)
+                                {
+                                    if (ObserveList.get(i).getSn() == Integer.parseInt(col_sn.getCellData(user).toString()))
+                                    {
+                                        int sn =(ObserveList.get(i).getSn());
+                                        String oriPOnum =(ObserveList.get(i).getPONum());
+                                        String oriSup =(ObserveList.get(i).getSupplier());
+                                        Date oriDate =(ObserveList.get(i).getOrderDate());
+                                        WM_POIN_restock_view_Controller.getme(sn,oriPOnum,oriSup,oriDate);
+                                        try {
+                                            Parent fxml2 = FXMLLoader.load(getClass().getResource("WM_POIN_restock_view.fxml"));
+                                            Scene window3 = new Scene(fxml2);
+                                            Stage parentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                                            parentStage.setScene(window3);
+                                            parentStage.centerOnScreen();
+                                            parentStage.show();
+
+                                            fxml2.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    xOffset = event.getSceneX();
+                                                    yOffset = event.getSceneY();
+                                                }
+                                            });
+                                            fxml2.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    parentStage.setX(event.getScreenX() - xOffset);
+                                                    parentStage.setY(event.getScreenY() - yOffset);
+                                                }
+                                            });
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                            e.getCause();
+                                        }
+                                    }
+
+                                }
+                            }
+                    );
+                }
+            }
+        });
+        
+        table.setItems(ObserveList);
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, supplier, orderBy, order_date, status FROM POin WHERE status = 'Not Approved';");
+            while (rs.next()) {
+                ObserveList.add(new POin(count, rs.getString("PONum"),rs.getString("supplier"), rs.getDate("order_date")));
+                count++;
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_PONumber.setCellValueFactory((new PropertyValueFactory<>("PONum")));
+        col_supplierName.setCellValueFactory((new PropertyValueFactory<>("Supplier")));
+        col_dateCreated.setCellValueFactory((new PropertyValueFactory<>("OrderDate")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return ObserveList;  
+    }
+    
+    //POin restock Table for WM
+    public ObservableList POApprovalViewWM(String PONum, TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_upc, TableColumn col_productName,
+            TableColumn col_qty){       
+
+        table.setItems(ObserveList);
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT * FROM POin_detail WHERE PONum = '" + PONum +"';");
+            while (rs.next()) {
+                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT prod_name FROM product_master WHERE upc = '" + rs.getString("upc") +"';");
+                while (rs2.next()) {
+                    ObserveList.add(new POin(rs.getString("upc"), count ,rs2.getString("prod_name"), rs.getInt("qty_ordered")));
+                    //moreButton.setText(rs.getInt("qty_ordered"));
+                }
+                count++;
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_upc.setCellValueFactory((new PropertyValueFactory<>("upc")));
+        col_productName.setCellValueFactory((new PropertyValueFactory<>("prod_name")));
+        col_qty.setCellValueFactory((new PropertyValueFactory<>("qty_ordered")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return ObserveList;  
+    }
+    
+    //Inventory Table Report for WM
+    public ObservableList viewInvetoryReportMonthWM(TableView table, ObservableList<product_indv> ObserveList, TableColumn col_sn, TableColumn col_month, TableColumn col_year, TableColumn col_total,
+            TableColumn<product_indv,product_indv> col_action){       
+        
+        col_action.setCellValueFactory(
+                param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        col_action.setCellFactory(param -> new TableCell<product_indv, product_indv>() {
+            private final Button moreButton = new Button();
+
+            //@Override
+            protected void updateItem(product_indv user, boolean empty) {
+                super.updateItem(user, empty);
+                if (user == null) {
+                    setGraphic(null);
+                    return;
+                }
+                else
+                {
+                    //moreButton.getStyleClass().add("moreButton");
+                    setGraphic(moreButton);
+                    moreButton.setText("View");
+                    moreButton.setOnAction(
+                            event -> {
+                                for (int i = 0; i < ObserveList.size(); i++)
+                                {
+                                    if (ObserveList.get(i).getSn() == Integer.parseInt(col_sn.getCellData(user).toString()))
+                                    {
+                                        String year = (ObserveList.get(i).getYear());
+                                        String month = (ObserveList.get(i).getMonth());
+                                        WM_genRpt_invView_Controller.getme(year,month);
+                                        try {
+                                            Parent fxml2 = FXMLLoader.load(getClass().getResource("WM_genRpt_invView.fxml"));
+                                            Scene window3 = new Scene(fxml2);
+                                            Stage parentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                                            parentStage.setScene(window3);
+                                            parentStage.centerOnScreen();
+                                            parentStage.show();
+
+                                            fxml2.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    xOffset = event.getSceneX();
+                                                    yOffset = event.getSceneY();
+                                                }
+                                            });
+                                            fxml2.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    parentStage.setX(event.getScreenX() - xOffset);
+                                                    parentStage.setY(event.getScreenY() - yOffset);
+                                                }
+                                            });
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                            e.getCause();
+                                        }
+                                    }
+
+                                }
+                            }
+                    );
+                }
+            }
+        });
+        
+        table.setItems(ObserveList);
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth");
+            while (rs.next()) {
+                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT Count(sn) as qtyMonth FROM product_indv WHERE date_added <= '" + rs.getDate("endDate") + "' AND "
+                        + "(delivery_date >= '" + rs.getDate("endDate") + "' OR delivery_date is NULL);");
+                while (rs2.next()) {
+                    ObserveList.add(new product_indv(count, rs.getString("month"),rs2.getInt("qtyMonth"),rs.getString("year")));
+                    count++;
+                }
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_month.setCellValueFactory((new PropertyValueFactory<>("month")));
+        col_year.setCellValueFactory((new PropertyValueFactory<>("year")));
+        col_total.setCellValueFactory((new PropertyValueFactory<>("qtyMonth")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        return ObserveList;  
+    }
+    
+    //Individual prod Table Current for WM Report
+    public ObservableList viewProdIndvReportCurrentWM(String month, String year, TableView tableAccount, ObservableList<product_indv> ObserveList, TableColumn col_sn, 
+            TableColumn col_upc, TableColumn col_sku, TableColumn col_prodName, TableColumn col_unit, TableColumn col_loc, TableColumn col_sup,
+            TableColumn col_cat, TableColumn col_expDate){
+        int count = 1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT startDate, endDate FROM ReportMonth WHERE month = '" + month + "' AND year = '" + year + "';");
+            while (rs3.next()) {
+                ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc, sku, location, expiry_date FROM product_indv WHERE date_added >= '" + rs3.getDate("startDate") + "' AND (delivery_date >= '" + rs3.getDate("endDate") + "' OR delivery_date is NULL);");
+                while (rs.next()) {
+                    ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT prod_name, unit, supplier, category FROM product_master WHERE upc = '" + rs.getString("upc") + "';");
+                    while (rs2.next()) {
+                        ObserveList.add(new product_indv(count,rs.getString("upc"), rs.getString("sku"), rs2.getString("prod_name"), rs2.getString("unit"), 
+                                rs.getString("location"), rs2.getString("supplier"), rs2.getString("category"), rs.getString("expiry_date")));
+                        count++;
+                    }
+                }
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+       
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_upc.setCellValueFactory((new PropertyValueFactory<>("upc")));
+        col_sku.setCellValueFactory((new PropertyValueFactory<>("Sku")));
+        col_prodName.setCellValueFactory((new PropertyValueFactory<>("prod_name")));
+        col_unit.setCellValueFactory((new PropertyValueFactory<>("unit")));
+        col_loc.setCellValueFactory((new PropertyValueFactory<>("Loc")));
+        col_sup.setCellValueFactory((new PropertyValueFactory<>("supplier")));
+        col_cat.setCellValueFactory((new PropertyValueFactory<>("category")));
+        col_expDate.setCellValueFactory((new PropertyValueFactory<>("expiry_date")));
+
+        try {
+            tableAccount.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return ObserveList;  
+    }
+    
+    //POin Table Report View for WM
+    public ObservableList viewPOinReportMonthWM(TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_month, TableColumn col_year, TableColumn col_total,
+            TableColumn<POin,POin> col_action){       
+        
+        col_action.setCellValueFactory(
+                param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        col_action.setCellFactory(param -> new TableCell<POin, POin>() {
+            private final Button moreButton = new Button();
+
+            //@Override
+            protected void updateItem(POin user, boolean empty) {
+                super.updateItem(user, empty);
+                if (user == null) {
+                    setGraphic(null);
+                    return;
+                }
+                else
+                {
+                    //moreButton.getStyleClass().add("moreButton");
+                    setGraphic(moreButton);
+                    moreButton.setText("View");
+                    moreButton.setOnAction(
+                            event -> {
+                                for (int i = 0; i < ObserveList.size(); i++)
+                                {
+                                    if (ObserveList.get(i).getSn() == Integer.parseInt(col_sn.getCellData(user).toString()))
+                                    {
+                                        //Date startDate =(ObserveList.get(i).getStartDate());
+                                        //Date endDate =(ObserveList.get(i).getEndDate());
+                                        String year = (ObserveList.get(i).getYear());
+                                        String month = (ObserveList.get(i).getMonth());
+                                        WM_genRpt_in_POView_Controller.getme(year,month);
+                                        try {
+                                            Parent fxml2 = FXMLLoader.load(getClass().getResource("WM_genRpt_in_POView.fxml"));
+                                            Scene window3 = new Scene(fxml2);
+                                            Stage parentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                                            parentStage.setScene(window3);
+                                            parentStage.centerOnScreen();
+                                            parentStage.show();
+
+                                            fxml2.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    xOffset = event.getSceneX();
+                                                    yOffset = event.getSceneY();
+                                                }
+                                            });
+                                            fxml2.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    parentStage.setX(event.getScreenX() - xOffset);
+                                                    parentStage.setY(event.getScreenY() - yOffset);
+                                                }
+                                            });
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                            e.getCause();
+                                        }
+                                    }
+
+                                }
+                            }
+                    );
+                }
+            }
+        });
+        
+        table.setItems(ObserveList);
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth");
+            while (rs.next()) {
+                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT Count(DISTINCT PONum) as qtyMonth FROM POin_rcv WHERE date_rcv >= '" + rs.getDate("startDate") + "' AND date_rcv < '" + rs.getDate("endDate") + "';");
+                while (rs2.next()) {
+                    ObserveList.add(new POin(count, rs.getString("month"),rs2.getInt("qtyMonth"),rs.getString("year")));
+                    count++;
+                }
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_month.setCellValueFactory((new PropertyValueFactory<>("month")));
+        col_year.setCellValueFactory((new PropertyValueFactory<>("year")));
+        col_total.setCellValueFactory((new PropertyValueFactory<>("qtyMonth")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return ObserveList;  
+    }
+    
+    //POin Table Report View Per Month for WM
+    public ObservableList viewPOinReportWM(String month, String year, TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_PONum, TableColumn col_supplier, TableColumn col_OrdBy,
+            TableColumn col_dateOrd, TableColumn col_compDate, TableColumn col_status, TableColumn<POin,POin> col_action){       
+        
+        col_action.setCellValueFactory(
+                param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        col_action.setCellFactory(param -> new TableCell<POin, POin>() {
+            private final Button moreButton = new Button();
+
+            //@Override
+            protected void updateItem(POin user, boolean empty) {
+                super.updateItem(user, empty);
+                if (user == null) {
+                    setGraphic(null);
+                    return;
+                }
+                else
+                {
+                    //moreButton.getStyleClass().add("moreButton");
+                    setGraphic(moreButton);
+                    moreButton.setText("View");
+                    moreButton.setOnAction(
+                            event -> {
+                                for (int i = 0; i < ObserveList.size(); i++)
+                                {
+                                    if (ObserveList.get(i).getSn() == Integer.parseInt(col_sn.getCellData(user).toString()))
+                                    {
+                                        int sn =(ObserveList.get(i).getSn());
+                                        String oriPOnum =(ObserveList.get(i).getPONum());
+                                        String oriSup =(ObserveList.get(i).getSupplier());
+                                        Date oriDate =(ObserveList.get(i).getOrderDate());
+                                        WM_genRpt_in_POViewDet_Controller.getme(sn,oriPOnum,oriSup,oriDate);
+                                        try {
+                                            Parent fxml2 = FXMLLoader.load(getClass().getResource("WM_genRpt_in_POViewDet.fxml"));
+                                            Scene window3 = new Scene(fxml2);
+                                            Stage parentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                                            parentStage.setScene(window3);
+                                            parentStage.centerOnScreen();
+                                            parentStage.show();
+
+                                            fxml2.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    xOffset = event.getSceneX();
+                                                    yOffset = event.getSceneY();
+                                                }
+                                            });
+                                            fxml2.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    parentStage.setX(event.getScreenX() - xOffset);
+                                                    parentStage.setY(event.getScreenY() - yOffset);
+                                                }
+                                            });
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                            e.getCause();
+                                        }
+                                    }
+
+                                }
+                            }
+                    );
+                }
+            }
+        });
+        
+        table.setItems(ObserveList);
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT startDate, endDate FROM ReportMonth WHERE month = '" + month + "' AND year = '" + year + "';");
+            while (rs3.next()) {
+                ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, supplier, orderBy, order_date, status FROM POin WHERE status = 'Fully Received';");
+                while (rs.next()) {
+                    ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT MAX(date_rcv) as dateReceive FROM POin_rcv WHERE PONum = '" + rs.getString("PONum") +"'AND date_rcv >= '" + rs3.getDate("startDate") + "' AND date_rcv < '" + rs3.getDate("endDate") + "';");
+                    while (rs2.next()) {
+                        ObserveList.add(new POin(count, rs.getString("PONum"),rs.getString("supplier"),rs.getString("orderBy"), rs.getDate("order_date"),rs2.getDate("dateReceive"),rs.getString("status")));
+                        count++;
+                    }
+                }
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_PONum.setCellValueFactory((new PropertyValueFactory<>("PONum")));
+        col_supplier.setCellValueFactory((new PropertyValueFactory<>("Supplier")));
+        col_OrdBy.setCellValueFactory((new PropertyValueFactory<>("OrderBy")));
+        col_dateOrd.setCellValueFactory((new PropertyValueFactory<>("OrderDate")));
+        col_compDate.setCellValueFactory((new PropertyValueFactory<>("date_rcv")));
+        col_status.setCellValueFactory((new PropertyValueFactory<>("Status")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return ObserveList;  
+    }
+    
+    //View Detailed POin Report for WM
+    public ObservableList ViewDetPOinReportWM(int sn, String PONum, String Sup, Date oriDate, TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_QtyOrder,
+            TableColumn col_UPC, TableColumn col_prodName){
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc, qty_ordered FROM POin_detail WHERE PONum = '" + PONum +"';");
+            while (rs.next()) {
+                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT prod_name FROM product_master WHERE upc = '" + rs.getString("upc") +"';");
+                while (rs2.next()) {
+                    ObserveList.add(new POin(rs.getString("upc"), count,rs2.getString("prod_name"),rs.getInt("qty_ordered")));
+                }
+                count++;
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_QtyOrder.setCellValueFactory((new PropertyValueFactory<>("Qty_ordered")));
+        col_UPC.setCellValueFactory((new PropertyValueFactory<>("Upc")));
+        col_prodName.setCellValueFactory((new PropertyValueFactory<>("Prod_name")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return ObserveList;
+    }
+    
+    //DOin Table Report View for WM
+    public ObservableList viewDOinReportMonthWM(TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_month, TableColumn col_year, TableColumn col_total,
+            TableColumn<POin,POin> col_action){       
+        
+        col_action.setCellValueFactory(
+                param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        col_action.setCellFactory(param -> new TableCell<POin, POin>() {
+            private final Button moreButton = new Button();
+
+            //@Override
+            protected void updateItem(POin user, boolean empty) {
+                super.updateItem(user, empty);
+                if (user == null) {
+                    setGraphic(null);
+                    return;
+                }
+                else
+                {
+                    //moreButton.getStyleClass().add("moreButton");
+                    setGraphic(moreButton);
+                    moreButton.setText("View");
+                    moreButton.setOnAction(
+                            event -> {
+                                for (int i = 0; i < ObserveList.size(); i++)
+                                {
+                                    if (ObserveList.get(i).getSn() == Integer.parseInt(col_sn.getCellData(user).toString()))
+                                    {
+                                        //Date startDate =(ObserveList.get(i).getStartDate());
+                                        //Date endDate =(ObserveList.get(i).getEndDate());
+                                        String year = (ObserveList.get(i).getYear());
+                                        String month = (ObserveList.get(i).getMonth());
+                                        WM_genRpt_in_DOView_Controller.getme(year,month);
+                                        try {
+                                            Parent fxml2 = FXMLLoader.load(getClass().getResource("WM_genRpt_in_DOView.fxml"));
+                                            Scene window3 = new Scene(fxml2);
+                                            Stage parentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                                            parentStage.setScene(window3);
+                                            parentStage.centerOnScreen();
+                                            parentStage.show();
+
+                                            fxml2.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    xOffset = event.getSceneX();
+                                                    yOffset = event.getSceneY();
+                                                }
+                                            });
+                                            fxml2.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    parentStage.setX(event.getScreenX() - xOffset);
+                                                    parentStage.setY(event.getScreenY() - yOffset);
+                                                }
+                                            });
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                            e.getCause();
+                                        }
+                                    }
+
+                                }
+                            }
+                    );
+                }
+            }
+        });
+        
+        table.setItems(ObserveList);
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth");
+            while (rs.next()) {
+                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT Count(DISTINCT DONum) as qtyMonth FROM POin_rcv WHERE date_rcv >= '" + rs.getDate("startDate") + "' AND date_rcv < '" + rs.getDate("endDate") + "';");
+                while (rs2.next()) {
+                    ObserveList.add(new POin(count, rs.getString("month"),rs2.getInt("qtyMonth"),rs.getString("year")));
+                    count++;
+                }
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_month.setCellValueFactory((new PropertyValueFactory<>("month")));
+        col_year.setCellValueFactory((new PropertyValueFactory<>("year")));
+        col_total.setCellValueFactory((new PropertyValueFactory<>("qtyMonth")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return ObserveList;  
+    }
+    
+    //DOin Table Report View Per Month for WM
+    public ObservableList viewDOinReportWM(String month, String year, TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_DONum, TableColumn col_supplier, TableColumn col_OrdBy,
+            TableColumn col_dateOrd, TableColumn col_compDate, TableColumn col_status, TableColumn<POin,POin> col_action){       
+        
+        col_action.setCellValueFactory(
+                param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        col_action.setCellFactory(param -> new TableCell<POin, POin>() {
+            private final Button moreButton = new Button();
+
+            //@Override
+            protected void updateItem(POin user, boolean empty) {
+                super.updateItem(user, empty);
+                if (user == null) {
+                    setGraphic(null);
+                    return;
+                }
+                else
+                {
+                    //moreButton.getStyleClass().add("moreButton");
+                    setGraphic(moreButton);
+                    moreButton.setText("View");
+                    moreButton.setOnAction(
+                            event -> {
+                                for (int i = 0; i < ObserveList.size(); i++)
+                                {
+                                    if (ObserveList.get(i).getSn() == Integer.parseInt(col_sn.getCellData(user).toString()))
+                                    {
+                                        int sn =(ObserveList.get(i).getSn());
+                                        String oriPOnum =(ObserveList.get(i).getPONum());
+                                        String oriDOnum =(ObserveList.get(i).getDONum());
+                                        String oriSup =(ObserveList.get(i).getSupplier());
+                                        Date oriDate =(ObserveList.get(i).getOrderDate());
+                                        try{
+                                            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                                            ResultSet rs = connectDB.createStatement().executeQuery("SELECT DISTINCT PONum FROM POin_rcv WHERE DONum = '" + oriDOnum + "';");
+                                            while (rs.next()) {
+                                                oriPOnum = rs.getString("PONum");
+                                            }
+                                        }catch(SQLException ex){
+                                            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+                                        }
+                                        WM_genRpt_in_DOViewDet_Controller.getme(sn,oriPOnum,oriSup,oriDate,oriDOnum);
+                                        try {
+                                            Parent fxml2 = FXMLLoader.load(getClass().getResource("WM_genRpt_in_DOViewDet.fxml"));
+                                            Scene window3 = new Scene(fxml2);
+                                            Stage parentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                                            parentStage.setScene(window3);
+                                            parentStage.centerOnScreen();
+                                            parentStage.show();
+
+                                            fxml2.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    xOffset = event.getSceneX();
+                                                    yOffset = event.getSceneY();
+                                                }
+                                            });
+                                            fxml2.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    parentStage.setX(event.getScreenX() - xOffset);
+                                                    parentStage.setY(event.getScreenY() - yOffset);
+                                                }
+                                            });
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                            e.getCause();
+                                        }
+                                    }
+
+                                }
+                            }
+                    );
+                }
+            }
+        });
+        table.setItems(ObserveList);
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT DISTINCT PONum, DONum, date_rcv FROM POin_rcv");
+            while (rs.next()) {
+                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT sn, supplier, orderBy, order_date, status FROM POin WHERE PONum = '" + rs.getString("PONum") +"';");
+                while (rs2.next()) {
+                    ObserveList.add(new POin(rs.getString("DONum"), count, rs2.getString("supplier"),rs2.getString("orderBy"), rs2.getDate("order_date"),rs.getDate("date_rcv"),rs2.getString("status")));
+                    count++;
+                }
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_DONum.setCellValueFactory((new PropertyValueFactory<>("DONum")));
+        col_supplier.setCellValueFactory((new PropertyValueFactory<>("Supplier")));
+        col_OrdBy.setCellValueFactory((new PropertyValueFactory<>("OrderBy")));
+        col_dateOrd.setCellValueFactory((new PropertyValueFactory<>("OrderDate")));
+        col_compDate.setCellValueFactory((new PropertyValueFactory<>("date_rcv")));
+        col_status.setCellValueFactory((new PropertyValueFactory<>("Status")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return ObserveList;  
+    }
+    
+    //View Detailed DOin Report for WM
+    public ObservableList ViewDetDOinReportWM(int sn, String PONum, String DONum, String Sup, Date oriDate, TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_QtyOrder,
+            TableColumn col_UPC, TableColumn col_prodName){
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc, qty FROM POin_detail WHERE DONum = '" + DONum +"';");
+            while (rs.next()) {
+                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT prod_name FROM product_master WHERE upc = '" + rs.getString("upc") +"';");
+                while (rs2.next()) {
+                    ObserveList.add(new POin(rs.getString("upc"), count,rs2.getString("prod_name"),rs.getInt("qty")));
+                }
+                count++;
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_QtyOrder.setCellValueFactory((new PropertyValueFactory<>("qty")));
+        col_UPC.setCellValueFactory((new PropertyValueFactory<>("Upc")));
+        col_prodName.setCellValueFactory((new PropertyValueFactory<>("Prod_name")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return ObserveList;
+    }
+    
+    //POout Table Report View for WM
+    public ObservableList viewPOoutReportMonthWM(TableView table, ObservableList<POout> ObserveList, TableColumn col_sn, TableColumn col_month, TableColumn col_year, TableColumn col_total,
+            TableColumn<POout,POout> col_action){       
+        
+        col_action.setCellValueFactory(
+                param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        col_action.setCellFactory(param -> new TableCell<POout, POout>() {
+            private final Button moreButton = new Button();
+
+            //@Override
+            protected void updateItem(POout user, boolean empty) {
+                super.updateItem(user, empty);
+                if (user == null) {
+                    setGraphic(null);
+                    return;
+                }
+                else
+                {
+                    //moreButton.getStyleClass().add("moreButton");
+                    setGraphic(moreButton);
+                    moreButton.setText("View");
+                    moreButton.setOnAction(
+                            event -> {
+                                for (int i = 0; i < ObserveList.size(); i++)
+                                {
+                                    if (ObserveList.get(i).getSn() == Integer.parseInt(col_sn.getCellData(user).toString()))
+                                    {
+                                        String year = (ObserveList.get(i).getYear());
+                                        String month = (ObserveList.get(i).getMonth());
+                                        WM_genRpt_out_POView_Controller.getme(year,month);
+                                        try {
+                                            Parent fxml2 = FXMLLoader.load(getClass().getResource("WM_genRpt_out_POView.fxml"));
+                                            Scene window3 = new Scene(fxml2);
+                                            Stage parentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                                            parentStage.setScene(window3);
+                                            parentStage.centerOnScreen();
+                                            parentStage.show();
+
+                                            fxml2.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    xOffset = event.getSceneX();
+                                                    yOffset = event.getSceneY();
+                                                }
+                                            });
+                                            fxml2.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    parentStage.setX(event.getScreenX() - xOffset);
+                                                    parentStage.setY(event.getScreenY() - yOffset);
+                                                }
+                                            });
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                            e.getCause();
+                                        }
+                                    }
+
+                                }
+                            }
+                    );
+                }
+            }
+        });
+        
+        table.setItems(ObserveList);
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth");
+            while (rs.next()) {
+                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT Count(DISTINCT PONum) as qtyMonth FROM POout WHERE status = 'Delivered' AND delivery_date >= '" + rs.getDate("startDate") + "' AND delivery_date < '" + rs.getDate("endDate") + "';");
+                while (rs2.next()) {
+                    ObserveList.add(new POout(count, rs.getString("month"),rs2.getInt("qtyMonth"),rs.getString("year")));
+                    count++;
+                }
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_month.setCellValueFactory((new PropertyValueFactory<>("month")));
+        col_year.setCellValueFactory((new PropertyValueFactory<>("year")));
+        col_total.setCellValueFactory((new PropertyValueFactory<>("qtyMonth")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        return ObserveList;  
+    }
+    
+    //POout Table Report View Per Month for WM
+    public ObservableList viewPOoutReportWM(String month, String year, TableView table, ObservableList<POout> ObserveList, TableColumn col_sn, TableColumn col_PONum, TableColumn col_SONum, TableColumn col_company, TableColumn col_CrtBy,
+            TableColumn col_dateCrt, TableColumn col_deliverDate, TableColumn col_status, TableColumn<POout,POout> col_action){       
+        
+        col_action.setCellValueFactory(
+                param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        col_action.setCellFactory(param -> new TableCell<POout, POout>() {
+            private final Button moreButton = new Button();
+
+            //@Override
+            protected void updateItem(POout user, boolean empty) {
+                super.updateItem(user, empty);
+                if (user == null) {
+                    setGraphic(null);
+                    return;
+                }
+                else
+                {
+                    //moreButton.getStyleClass().add("moreButton");
+                    setGraphic(moreButton);
+                    moreButton.setText("View");
+                    moreButton.setOnAction(
+                            event -> {
+                                for (int i = 0; i < ObserveList.size(); i++)
+                                {
+                                    if (ObserveList.get(i).getSn() == Integer.parseInt(col_sn.getCellData(user).toString()))
+                                    {
+                                        int sn =(ObserveList.get(i).getSn());
+                                        String oriPOnum =(ObserveList.get(i).getPONum());
+                                        String oriSOnum =(ObserveList.get(i).getSONum());
+                                        String oriComp =(ObserveList.get(i).getCompany());
+                                        Date oriDate =(ObserveList.get(i).getDelivery_date());
+                                        System.out.print(oriSOnum);
+                                        WM_genRpt_out_POViewDet_Controller.getme(sn,oriPOnum,oriSOnum,oriComp,oriDate);
+                                        try {
+                                            Parent fxml2 = FXMLLoader.load(getClass().getResource("WM_genRpt_out_POViewDet.fxml"));
+                                            Scene window3 = new Scene(fxml2);
+                                            Stage parentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                                            parentStage.setScene(window3);
+                                            parentStage.centerOnScreen();
+                                            parentStage.show();
+
+                                            fxml2.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    xOffset = event.getSceneX();
+                                                    yOffset = event.getSceneY();
+                                                }
+                                            });
+                                            fxml2.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    parentStage.setX(event.getScreenX() - xOffset);
+                                                    parentStage.setY(event.getScreenY() - yOffset);
+                                                }
+                                            });
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                            e.getCause();
+                                        }
+                                    }
+
+                                }
+                            }
+                    );
+                }
+            }
+        });
+        
+        table.setItems(ObserveList);
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT startDate, endDate FROM ReportMonth WHERE month = '" + month + "' AND year = '" + year + "';");
+            while (rs3.next()) {
+                ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, SONum, company, createdBy, date_created, delivery_date, status FROM POout WHERE status = 'Delivered'AND delivery_date >= '" + rs3.getDate("startDate") + "' AND delivery_date < '" + rs3.getDate("endDate") + "';");
+                while (rs.next()) {
+                    ObserveList.add(new POout(count, rs.getString("PONum"),rs.getString("SONum"),rs.getString("company"),rs.getString("createdBy"), rs.getDate("date_created"),rs.getDate("delivery_date"),rs.getString("status")));
+                    count++;
+                }
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_PONum.setCellValueFactory((new PropertyValueFactory<>("PONum")));
+        col_SONum.setCellValueFactory((new PropertyValueFactory<>("SONum")));
+        col_company.setCellValueFactory((new PropertyValueFactory<>("company")));
+        col_CrtBy.setCellValueFactory((new PropertyValueFactory<>("createdBy")));
+        col_dateCrt.setCellValueFactory((new PropertyValueFactory<>("date_created")));
+        col_deliverDate.setCellValueFactory((new PropertyValueFactory<>("delivery_date")));
+        col_status.setCellValueFactory((new PropertyValueFactory<>("Status")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return ObserveList;  
+    }
+    
+    //View Detailed POout Report for WM
+    public ObservableList ViewDetPOoutReportWM(int sn, String SONum, String Comp, Date oriDate, TableView table, ObservableList<POout> ObserveList, TableColumn col_sn, TableColumn col_SKU,
+            TableColumn col_UPC, TableColumn col_prodName){
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc, prod_name, sku_scanned FROM pickingList_detail WHERE SONum = '" + SONum + "';");
+            while (rs.next()) {
+                ObserveList.add(new POout(count, rs.getString("upc"), rs.getString("prod_name"), rs.getString("sku_scanned")));
+                System.out.println(rs.getString("upc"));
+                System.out.println(rs.getString("prod_name"));
+                System.out.println(rs.getString("sku_scanned"));
+                count++;
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_UPC.setCellValueFactory((new PropertyValueFactory<>("Upc")));
+        col_prodName.setCellValueFactory((new PropertyValueFactory<>("Prod_name")));
+        col_SKU.setCellValueFactory((new PropertyValueFactory<>("Sku_scanned")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return ObserveList;
+    }
+    
+    //DOout Table Report View for WM
+    public ObservableList viewDOoutReportMonthWM(TableView table, ObservableList<POout> ObserveList, TableColumn col_sn, TableColumn col_month, TableColumn col_year, TableColumn col_total,
+            TableColumn<POout,POout> col_action){       
+        
+        col_action.setCellValueFactory(
+                param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        col_action.setCellFactory(param -> new TableCell<POout, POout>() {
+            private final Button moreButton = new Button();
+
+            //@Override
+            protected void updateItem(POout user, boolean empty) {
+                super.updateItem(user, empty);
+                if (user == null) {
+                    setGraphic(null);
+                    return;
+                }
+                else
+                {
+                    //moreButton.getStyleClass().add("moreButton");
+                    setGraphic(moreButton);
+                    moreButton.setText("View");
+                    moreButton.setOnAction(
+                            event -> {
+                                for (int i = 0; i < ObserveList.size(); i++)
+                                {
+                                    if (ObserveList.get(i).getSn() == Integer.parseInt(col_sn.getCellData(user).toString()))
+                                    {
+                                        String year = (ObserveList.get(i).getYear());
+                                        String month = (ObserveList.get(i).getMonth());
+                                        WM_genRpt_out_DOView_Controller.getme(year,month);
+                                        try {
+                                            Parent fxml2 = FXMLLoader.load(getClass().getResource("WM_genRpt_out_DOView.fxml"));
+                                            Scene window3 = new Scene(fxml2);
+                                            Stage parentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                                            parentStage.setScene(window3);
+                                            parentStage.centerOnScreen();
+                                            parentStage.show();
+
+                                            fxml2.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    xOffset = event.getSceneX();
+                                                    yOffset = event.getSceneY();
+                                                }
+                                            });
+                                            fxml2.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    parentStage.setX(event.getScreenX() - xOffset);
+                                                    parentStage.setY(event.getScreenY() - yOffset);
+                                                }
+                                            });
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                            e.getCause();
+                                        }
+                                    }
+
+                                }
+                            }
+                    );
+                }
+            }
+        });
+        
+        table.setItems(ObserveList);
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth");
+            while (rs.next()) {
+                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT Count(DISTINCT DONum) as qtyMonth FROM POout WHERE status = 'Delivered' AND delivery_date >= '" + rs.getDate("startDate") + "' AND delivery_date < '" + rs.getDate("endDate") + "';");
+                while (rs2.next()) {
+                    ObserveList.add(new POout(count, rs.getString("month"),rs2.getInt("qtyMonth"),rs.getString("year")));
+                    count++;
+                }
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_month.setCellValueFactory((new PropertyValueFactory<>("month")));
+        col_year.setCellValueFactory((new PropertyValueFactory<>("year")));
+        col_total.setCellValueFactory((new PropertyValueFactory<>("qtyMonth")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        return ObserveList;  
+    }
+    
+    //DOout Table Report View Per Month for WM
+    public ObservableList viewDOoutReportWM(String month, String year, TableView table, ObservableList<POout> ObserveList, TableColumn col_sn, TableColumn col_DONum, TableColumn col_SONum, TableColumn col_company, TableColumn col_CrtBy,
+            TableColumn col_dateCrt, TableColumn col_deliverDate, TableColumn col_status, TableColumn<POout,POout> col_action){       
+        
+        col_action.setCellValueFactory(
+                param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        col_action.setCellFactory(param -> new TableCell<POout, POout>() {
+            private final Button moreButton = new Button();
+
+            //@Override
+            protected void updateItem(POout user, boolean empty) {
+                super.updateItem(user, empty);
+                if (user == null) {
+                    setGraphic(null);
+                    return;
+                }
+                else
+                {
+                    //moreButton.getStyleClass().add("moreButton");
+                    setGraphic(moreButton);
+                    moreButton.setText("View");
+                    moreButton.setOnAction(
+                            event -> {
+                                for (int i = 0; i < ObserveList.size(); i++)
+                                {
+                                    if (ObserveList.get(i).getSn() == Integer.parseInt(col_sn.getCellData(user).toString()))
+                                    {
+                                        int sn =(ObserveList.get(i).getSn());
+                                        String oriDOnum =(ObserveList.get(i).getDONum());
+                                        String oriSOnum =(ObserveList.get(i).getSONum());
+                                        String oriComp =(ObserveList.get(i).getCompany());
+                                        Date oriDate =(ObserveList.get(i).getDelivery_date());
+                                        WM_genRpt_out_DOViewDet_Controller.getme(sn,oriDOnum,oriSOnum,oriComp,oriDate);
+                                        try {
+                                            Parent fxml2 = FXMLLoader.load(getClass().getResource("WM_genRpt_out_DOViewDet.fxml"));
+                                            Scene window3 = new Scene(fxml2);
+                                            Stage parentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                                            parentStage.setScene(window3);
+                                            parentStage.centerOnScreen();
+                                            parentStage.show();
+
+                                            fxml2.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    xOffset = event.getSceneX();
+                                                    yOffset = event.getSceneY();
+                                                }
+                                            });
+                                            fxml2.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    parentStage.setX(event.getScreenX() - xOffset);
+                                                    parentStage.setY(event.getScreenY() - yOffset);
+                                                }
+                                            });
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                            e.getCause();
+                                        }
+                                    }
+
+                                }
+                            }
+                    );
+                }
+            }
+        });
+        
+        table.setItems(ObserveList);
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT startDate, endDate FROM ReportMonth WHERE month = '" + month + "' AND year = '" + year + "';");
+            while (rs3.next()) {
+                ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, DONum, SONum, company, createdBy, date_created, delivery_date, status FROM POout WHERE status = 'Delivered'AND delivery_date >= '" + rs3.getDate("startDate") + "' AND delivery_date < '" + rs3.getDate("endDate") + "';");
+                while (rs.next()) {
+                    ObserveList.add(new POout(rs.getString("DONum"), count, rs.getString("SONum"),rs.getString("company"),rs.getString("createdBy"), rs.getDate("date_created"),rs.getDate("delivery_date"),rs.getString("status")));
+                    count++;
+                }
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_DONum.setCellValueFactory((new PropertyValueFactory<>("DONum")));
+        col_SONum.setCellValueFactory((new PropertyValueFactory<>("SONum")));
+        col_company.setCellValueFactory((new PropertyValueFactory<>("company")));
+        col_CrtBy.setCellValueFactory((new PropertyValueFactory<>("createdBy")));
+        col_dateCrt.setCellValueFactory((new PropertyValueFactory<>("date_created")));
+        col_deliverDate.setCellValueFactory((new PropertyValueFactory<>("delivery_date")));
+        col_status.setCellValueFactory((new PropertyValueFactory<>("Status")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return ObserveList;  
+    }
+    
+    //View Detailed DOout Report for WM
+    public ObservableList ViewDetDOoutReportWM(int sn, String DONum, String Comp, Date oriDate, TableView table, ObservableList<POout> ObserveList, TableColumn col_sn, TableColumn col_SKU,
+            TableColumn col_UPC, TableColumn col_prodName){
+        int count =1;
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc, prod_name, sku_scanned FROM pickingList_detail WHERE DONum = '" + DONum + "';");
+            while (rs.next()) {
+                ObserveList.add(new POout(count, rs.getString("upc"), rs.getString("prod_name"), rs.getString("sku_scanned")));
+                System.out.println(rs.getString("upc"));
+                System.out.println(rs.getString("prod_name"));
+                System.out.println(rs.getString("sku_scanned"));
+                count++;
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
+        col_UPC.setCellValueFactory((new PropertyValueFactory<>("Upc")));
+        col_prodName.setCellValueFactory((new PropertyValueFactory<>("Prod_name")));
+        col_SKU.setCellValueFactory((new PropertyValueFactory<>("Sku_scanned")));
+        try {
+            table.setItems(ObserveList);
+        }
+        catch (NullPointerException ex ){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return ObserveList;
+    }
 }

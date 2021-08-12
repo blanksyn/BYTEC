@@ -1,6 +1,5 @@
 package Files;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,95 +20,92 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 
-public class WM_POIN_Controller extends WM implements Initializable{
-
+public class WM_genRpt_invView_Controller extends WM implements Initializable {
     @FXML
     private ImageView logoutBtn;
 
     @FXML
-    private Label welcomeLabel;
+    private Label welcomeLabel, labelMonth, labelYear;
 
     @FXML
-    private TableView<POin> tbl_PO;
+    private TableView<product_indv> tbl_invRpt;
 
     @FXML
-    private TableColumn<POin, Integer> col_sn;
+    private TableColumn<product_indv, Integer> col_sn;
 
     @FXML
-    private TableColumn<POin, String> col_PONumber;
+    private TableColumn<product_indv, String> col_upc, col_sku, col_prodName, col_unit, col_loc, col_sup, col_cat, col_expDate;
 
     @FXML
-    private TableColumn<POin, String> col_supplierName;
-
-    @FXML
-    private TableColumn<POin, String> col_orderedBy;
-
-    @FXML
-    private TableColumn<POin, String> col_orderedDate;
-
-    @FXML
-    private TableColumn<POin, String> col_status;
-
-    @FXML
-    private TableColumn<POin, POin> col_action;
-
-    ObservableList<POin> ObserveList = FXCollections.observableArrayList();
+    private TextField TF_keyword;
     
+    String month;
+    static String thisYear, thisMonth;
+    
+    ObservableList<product_indv> ObserveList = FXCollections.observableArrayList();
+    
+    static void getme(String year, String month){
+        thisYear = year;
+        thisMonth = month;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb){
         welcome(welcomeLabel);
-        viewPOWM(tbl_PO, ObserveList, col_sn, col_PONumber, col_supplierName, col_orderedBy, col_orderedDate, col_status, col_action);
+        labelYear.setText(thisYear);
+        labelMonth.setText(thisMonth);
+        viewProdIndvReportCurrentWM(thisMonth, thisYear, tbl_invRpt, ObserveList, col_sn, col_upc, col_sku, col_prodName, col_unit, col_loc, col_sup, col_cat, col_expDate);
     }
-
-    @FXML
-    void Nav_PO_Restock(ActionEvent event) {
-        try{
-            Parent root = FXMLLoader.load(getClass().getResource("WM_POIN_restock.fxml"));
-            Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            loginStage.setScene(scene);
-            loginStage.centerOnScreen();
-
-        }catch (Exception e){
-            e.printStackTrace();
-            e.getCause();
-        }
-    }
-
-    @FXML
-    void Nav_PO_Ordered(ActionEvent event) {
-        try{
-            Parent root = FXMLLoader.load(getClass().getResource("WM_POIN.fxml"));
-            Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            loginStage.setScene(scene);
-            loginStage.centerOnScreen();
-
-        }catch (Exception e){
-            e.printStackTrace();
-            e.getCause();
-        }
-    }
-
-    @FXML
-    void Nav_createPO(ActionEvent event) {
-        try{
-            Parent root = FXMLLoader.load(getClass().getResource("WM_POIN_create.fxml"));
-            Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            loginStage.setScene(scene);
-            loginStage.centerOnScreen();
-
-        }catch (Exception e){
-            e.printStackTrace();
-            e.getCause();
-        }
-    }
-
+    
     @FXML
     void Nav_Gen_Rpt(ActionEvent event) {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("WM_genRpt_inv.fxml"));
+            Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            loginStage.setScene(scene);
+            loginStage.centerOnScreen();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+
+    @FXML
+    void Nav_InbRpt(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(getClass().getResource("WM_genRpt_in_PO.fxml"));
+            Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            loginStage.setScene(scene);
+            loginStage.centerOnScreen();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+
+    @FXML
+    void Nav_InvRpt(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(getClass().getResource("WM_genRpt_inv.fxml"));
+            Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            loginStage.setScene(scene);
+            loginStage.centerOnScreen();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+
+    @FXML
+    void Nav_OutbRpt(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(getClass().getResource("WM_genRpt_out_PO.fxml"));
             Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             loginStage.setScene(scene);
@@ -169,8 +165,17 @@ public class WM_POIN_Controller extends WM implements Initializable{
 
     @FXML
     void closeWindow(ActionEvent event) {
-        Platform.exit();
-        System.exit(0);
+        try{
+            Parent root = FXMLLoader.load(getClass().getResource("WM_genRpt_inv.fxml"));
+            Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            loginStage.setScene(scene);
+            loginStage.centerOnScreen();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 
     @FXML
@@ -195,9 +200,10 @@ public class WM_POIN_Controller extends WM implements Initializable{
 
         }
     }
-    
+
     @FXML
     void searchFunction(ActionEvent event) {
 
     }
+
 }

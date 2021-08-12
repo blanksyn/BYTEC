@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
@@ -31,31 +30,25 @@
          </font>
       </Label>
       <Separator layoutY="33.0" prefHeight="12.0" prefWidth="1014.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-      <TableView layoutX="-2.0" layoutY="90.0" prefHeight="509.0" prefWidth="996.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="204.0">
+      <TableView fx:id="table_restock" layoutX="-2.0" layoutY="90.0" prefHeight="509.0" prefWidth="996.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="204.0">
         <columns>
-          <TableColumn fx:id="col_sn" prefWidth="75.0" text="S/N" />
-          <TableColumn fx:id="col_upc" prefWidth="159.99996948242188" text="UPC" />
-            <TableColumn fx:id="col_productName" prefWidth="560.0" text="Product Name" />
-            <TableColumn fx:id="col_qty" prefWidth="200.0" text="Quantity" />
+          <TableColumn fx:id="col_sn" prefWidth="75.0" style="-fx-background-color: white;  -fx-alignment: center;" text="S/N" />
+          <TableColumn fx:id="col_upc" prefWidth="159.99996948242188" style="-fx-background-color: white;  -fx-alignment: center;" text="UPC" />
+            <TableColumn fx:id="col_productName" prefWidth="560.0" style="-fx-background-color: white;  -fx-alignment: center;" text="Product Name" />
+            <TableColumn fx:id="col_qty" prefWidth="200.0" style="-fx-background-color: white;  -fx-alignment: center;" text="Quantity" />
         </columns>
       </TableView>
-      <TextField fx:id="TF_keyword" layoutX="622.0" layoutY="150.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
+      <TextField fx:id="TF_keyword" layoutX="847.0" layoutY="148.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
          <font>
             <Font name="Bodoni MT" size="12.0" />
          </font>
       </TextField>
-      <Button fx:id="searchBtn" layoutX="936.0" layoutY="151.0" mnemonicParsing="false" onAction="#searchFunction" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Search" textFill="WHITE">
-         <font>
-            <Font name="Bodoni MT" size="14.0" />
-         </font>
-      </Button>
-      <ComboBox fx:id="CB_field" layoutX="778.0" layoutY="149.0" prefHeight="30.0" prefWidth="150.0" promptText="Select Field" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
-      <Label layoutX="170.0" layoutY="71.0" prefHeight="25.0" prefWidth="149.0">
+      <Label fx:id="PONumLabel" layoutX="170.0" layoutY="71.0" prefHeight="25.0" prefWidth="149.0">
          <font>
             <Font name="Bodoni MT" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="170.0" layoutY="103.0" prefHeight="25.0" prefWidth="149.0">
+      <Label fx:id="supLabel" layoutX="170.0" layoutY="103.0" prefHeight="25.0" prefWidth="149.0">
          <font>
             <Font name="Bodoni MT" size="12.0" />
          </font>
@@ -76,7 +69,7 @@
             <Insets left="2.0" right="2.0" />
          </padding>
       </Label>
-      <Label layoutX="170.0" layoutY="138.0" prefHeight="25.0" prefWidth="149.0">
+      <Label fx:id="dateLabel" layoutX="170.0" layoutY="138.0" prefHeight="25.0" prefWidth="149.0">
          <font>
             <Font name="Bodoni MT" size="12.0" />
          </font>
@@ -109,5 +102,10 @@
             <Font name="Bodoni MT" size="18.0" />
          </font>
       </Label>
+      <Button fx:id="cancelBtn1" layoutX="1052.0" layoutY="608.0" mnemonicParsing="false" onAction="#deleteOrder" prefHeight="34.0" prefWidth="90.0" style="-fx-background-color: red; -fx-background-radius: 1em;" text="Delete" textFill="WHITE">
+         <font>
+            <Font name="Bodoni MT" size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

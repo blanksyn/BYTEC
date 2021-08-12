@@ -16,43 +16,23 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 
 public class WM_WHEnv_whSpace_Controller extends WM implements Initializable{
-
-    @FXML
-    private Button closeBtn;
-
     @FXML
     private ImageView logoutBtn;
 
     @FXML
     private Label welcomeLabel;
-
-    @FXML
-    private Button accMgtBtn;
-
-    @FXML
-    private Button WHEnvBtn;
-
-    @FXML
-    private Button POINBtn;
-
-    @FXML
-    private Button GenRptBtn;
-
-    @FXML
-    private Button courierMgtBtn;
-
-    @FXML
-    private Button supplierMgtBtn;
-
-    @FXML
-    private Button productMgtBtn;
 
     @FXML
     private TableView<setup_storage> tableSpace;
@@ -83,25 +63,14 @@ public class WM_WHEnv_whSpace_Controller extends WM implements Initializable{
     
     @FXML
     private TextField name, lvl, col, length, width, height, qty;
+    
 
     @FXML
-    private ComboBox<String> cbName_Convention, cbLevel_Convention, cbCol_Convention;
-
-    @FXML
-    private Button addSupplierBtn;
+    private ComboBox<String> cbName_Convention, cbLevel_Convention, cbCol_Convention, cbStorage;
 
     @FXML
     private TextField TF_keyword;
 
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<?> CB_field;
-
-    @FXML
-    private Button WHSpaceBtn;
-    
     ObservableList<setup_storage> ObserveList = FXCollections.observableArrayList();
     
     @Override
@@ -117,6 +86,24 @@ public class WM_WHEnv_whSpace_Controller extends WM implements Initializable{
         cbCol_Convention.setVisible(false);
         cbLevel_Convention.setVisible(false);
         cbName_Convention.setVisible(false);
+        
+        try{
+            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT DISTINCT name FROM storage;");
+            ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT DISTINCT name, name_conv FROM storage;");
+            while (rs.next()) {
+                    //String otherName = rs.getString("name") + " " + rs.getString("name_conv");
+                    cbStorage.getItems().add(rs.getString("name"));
+                    //cbStorage.getItems().add(otherName);
+            }
+            while (rs2.next()) {
+                    String otherName = rs2.getString("name") + " " + rs2.getString("name_conv");
+                    //cbStorage.getItems().add(rs2.getString("name"));
+                    cbStorage.getItems().add(otherName);
+            }
+        }catch(SQLException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }
     }
     
     @FXML
@@ -142,12 +129,41 @@ public class WM_WHEnv_whSpace_Controller extends WM implements Initializable{
     
     @FXML
     void editAllStorage(ActionEvent event) {
+        String loc = (String) cbStorage.getValue();
+        WM_WHEnv_whSpaceEditAll_Controller.getme(loc);
+        try{
+            Parent root = FXMLLoader.load(getClass().getResource("WM_WHEnv_whSpaceEditAll.fxml"));
+            Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            loginStage.setScene(scene);
+            loginStage.centerOnScreen();
+            loginStage.show();
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    loginStage.setX(event.getScreenX() - xOffset);
+                    loginStage.setY(event.getScreenY() - yOffset);
+                }
+            });
+
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
         
     }
     
     @FXML
     void deleteAllStorage(ActionEvent event) {
-        
+        String loc = (String) cbStorage.getValue();
+        deleteStorageWM(loc, event);
     }
     
     
@@ -421,6 +437,36 @@ public class WM_WHEnv_whSpace_Controller extends WM implements Initializable{
             e.getCause();
         }
     }
+    
+    @FXML
+    void cancel(ActionEvent event) {
+        try{
+            Parent root = FXMLLoader.load(getClass().getResource("WM_WHEnv_whSpace.fxml"));
+            Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 450, 500);
+            loginStage.setScene(scene);
+            loginStage.centerOnScreen();
+            loginStage.show();
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    loginStage.setX(event.getScreenX() - xOffset);
+                    loginStage.setY(event.getScreenY() - yOffset);
+                }
+            });
+
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
 
     @FXML
     void closeWindow(ActionEvent event) {
@@ -431,7 +477,25 @@ public class WM_WHEnv_whSpace_Controller extends WM implements Initializable{
 
     @FXML
     void logoutAcc(MouseEvent event) throws IOException {
-        Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("You're about to logout!");
+        alert.setContentText("Confirm logout?");
+
+        if(alert.showAndWait().get()== ButtonType.OK){
+
+            Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            Stage logoutStage = (Stage)logoutBtn.getScene().getWindow();
+            Scene scene = new Scene(root, 700, 650);
+            logoutStage.setTitle("Login");
+            logoutStage.setScene(scene);
+            Image image = new Image("image/logo192.png");
+            logoutStage.getIcons().add(image);
+            scene.setFill(Color.TRANSPARENT);
+            logoutStage.centerOnScreen();
+            logoutStage.show();
+
+        }
     }
 
     @FXML

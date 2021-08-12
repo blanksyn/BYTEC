@@ -1,9 +1,7 @@
 package Files;
 
-import static Files.WM_WHEnv_productMgt_ML_edit_Controller.thisOriUPC;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -16,38 +14,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class WM_WHEnv_productMgt_ML_detail_edit_Controller extends WM implements Initializable{
-
-    @FXML
-    private Button closeBtn;
-
     @FXML
     private Label welcomeLabel;
 
-
     @FXML
     private ComboBox<String> CB_location;
-
-    @FXML
-    private Button loadBtn;
-
-    @FXML
-    private Button addBtn;
-
-    @FXML
-    private Button cancelBtn;
-
-    @FXML
-    private Button deleteBtn;
 
     @FXML
     private TextField TF_sku;
@@ -55,16 +32,6 @@ public class WM_WHEnv_productMgt_ML_detail_edit_Controller extends WM implements
     @FXML
     private TextField TF_expDate;
 
-    @FXML
-    void delete(ActionEvent event) {
-
-    }
-
-    @FXML
-    void loadImage(ActionEvent event) {
-
-    }
-    
     static String thisUPC, thisSKU;
     static int thisSN;
     

@@ -15,12 +15,13 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.Initializable;
 
-public class WM_POIN_restock_Controller {
-
-    @FXML
-    private Button closeBtn;
-
+public class WM_POIN_restock_Controller extends WM implements Initializable{
     @FXML
     private ImageView logoutBtn;
 
@@ -28,53 +29,31 @@ public class WM_POIN_restock_Controller {
     private Label welcomeLabel;
 
     @FXML
-    private Button accMgtBtn;
+    private TableView<POin> tableCourier;
 
     @FXML
-    private Button WHEnvBtn;
+    private TableColumn<POin, Integer> col_sn;
 
     @FXML
-    private Button POINBtn;
+    private TableColumn<POin, String> col_PONumber;
 
     @FXML
-    private Button GenRptBtn;
+    private TableColumn<POin, String> col_supplierName;
 
     @FXML
-    private Button viewPOBtn;
+    private TableColumn<POin, String> col_dateCreated;
 
     @FXML
-    private Button viewPORESBtn;
+    private TableColumn<POin, POin> col_action;
 
-    @FXML
-    private Button createPOBtn;
-
-    @FXML
-    private TableView<?> tableCourier;
-
-    @FXML
-    private TableColumn<?, ?> col_sn;
-
-    @FXML
-    private TableColumn<?, ?> col_PONumber;
-
-    @FXML
-    private TableColumn<?, ?> col_supplierName;
-
-    @FXML
-    private TableColumn<?, ?> col_dateCreated;
-
-    @FXML
-    private TableColumn<?, ?> col_action;
-
-    @FXML
-    private TextField TF_keyword;
-
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<?> CB_field;
-
+    ObservableList<POin> ObserveList = FXCollections.observableArrayList();
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb){
+        welcome(welcomeLabel);
+        viewPOApprovalWM(tableCourier, ObserveList, col_sn, col_PONumber, col_supplierName, col_dateCreated, col_action);
+    }
+    
     @FXML
     void Nav_Gen_Rpt(ActionEvent event) {
         try{
@@ -89,7 +68,6 @@ public class WM_POIN_restock_Controller {
             e.getCause();
         }
     }
-
 
     @FXML
     void Nav_PO_In(ActionEvent event) {
@@ -191,7 +169,25 @@ public class WM_POIN_restock_Controller {
 
     @FXML
     void logoutAcc(MouseEvent event) throws IOException {
-        Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("You're about to logout!");
+        alert.setContentText("Confirm logout?");
+
+        if(alert.showAndWait().get()== ButtonType.OK){
+
+            Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            Stage logoutStage = (Stage)logoutBtn.getScene().getWindow();
+            Scene scene = new Scene(root, 700, 650);
+            logoutStage.setTitle("Login");
+            logoutStage.setScene(scene);
+            Image image = new Image("image/logo192.png");
+            logoutStage.getIcons().add(image);
+            scene.setFill(Color.TRANSPARENT);
+            logoutStage.centerOnScreen();
+            logoutStage.show();
+
+        }
     }
 
     @FXML

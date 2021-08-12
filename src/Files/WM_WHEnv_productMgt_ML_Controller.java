@@ -23,39 +23,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 
 public class WM_WHEnv_productMgt_ML_Controller extends WM implements Initializable{
-
-    @FXML
-    private Button closeBtn;
-
     @FXML
     private ImageView logoutBtn;
 
     @FXML
     private Label welcomeLabel;
-
-    @FXML
-    private Button accMgtBtn;
-
-    @FXML
-    private Button WHEnvBtn;
-
-    @FXML
-    private Button POINBtn;
-
-    @FXML
-    private Button GenRptBtn;
-
-    @FXML
-    private Button courierMgtBtn;
-
-    @FXML
-    private Button supplierMgtBtn;
-
-    @FXML
-    private Button productMgtBtn;
-
-    @FXML
-    private Button productMLBtn;
 
     @FXML
     private TableView<prod_master> tableProductML;
@@ -105,22 +77,11 @@ public class WM_WHEnv_productMgt_ML_Controller extends WM implements Initializab
     @FXML
     private TextField TF_keyword;
 
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<?> CB_field;
-
-    @FXML
-    private Button addProductBtn;
-
-    @FXML
-    private Button WHSpaceBtn;
-    
     ObservableList<prod_master> ObserveList = FXCollections.observableArrayList();
     
     @Override
-    public void initialize(URL url, ResourceBundle rb){welcome(welcomeLabel);
+    public void initialize(URL url, ResourceBundle rb){
+        welcome(welcomeLabel);
         viewProdMasterWM(tableProductML,ObserveList, col_sn, col_upc, col_Name, col_qty, col_unit, col_location, col_supplier, col_category, col_minQty, 
                 col_maxQty, col_ARStatus, col_dateAdded, col_action, col_action2);
     }
@@ -300,7 +261,25 @@ public class WM_WHEnv_productMgt_ML_Controller extends WM implements Initializab
 
     @FXML
     void logoutAcc(MouseEvent event) throws IOException {
-        Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("You're about to logout!");
+        alert.setContentText("Confirm logout?");
+
+        if(alert.showAndWait().get()== ButtonType.OK){
+
+            Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            Stage logoutStage = (Stage)logoutBtn.getScene().getWindow();
+            Scene scene = new Scene(root, 700, 650);
+            logoutStage.setTitle("Login");
+            logoutStage.setScene(scene);
+            Image image = new Image("image/logo192.png");
+            logoutStage.getIcons().add(image);
+            scene.setFill(Color.TRANSPARENT);
+            logoutStage.centerOnScreen();
+            logoutStage.show();
+
+        }
     }
 
     @FXML

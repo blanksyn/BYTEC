@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
@@ -101,28 +100,22 @@
             <Insets right="2.0" />
          </padding>
       </VBox>
-      <TableView fx:id="tableCourier" layoutX="-45.0" layoutY="103.0" prefHeight="611.0" prefWidth="1268.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="285.0" AnchorPane.rightAnchor="0.0">
+      <TableView fx:id="tbl_PO" layoutX="-45.0" layoutY="103.0" prefHeight="611.0" prefWidth="1268.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="285.0" AnchorPane.rightAnchor="0.0">
          <columns>
-            <TableColumn fx:id="col_sn" prefWidth="50.0" style="-fx-background-color: white;" text="S/N" />
-            <TableColumn fx:id="col_PONumber" prefWidth="135.0" style="-fx-background-color: white;" text="PO Number" />
-            <TableColumn fx:id="col_supplierName" prefWidth="311.0" style="-fx-background-color: white;" text="Supplier Name" />
-            <TableColumn fx:id="col_orderedBy" prefWidth="103.0" style="-fx-background-color: white;" text="Ordered By" />
-            <TableColumn fx:id="col_orderedDate" prefWidth="113.0" style="-fx-background-color: white;" text="Ordered Date" />
-            <TableColumn fx:id="col_status" prefWidth="105.0" style="-fx-background-color: white;" text="Status" />
-            <TableColumn fx:id="col_action" prefWidth="102.0" style="-fx-background-color: white;" text="Action" />
+            <TableColumn fx:id="col_sn" prefWidth="50.0" style="-fx-background-color: white;  -fx-alignment: center;" text="S/N" />
+            <TableColumn fx:id="col_PONumber" prefWidth="135.0" style="-fx-background-color: white;  -fx-alignment: center;" text="PO Number" />
+            <TableColumn fx:id="col_supplierName" prefWidth="311.0" style="-fx-background-color: white;  -fx-alignment: center;" text="Supplier Name" />
+            <TableColumn fx:id="col_orderedBy" prefWidth="103.0" style="-fx-background-color: white;  -fx-alignment: center;" text="Ordered By" />
+            <TableColumn fx:id="col_orderedDate" prefWidth="113.0" style="-fx-background-color: white;  -fx-alignment: center;" text="Ordered Date" />
+            <TableColumn fx:id="col_status" prefWidth="105.0" style="-fx-background-color: white;  -fx-alignment: center;" text="Status" />
+            <TableColumn fx:id="col_action" prefWidth="102.0" style="-fx-background-color: white;  -fx-alignment: center;" text="Action" />
          </columns>
       </TableView>
-      <TextField fx:id="TF_keyword" layoutX="817.0" layoutY="59.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
+      <TextField fx:id="TF_keyword" layoutX="1025.0" layoutY="58.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
          <font>
             <Font name="Bodoni MT" size="12.0" />
          </font>
       </TextField>
-      <Button fx:id="searchBtn" layoutX="1131.0" layoutY="60.0" mnemonicParsing="false" onAction="#searchFunction" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Search" textFill="WHITE">
-         <font>
-            <Font name="Bodoni MT" size="14.0" />
-         </font>
-      </Button>
-      <ComboBox fx:id="CB_field" layoutX="973.0" layoutY="58.0" prefHeight="30.0" prefWidth="150.0" promptText="Select Field" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
       <Label layoutX="1089.0" layoutY="7.0" prefHeight="27.0" prefWidth="42.0" text="WM" textAlignment="CENTER">
          <font>
             <Font name="Bodoni MT" size="18.0" />

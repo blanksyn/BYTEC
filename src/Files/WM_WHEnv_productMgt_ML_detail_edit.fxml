@@ -39,11 +39,6 @@
             <Font name="Bodoni MT" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="deleteBtn" layoutX="809.0" layoutY="573.0" mnemonicParsing="false" onAction="#delete" style="-fx-background-color: red; -fx-background-radius: 1em;" text="Delete" textFill="WHITE">
-         <font>
-            <Font name="Bodoni MT" size="18.0" />
-         </font>
-      </Button>
       <TextField fx:id="TF_sku" layoutX="301.0" layoutY="103.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
       <Label layoutX="132.0" layoutY="104.0" prefHeight="25.0" prefWidth="149.0" text="SKU" />
       <ComboBox fx:id="CB_location" layoutX="301.0" layoutY="146.0" prefWidth="150.0" style="-fx-border-color: #4B0082; -fx-background-color: white;" />
