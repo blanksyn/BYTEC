@@ -282,7 +282,7 @@ public class SP_picklistView_Controller {
         }
         int count = Integer.parseInt(rejectCouunt) + 1;
 
-        String getRejectC = "UPDATE POout SET reject = "+count +" WHERE SONum = '"+ SONum + "' LIMIT 1";
+        String getRejectC = "UPDATE POout SET reject = '" + count + "', status = 'Unpicked' WHERE SONum = '"+ SONum + "' LIMIT 1";
         Statement statement2 = connectDB.createStatement();
         statement2.executeUpdate(getRejectC);
 

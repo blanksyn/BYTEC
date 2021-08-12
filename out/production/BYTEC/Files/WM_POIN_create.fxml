@@ -101,26 +101,16 @@
             <Insets right="2.0" />
          </padding>
       </VBox>
-      <TableView fx:id="tableCourier" layoutX="498.0" layoutY="104.0" prefHeight="611.0" prefWidth="693.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="498.0" AnchorPane.rightAnchor="9.0">
+      <TableView fx:id="tbl_newPO" layoutX="498.0" layoutY="104.0" prefHeight="611.0" prefWidth="693.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="498.0" AnchorPane.rightAnchor="9.0">
          <columns>
-            <TableColumn fx:id="col_sn" prefWidth="50.0" style="-fx-background-color: white;" text="S/N" />
-            <TableColumn fx:id="col_PONumber" prefWidth="135.0" style="-fx-background-color: white;" text="UPC" />
-            <TableColumn fx:id="col_supplierName" prefWidth="378.0" style="-fx-background-color: white;" text="Product Name" />
-            <TableColumn fx:id="col_orderedBy" prefWidth="129.0" style="-fx-background-color: white;" text="Quantity" />
+            <TableColumn fx:id="col_sn" prefWidth="39.0" style="-fx-background-color: white;-fx-alignment: center;" text="S/N" />
+            <TableColumn fx:id="col_upc" prefWidth="107.0" style="-fx-background-color: white; -fx-alignment: center;" text="UPC" />
+            <TableColumn fx:id="col_productName" prefWidth="354.0" style="-fx-background-color: white; -fx-alignment: center;" text="Product Name" />
+            <TableColumn fx:id="col_qty" prefWidth="107.0" style="-fx-background-color: white; -fx-alignment: center;" text="Quantity" />
+            <TableColumn fx:id="col_action" prefWidth="84.0" style="-fx-background-color: white; -fx-alignment: center;" text="Action" />
          </columns>
       </TableView>
-      <TextField fx:id="TF_keyword" layoutX="817.0" layoutY="59.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
-         <font>
-            <Font name="Bodoni MT" size="12.0" />
-         </font>
-      </TextField>
-      <Button fx:id="searchBtn" layoutX="1131.0" layoutY="60.0" mnemonicParsing="false" onAction="#searchFunction" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Search" textFill="WHITE">
-         <font>
-            <Font name="Bodoni MT" size="14.0" />
-         </font>
-      </Button>
-      <ComboBox fx:id="CB_field" layoutX="973.0" layoutY="58.0" prefHeight="30.0" prefWidth="150.0" promptText="Select Field" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
-      <ComboBox fx:id="CB_supplier" layoutX="289.0" layoutY="103.0" prefWidth="150.0" promptText="Supplier" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
+      <ComboBox fx:id="CB_supplier" layoutX="289.0" layoutY="103.0" onAction="#fill_cb" prefWidth="150.0" promptText="Supplier" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
       <ComboBox fx:id="CB_UPC" layoutX="289.0" layoutY="143.0" prefWidth="150.0" promptText="UPC" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
       <ComboBox fx:id="CB_productName" layoutX="289.0" layoutY="238.0" prefWidth="150.0" promptText="Product Name" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
       <Label layoutX="354.0" layoutY="192.0" prefHeight="17.0" prefWidth="21.0" text="OR">
@@ -128,7 +118,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="CB_Qty" layoutX="290.0" layoutY="278.0" promptText="Quantity" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
+      <TextField fx:id="TF_qty" layoutX="290.0" layoutY="278.0" promptText="Quantity" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
       <Button fx:id="addBtn" layoutX="329.0" layoutY="320.0" mnemonicParsing="false" onAction="#addToList" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Add to list" textFill="WHITE">
          <font>
             <Font name="Bodoni MT" size="14.0" />

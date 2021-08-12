@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
@@ -88,7 +87,7 @@
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="productMgtBtn" mnemonicParsing="false" onAction="#Nav_productMgt" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Product Management" textFill="WHITE">
+            <Button fx:id="WHSpaceBtn" mnemonicParsing="false" onAction="#Nav_WHSpace" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Warehouse Space" textFill="WHITE">
                <font>
                   <Font name="Bodoni MT" size="18.0" />
                </font>
@@ -96,10 +95,13 @@
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="WHSpaceBtn" mnemonicParsing="false" onAction="#Nav_WHSpace" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Warehouse Space" textFill="WHITE">
+            <Button fx:id="productMgtBtn" mnemonicParsing="false" onAction="#Nav_productMgt" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Product Management" textFill="WHITE">
                <font>
                   <Font name="Bodoni MT" size="18.0" />
                </font>
+               <VBox.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </VBox.margin>
             </Button>
          </children>
          <padding>
@@ -120,17 +122,11 @@
             <Font name="Bodoni MT" size="14.0" />
          </font>
       </Button>
-      <TextField fx:id="TF_keyword" layoutX="817.0" layoutY="47.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
+      <TextField fx:id="TF_keyword" layoutX="997.0" layoutY="48.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
          <font>
             <Font name="Bodoni MT" size="12.0" />
          </font>
       </TextField>
-      <Button fx:id="searchBtn" layoutX="1126.0" layoutY="48.0" mnemonicParsing="false" onAction="#searchFunction" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Search" textFill="WHITE" AnchorPane.rightAnchor="14.0">
-         <font>
-            <Font name="Bodoni MT" size="14.0" />
-         </font>
-      </Button>
-      <ComboBox fx:id="CB_field" layoutX="973.0" layoutY="46.0" prefHeight="30.0" prefWidth="150.0" promptText="Select Field" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
       <Label layoutX="1086.0" layoutY="7.0" prefHeight="27.0" prefWidth="42.0" text="WM" textAlignment="CENTER">
          <font>
             <Font name="Bodoni MT" size="18.0" />

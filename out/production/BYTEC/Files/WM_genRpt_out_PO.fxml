@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
@@ -97,7 +96,7 @@
                </VBox.margin>
             </Button>
             <Separator prefHeight="12.0" prefWidth="1014.0" />
-            <Button fx:id="POBtn" mnemonicParsing="false" onAction="#Nav_OutPO" prefHeight="25.0" prefWidth="285.0" style="-fx-background-color: #BF68FF; -fx-background-radius: 1em;" text="Purchase Order" textFill="WHITE">
+            <Button fx:id="POBtn" mnemonicParsing="false" onAction="#Nav_OutPO" prefHeight="25.0" prefWidth="285.0" style="-fx-background-color: #BF68FF; -fx-background-radius: 1em;" text="Sales Order" textFill="WHITE">
                <font>
                   <Font name="Bodoni MT" size="18.0" />
                </font>
@@ -105,7 +104,7 @@
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="DOBtn" mnemonicParsing="false" onAction="#Nav_OutDO" prefHeight="25.0" prefWidth="285.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="DeliveryOrder" textFill="WHITE">
+            <Button fx:id="DOBtn" mnemonicParsing="false" onAction="#Nav_OutDO" prefHeight="25.0" prefWidth="285.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Delivery Order" textFill="WHITE">
                <font>
                   <Font name="Bodoni MT" size="18.0" />
                </font>
@@ -120,30 +119,24 @@
       </VBox>
       <TableView fx:id="tableCourier" layoutX="285.0" layoutY="103.0" prefHeight="611.0" prefWidth="920.0" style="-fx-background-color: white;">
          <columns>
-            <TableColumn fx:id="col_sn" prefWidth="50.0" style="-fx-background-color: white;" text="S/N" />
-            <TableColumn fx:id="col_month" prefWidth="295.0" style="-fx-background-color: white;" text="Month" />
-            <TableColumn fx:id="col_year" prefWidth="248.0" style="-fx-background-color: white;" text="Year" />
-            <TableColumn fx:id="col_total" prefWidth="198.0" style="-fx-background-color: white;" text="Total" />
-            <TableColumn fx:id="col_action" prefWidth="146.0" style="-fx-background-color: white;" text="Action" />
+            <TableColumn fx:id="col_sn" prefWidth="50.0" style="-fx-background-color: white;  -fx-alignment: center;" text="S/N" />
+            <TableColumn fx:id="col_month" prefWidth="295.0" style="-fx-background-color: white; -fx-alignment: center;" text="Month" />
+            <TableColumn fx:id="col_year" prefWidth="248.0" style="-fx-background-color: white; -fx-alignment: center;" text="Year" />
+            <TableColumn fx:id="col_total" prefWidth="198.0" style="-fx-background-color: white; -fx-alignment: center;" text="Total" />
+            <TableColumn fx:id="col_action" prefWidth="146.0" style="-fx-background-color: white; -fx-alignment: center;" text="Action" />
          </columns>
       </TableView>
-      <TextField fx:id="TF_keyword" layoutX="817.0" layoutY="56.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
+      <TextField fx:id="TF_keyword" layoutX="1015.0" layoutY="56.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
          <font>
             <Font name="Bodoni MT" size="12.0" />
          </font>
       </TextField>
-      <Button fx:id="searchBtn" layoutX="1131.0" layoutY="57.0" mnemonicParsing="false" onAction="#searchFunction" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Search" textFill="WHITE">
-         <font>
-            <Font name="Bodoni MT" size="14.0" />
-         </font>
-      </Button>
-      <ComboBox fx:id="CB_field" layoutX="973.0" layoutY="55.0" prefHeight="30.0" prefWidth="150.0" promptText="Select Field" style="-fx-background-color: white; -fx-border-color: #4B0082;" />
       <Button fx:id="genRptBtn" layoutX="279.0" layoutY="57.0" mnemonicParsing="false" onAction="#generate_Rpt" prefHeight="27.0" prefWidth="167.0" style="-fx-background-color: #4B0082; -fx-background-radius: 1em;" text="Generate currrent month" textFill="WHITE">
          <font>
             <Font name="Bodoni MT" size="14.0" />
          </font>
       </Button>
-      <Label layoutX="474.0" layoutY="7.0" prefHeight="27.0" prefWidth="258.0" text="Purchase Order (Outbound) List" textAlignment="CENTER">
+      <Label layoutX="474.0" layoutY="7.0" prefHeight="27.0" prefWidth="258.0" text="Sales Order (Outbound) List" textAlignment="CENTER">
          <font>
             <Font name="Bodoni MT" size="18.0" />
          </font>
