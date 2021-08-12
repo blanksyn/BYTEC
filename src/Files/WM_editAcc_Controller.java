@@ -2,7 +2,6 @@ package Files;
 
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -16,19 +15,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class WM_editAcc_Controller extends WM implements Initializable{
-
-    @FXML
-    private Button closeBtn;
 
     @FXML
     private Label welcomeLabel;
@@ -50,15 +44,6 @@ public class WM_editAcc_Controller extends WM implements Initializable{
     
     @FXML
     private ComboBox<String> cb_role;
-
-    @FXML
-    private Button editBtn;
-
-    @FXML
-    private Button cancelBtn;
-
-    @FXML
-    private Button deleteBtn;
     
     static String thisOriEid;
     static int thisSN;

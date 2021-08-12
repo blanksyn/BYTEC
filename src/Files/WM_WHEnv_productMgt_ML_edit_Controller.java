@@ -28,9 +28,6 @@ import javafx.stage.Stage;
 public class WM_WHEnv_productMgt_ML_edit_Controller extends WM implements Initializable{
 
     @FXML
-    private Button closeBtn;
-
-    @FXML
     private Label welcomeLabel;
 
     @FXML
@@ -59,10 +56,7 @@ public class WM_WHEnv_productMgt_ML_edit_Controller extends WM implements Initia
 
     @FXML
     private TextArea TA_desc;
-
-    @FXML
-    private ComboBox<String> CB_location;
-
+    
     @FXML
     private ComboBox<String> CB_unit;
 
@@ -76,25 +70,10 @@ public class WM_WHEnv_productMgt_ML_edit_Controller extends WM implements Initia
     private CheckBox checkBox_restock;
 
     @FXML
-    private ImageView IV_product;
-
-    @FXML
-    private Button loadBtn;
-
-    @FXML
     private TextField TF_fileLoc;
 
     @FXML
-    private Button addBtn;
-
-    @FXML
-    private Button cancelBtn;
-
-    @FXML
     private ComboBox<String> CB_specialHand;
-
-    @FXML
-    private Button deleteBtn;
     
     static String thisOriUPC, thisOriLoc;
     static Double thisOriVol;
@@ -108,13 +87,14 @@ public class WM_WHEnv_productMgt_ML_edit_Controller extends WM implements Initia
     }
     
     @Override
-    public void initialize(URL url, ResourceBundle rb){welcome(welcomeLabel);
+    public void initialize(URL url, ResourceBundle rb){
+        welcome(welcomeLabel);
+        TF_fileLoc.setVisible(false);
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT DISTINCT unit FROM product_master;");
             ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT DISTINCT category FROM product_master;");
             ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT DISTINCT special_handling FROM product_master;");
-            //ResultSet rs4 = connectDB.createStatement().executeQuery("SELECT location FROM storage WHERE vol_avail > 0;");
             ResultSet rs5 = connectDB.createStatement().executeQuery("SELECT name FROM supplier;");
             while (rs.next()) {
                 CB_unit.getItems().add(rs.getString("unit"));
@@ -125,9 +105,6 @@ public class WM_WHEnv_productMgt_ML_edit_Controller extends WM implements Initia
             while (rs3.next()) {
                 CB_specialHand.getItems().add(rs3.getString("special_handling"));
             }
-            /*while (rs4.next()) {
-                CB_location.getItems().add(rs4.getString("location"));
-            }*/
             while (rs5.next()) {
                 CB_supplier.getItems().add(rs5.getString("name"));
             }
@@ -135,7 +112,6 @@ public class WM_WHEnv_productMgt_ML_edit_Controller extends WM implements Initia
         }catch(SQLException ex){
             Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
         }
-        //System.out.println(thisSN);
         editViewProdMasterWM(thisSN, TF_upc, TF_name, TF_maxQty, TF_weight, TF_length, TF_width, TF_height, TF_minQty, 
                 TA_desc, CB_unit, CB_supplier, CB_cat, checkBox_restock, TF_fileLoc, CB_specialHand);
     }
@@ -151,9 +127,6 @@ public class WM_WHEnv_productMgt_ML_edit_Controller extends WM implements Initia
         String specialHand = (String) CB_specialHand.getValue();
         if(CB_specialHand.getValue() == null)
             specialHand = "";
-        //String loc = (String) CB_location.getValue();
-        //if(CB_location.getValue() == null)
-        //    loc = "";
         String sup = (String) CB_supplier.getValue();
         if(CB_supplier.getValue() == null)
             sup = "";
@@ -222,10 +195,4 @@ public class WM_WHEnv_productMgt_ML_edit_Controller extends WM implements Initia
     void delete(ActionEvent event) {
         deleteProdMasterWM(thisSN, thisOriUPC , thisOriVol, event);
     }
-
-    @FXML
-    void loadImage(ActionEvent event) {
-
-    }
-
 }

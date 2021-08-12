@@ -24,10 +24,6 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 public class WM_WHEnv_productMgt_ML_detail_Controller extends WM implements Initializable{
-
-    @FXML
-    private Button closeBtn;
-
     @FXML
     private Label welcomeLabel;
 

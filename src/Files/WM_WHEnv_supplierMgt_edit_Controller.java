@@ -1,13 +1,7 @@
 package Files;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -23,21 +17,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class WM_WHEnv_supplierMgt_edit_Controller extends WM implements Initializable{
-
-    @FXML
-    private Button closeBtn;
-
     @FXML
     private Label welcomeLabel;
 
     @FXML
     private TextField name;
-
-    @FXML
-    private Button addBtn;
-
-    @FXML
-    private Button cancelBtn;
 
     @FXML
     private TextField contactNo;

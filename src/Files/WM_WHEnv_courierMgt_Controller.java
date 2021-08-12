@@ -25,34 +25,10 @@ import javafx.fxml.Initializable;
 public class WM_WHEnv_courierMgt_Controller extends WM implements Initializable{
 
     @FXML
-    private Button closeBtn;
-
-    @FXML
     private ImageView logoutBtn;
 
     @FXML
     private Label welcomeLabel;
-
-    @FXML
-    private Button accMgtBtn;
-
-    @FXML
-    private Button WHEnvBtn;
-
-    @FXML
-    private Button POINBtn;
-
-    @FXML
-    private Button GenRptBtn;
-
-    @FXML
-    private Button courierMgtBtn;
-
-    @FXML
-    private Button supplierMgtBtn;
-
-    @FXML
-    private Button productMgtBtn;
 
     @FXML
     private TableView<setup_courier> tableCourier;
@@ -67,22 +43,11 @@ public class WM_WHEnv_courierMgt_Controller extends WM implements Initializable{
     private TableColumn<setup_courier, setup_courier> col_action;
 
     @FXML
-    private Button addCourierBtn;
-
-    @FXML
     private TextField TF_keyword;
-
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<?> CB_field;
 
     @FXML
     private TextField TF_courierName;
 
-    @FXML
-    private Button WHSpaceBtn;
     
     ObservableList<setup_courier> ObserveList = FXCollections.observableArrayList();
     
@@ -182,11 +147,6 @@ public class WM_WHEnv_courierMgt_Controller extends WM implements Initializable{
             e.printStackTrace();
             e.getCause();
         }
-    }
-
-    @FXML
-    void searchFunction(ActionEvent event) {
-
     }
 
     @FXML
@@ -326,8 +286,29 @@ public class WM_WHEnv_courierMgt_Controller extends WM implements Initializable{
 
     @FXML
     void logoutAcc(MouseEvent event) throws IOException {
-        Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("You're about to logout!");
+        alert.setContentText("Confirm logout?");
+
+        if(alert.showAndWait().get()== ButtonType.OK){
+
+            Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            Stage logoutStage = (Stage)logoutBtn.getScene().getWindow();
+            Scene scene = new Scene(root, 700, 650);
+            logoutStage.setTitle("Login");
+            logoutStage.setScene(scene);
+            Image image = new Image("image/logo192.png");
+            logoutStage.getIcons().add(image);
+            scene.setFill(Color.TRANSPARENT);
+            logoutStage.centerOnScreen();
+            logoutStage.show();
+
+        }
     }
+    
+    @FXML
+    void searchFunction(ActionEvent event) {
 
-
+    }
 }

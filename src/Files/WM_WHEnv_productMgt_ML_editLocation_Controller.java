@@ -1,10 +1,7 @@
 package Files;
 
-import static Files.WM_editAcc_Controller.thisOriEid;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,29 +13,21 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javax.swing.JOptionPane;
@@ -46,19 +35,7 @@ import javax.swing.JOptionPane;
 public class WM_WHEnv_productMgt_ML_editLocation_Controller extends WM implements Initializable{
 
     @FXML
-    private Button closeBtn;
-
-    @FXML
     private Label welcomeLabel;
-
-    @FXML
-    private Button addBtn;
-
-    @FXML
-    private Button cancelBtn;
-
-    @FXML
-    private Button deleteBtn;
     
     @FXML
     private TableView<prod_master> tableLocation;
@@ -189,20 +166,6 @@ public class WM_WHEnv_productMgt_ML_editLocation_Controller extends WM implement
                                         }
                                     }
                                 }
-                                /*else
-                                {
-                                    try{
-                                        Parent root = FXMLLoader.load(getClass().getResource("WM_WHEnv_productMgt_ML_editLocation.fxml"));
-                                        Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                                        Scene scene = new Scene(root);
-                                        loginStage.setScene(scene);
-                                        loginStage.centerOnScreen();
-
-                                    }catch (Exception e){
-                                        e.printStackTrace();
-                                        e.getCause();
-                                    }
-                                }*/
                             }
                     );
                 }
@@ -255,16 +218,4 @@ public class WM_WHEnv_productMgt_ML_editLocation_Controller extends WM implement
             e.getCause();
         }
     }
-    
-
-    @FXML
-    void delete(ActionEvent event) {
-
-    }
-
-    @FXML
-    void loadImage(ActionEvent event) {
-
-    }
-
 }

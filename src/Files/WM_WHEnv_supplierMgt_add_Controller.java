@@ -1,13 +1,7 @@
 package Files;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -22,11 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-public class WM_WHEnv_supplierMgt_add_Controller extends WM{
-
-    @FXML
-    private Button closeBtn;
-
+public class WM_WHEnv_supplierMgt_add_Controller extends WM implements Initializable{
     @FXML
     private Label welcomeLabel;
 
@@ -44,6 +34,11 @@ public class WM_WHEnv_supplierMgt_add_Controller extends WM{
 
     @FXML
     private TextField email;
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb){
+        welcome(welcomeLabel);
+    }
     
     @FXML
     void addSupplier(ActionEvent event) {

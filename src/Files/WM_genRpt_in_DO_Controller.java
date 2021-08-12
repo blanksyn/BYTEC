@@ -15,11 +15,14 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.Calendar;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.Initializable;
 
-public class WM_genRpt_in_DO_Controller {
-
-    @FXML
-    private Button closeBtn;
+public class WM_genRpt_in_DO_Controller extends WM implements Initializable{
 
     @FXML
     private ImageView logoutBtn;
@@ -28,70 +31,93 @@ public class WM_genRpt_in_DO_Controller {
     private Label welcomeLabel;
 
     @FXML
-    private Button accMgtBtn;
+    private TableView<POin> tableCourier;
 
     @FXML
-    private Button WHEnvBtn;
+    private TableColumn<POin, Integer> col_sn;
 
     @FXML
-    private Button POINBtn;
+    private TableColumn<POin, String> col_month;
 
     @FXML
-    private Button GenRptBtn;
+    private TableColumn<POin, Integer> col_year;
 
     @FXML
-    private Button invRptBtn;
+    private TableColumn<POin, Integer> col_total;
 
     @FXML
-    private Button InbRptBtn;
-
-    @FXML
-    private Button OutbRptBtn;
-
-    @FXML
-    private Button POBtn;
-
-    @FXML
-    private Button DOBtn;
-
-    @FXML
-    private TableView<?> tableCourier;
-
-    @FXML
-    private TableColumn<?, ?> col_sn;
-
-    @FXML
-    private TableColumn<?, ?> col_month;
-
-    @FXML
-    private TableColumn<?, ?> col_year;
-
-    @FXML
-    private TableColumn<?, ?> col_total;
-
-    @FXML
-    private TableColumn<?, ?> col_action;
+    private TableColumn<POin, POin> col_action;
 
     @FXML
     private TextField TF_keyword;
+    
+    String month;
+    
+    ObservableList<POin> ObserveList = FXCollections.observableArrayList();
 
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<?> CB_field;
-
-    @FXML
-    private Button genRptBtn;
-
-    @FXML
-    void initialize(){
-
+    @Override
+    public void initialize(URL url, ResourceBundle rb){
+        welcome(welcomeLabel);
+        viewDOinReportMonthWM(tableCourier, ObserveList, col_sn, col_month, col_year, col_total, col_action);
     }
 
     @FXML
     void generate_Rpt(ActionEvent event) {
+        Calendar now = Calendar.getInstance();
+        String year = (String.valueOf(now.get(Calendar.YEAR)));
+        int monthNum = now.get(Calendar.MONTH) + 1;
+        switch(monthNum){
+            case 1:
+                month = "January";
+                break;
+            case 2:
+                month = "February";
+                break;
+            case 3:
+                month = "March";
+                break;
+            case 4:
+                month = "April";
+                break;
+            case 5:
+                month = "May";
+                break;
+            case 6:
+                month = "June";
+                break;
+            case 7:
+                month = "July";
+                break;
+            case 8:
+                month = "August";
+                break;
+            case 9:
+                month = "September";
+                break;
+            case 10:
+                month = "October";
+                break;
+            case 11:
+                month = "November";
+                break;
+            case 12:
+                month = "December";
+                break;
+            
+        }
+        
+        WM_genRpt_in_DOView_Controller.getme(year, month);
+        try{
+            Parent root = FXMLLoader.load(getClass().getResource("WM_genRpt_in_DOView.fxml"));
+            Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            loginStage.setScene(scene);
+            loginStage.centerOnScreen();
 
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 
     @FXML
@@ -238,7 +264,25 @@ public class WM_genRpt_in_DO_Controller {
 
     @FXML
     void logoutAcc(MouseEvent event) throws IOException {
-        Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("You're about to logout!");
+        alert.setContentText("Confirm logout?");
+
+        if(alert.showAndWait().get()== ButtonType.OK){
+
+            Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            Stage logoutStage = (Stage)logoutBtn.getScene().getWindow();
+            Scene scene = new Scene(root, 700, 650);
+            logoutStage.setTitle("Login");
+            logoutStage.setScene(scene);
+            Image image = new Image("image/logo192.png");
+            logoutStage.getIcons().add(image);
+            scene.setFill(Color.TRANSPARENT);
+            logoutStage.centerOnScreen();
+            logoutStage.show();
+
+        }
     }
 
     @FXML

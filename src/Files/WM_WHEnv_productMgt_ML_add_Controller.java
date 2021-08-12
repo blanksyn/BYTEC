@@ -25,10 +25,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class WM_WHEnv_productMgt_ML_add_Controller extends WM implements Initializable{
-
-    @FXML
-    private Button closeBtn;
-
     @FXML
     private Label welcomeLabel;
 
@@ -75,19 +71,7 @@ public class WM_WHEnv_productMgt_ML_add_Controller extends WM implements Initial
     private CheckBox checkBox_restock;
 
     @FXML
-    private ImageView IV_product;
-
-    @FXML
-    private Button loadBtn;
-
-    @FXML
     private TextField TF_fileLoc;
-
-    @FXML
-    private Button addBtn;
-
-    @FXML
-    private Button cancelBtn;
 
     @FXML
     private ComboBox<String> CB_specialHand;
@@ -120,6 +104,7 @@ public class WM_WHEnv_productMgt_ML_add_Controller extends WM implements Initial
         }catch(SQLException ex){
             Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
         }
+        TF_fileLoc.setVisible(false);
     }
     
     @FXML
@@ -183,11 +168,6 @@ public class WM_WHEnv_productMgt_ML_add_Controller extends WM implements Initial
             e.printStackTrace();
             e.getCause();
         }
-    }
-
-    @FXML
-    void loadImage(ActionEvent event) {
-        //code to load image from "TF_fileLoc"
     }
 
 }

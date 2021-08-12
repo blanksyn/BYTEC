@@ -16,57 +16,18 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 
 public class WM_genRpt_in_PO_Controller extends WM implements Initializable{
-
-    @FXML
-    private Button closeBtn;
-
     @FXML
     private ImageView logoutBtn;
 
     @FXML
     private Label welcomeLabel;
-
-    @FXML
-    private Button accMgtBtn;
-
-    @FXML
-    private Button WHEnvBtn;
-
-    @FXML
-    private Button POINBtn;
-
-    @FXML
-    private Button GenRptBtn;
-
-    @FXML
-    private Button invRptBtn;
-
-    @FXML
-    private Button InbRptBtn;
-
-    @FXML
-    private Button OutbRptBtn;
-
-    @FXML
-    private Button POBtn;
-
-    @FXML
-    private Button DOBtn;
 
     @FXML
     private TableView<POin> tableCourier;
@@ -88,15 +49,6 @@ public class WM_genRpt_in_PO_Controller extends WM implements Initializable{
 
     @FXML
     private TextField TF_keyword;
-
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<?> CB_field;
-
-    @FXML
-    private Button genRptBtn;
     
     String month;
     
@@ -104,22 +56,12 @@ public class WM_genRpt_in_PO_Controller extends WM implements Initializable{
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
-        //viewPOinReportMonthWM(tableCourier, ObserveList, col_sn, col_month, col_year, col_total, col_action);
-        //Calendar now = Calendar.getInstance();
-        //String year = (String.valueOf(now.get(Calendar.YEAR)));
-        //String monthNum = (String.valueOf(now.get(Calendar.MONTH) + 1));
-        //String dayNum = (String.valueOf(now.get(Calendar.DAY_OF_MONTH)));
-        //String dateToday = year + "-" + monthNum + "-" + dayNum;
-        //String firstDate = year + "-" + monthNum + "-" + "01";
-        //String lastDate = year + "-" + monthNum + "-" + "31";
-        //System.out.println(dateToday);
-        //System.out.println(firstDate);
-       // System.out.println(lastDate);
+        welcome(welcomeLabel);
+        viewPOinReportMonthWM(tableCourier, ObserveList, col_sn, col_month, col_year, col_total, col_action);
     }
 
     @FXML
     void generate_Rpt(ActionEvent event) {
-        //welcome(welcomeLabel);
         Calendar now = Calendar.getInstance();
         String year = (String.valueOf(now.get(Calendar.YEAR)));
         int monthNum = now.get(Calendar.MONTH) + 1;
