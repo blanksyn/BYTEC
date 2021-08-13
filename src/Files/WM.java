@@ -2934,7 +2934,7 @@ public class WM extends User{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth");
             while (rs.next()) {
-                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT Count(DISTINCT PONum) as qtyMonth FROM POin_rcv WHERE date_rcv >= '" + rs.getDate("startDate") + "' AND date_rcv < '" + rs.getDate("endDate") + "';");
+                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT Count(DISTINCT PONum) as qtyMonth FROM POin_rcv WHERE approvedBy is Not NULL AND date_rcv >= '" + rs.getDate("startDate") + "' AND date_rcv < '" + rs.getDate("endDate") + "';");
                 while (rs2.next()) {
                     ObserveList.add(new POin(count, rs.getString("month"),rs2.getInt("qtyMonth"),rs.getString("year")));
                     count++;
@@ -3030,11 +3030,11 @@ public class WM extends User{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT startDate, endDate FROM ReportMonth WHERE month = '" + month + "' AND year = '" + year + "';");
             while (rs3.next()) {
-                ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, supplier, orderBy, order_date, status FROM POin WHERE status = 'Fully Received';");
-                while (rs.next()) {
-                    ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT MAX(date_rcv) as dateReceive FROM POin_rcv WHERE PONum = '" + rs.getString("PONum") +"'AND date_rcv >= '" + rs3.getDate("startDate") + "' AND date_rcv < '" + rs3.getDate("endDate") + "';");
-                    while (rs2.next()) {
-                        ObserveList.add(new POin(count, rs.getString("PONum"),rs.getString("supplier"),rs.getString("orderBy"), rs.getDate("order_date"),rs2.getDate("dateReceive"),rs.getString("status")));
+                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT DISTINCT PONum, date_rcv FROM POin_rcv WHERE date_rcv >= '" + rs3.getDate("startDate") + "' AND date_rcv < '" + rs3.getDate("endDate") + "';");
+                while (rs2.next()) {
+                    ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, supplier, orderBy, order_date, status FROM POin WHERE status = 'Fully received' AND PONum = '" + rs2.getString("PONum") + "';");
+                    while (rs.next()) {
+                        ObserveList.add(new POin(count, rs2.getString("PONum"),rs.getString("supplier"),rs.getString("orderBy"), rs.getDate("order_date"),rs2.getDate("date_rcv"),rs.getString("status")));
                         count++;
                     }
                 }
@@ -3163,7 +3163,7 @@ public class WM extends User{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth");
             while (rs.next()) {
-                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT Count(DISTINCT DONum) as qtyMonth FROM POin_rcv WHERE date_rcv >= '" + rs.getDate("startDate") + "' AND date_rcv < '" + rs.getDate("endDate") + "';");
+                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT Count(Distinct PONum) as qtyMonth,PONum FROM POin_rcv WHERE approvedBy is Not NULL AND date_rcv >= '" + rs.getDate("startDate") + "' AND date_rcv < '" + rs.getDate("endDate") + "';");
                 while (rs2.next()) {
                     ObserveList.add(new POin(count, rs.getString("month"),rs2.getInt("qtyMonth"),rs.getString("year")));
                     count++;
@@ -3266,17 +3266,21 @@ public class WM extends User{
         int count =1;
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT DISTINCT PONum, DONum, date_rcv FROM POin_rcv");
-            while (rs.next()) {
-                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT sn, supplier, orderBy, order_date, status FROM POin WHERE PONum = '" + rs.getString("PONum") +"';");
-                while (rs2.next()) {
-                    ObserveList.add(new POin(rs.getString("DONum"), count, rs2.getString("supplier"),rs2.getString("orderBy"), rs2.getDate("order_date"),rs.getDate("date_rcv"),rs2.getString("status")));
-                    count++;
+            ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT startDate, endDate FROM ReportMonth WHERE month = '" + month + "' AND year = '" + year + "';");
+            while (rs3.next()) {
+                ResultSet rs = connectDB.createStatement().executeQuery("SELECT DISTINCT DONum, PONum, date_rcv FROM POin_rcv WHERE date_rcv >= '" + rs3.getDate("startDate") + "' AND date_rcv < '" + rs3.getDate("endDate") + "';");
+                while (rs.next()) {
+                    ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT sn, supplier, orderBy, order_date, status FROM POin WHERE status = 'Fully received' AND PONum = '" + rs.getString("PONum") +"';");
+                    while (rs2.next()) {
+                        ObserveList.add(new POin(rs.getString("DONum"), count, rs2.getString("supplier"),rs2.getString("orderBy"), rs2.getDate("order_date"),rs.getDate("date_rcv"),rs2.getString("status")));
+                        count++;
+                    }
                 }
             }
         }catch(SQLException ex){
             Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
         }
+       
         col_sn.setCellValueFactory((new PropertyValueFactory<>("Sn")));
         col_DONum.setCellValueFactory((new PropertyValueFactory<>("DONum")));
         col_supplier.setCellValueFactory((new PropertyValueFactory<>("Supplier")));
