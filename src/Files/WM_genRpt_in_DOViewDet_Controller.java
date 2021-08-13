@@ -25,40 +25,10 @@ import javafx.fxml.Initializable;
 public class WM_genRpt_in_DOViewDet_Controller extends WM implements Initializable{
 
     @FXML
-    private Button closeBtn;
-
-    @FXML
     private ImageView logoutBtn;
 
     @FXML
     private Label welcomeLabel,PONumLabel,supLabel,dateLabel,DONumLabel;
-
-    @FXML
-    private Button accMgtBtn;
-
-    @FXML
-    private Button WHEnvBtn;
-
-    @FXML
-    private Button POINBtn;
-
-    @FXML
-    private Button GenRptBtn;
-
-    @FXML
-    private Button invRptBtn;
-
-    @FXML
-    private Button InbRptBtn;
-
-    @FXML
-    private Button OutbRptBtn;
-
-    @FXML
-    private Button POBtn;
-
-    @FXML
-    private Button DOBtn;
 
     @FXML
     private TableView<POin> table_DOView;
@@ -68,18 +38,6 @@ public class WM_genRpt_in_DOViewDet_Controller extends WM implements Initializab
 
     @FXML
     private TableColumn<POin, String> col_UPC, col_prodName;
-
-    @FXML
-    private TextField TF_keyword;
-
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<?> CB_field;
-
-    @FXML
-    private Button genRptBtn;
 
     static String thisoriPOnum, thisoriSup, thisoriDOnum;
     static Date thisoriDate;
@@ -260,10 +218,4 @@ public class WM_genRpt_in_DOViewDet_Controller extends WM implements Initializab
     void logoutAcc(MouseEvent event) throws IOException {
         Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
     }
-
-    @FXML
-    void searchFunction(ActionEvent event) {
-
-    }
-
 }
