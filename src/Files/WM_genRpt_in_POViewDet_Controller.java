@@ -38,9 +38,6 @@ public class WM_genRpt_in_POViewDet_Controller extends WM implements Initializab
     @FXML
     private TableColumn<POin, String> col_UPC, col_prodName;
 
-    @FXML
-    private TextField TF_keyword;
-
     static String thisoriPOnum, thisoriSup;
     static Date thisoriDate;
     static int thisSN;
@@ -218,10 +215,4 @@ public class WM_genRpt_in_POViewDet_Controller extends WM implements Initializab
     void logoutAcc(MouseEvent event) throws IOException {
         Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
     }
-
-    @FXML
-    void searchFunction(ActionEvent event) {
-
-    }
-
 }

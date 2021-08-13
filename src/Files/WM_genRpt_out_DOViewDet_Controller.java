@@ -38,9 +38,6 @@ public class WM_genRpt_out_DOViewDet_Controller extends WM implements Initializa
     @FXML
     private TableColumn<POout, String> col_upc, col_productName, col_sku;
 
-    @FXML
-    private TextField TF_keyword;
-
     static String thisoriDOnum, thisoriSOnum, thisoriComp;
     static Date thisoriDate;
     static int thisSN;
@@ -220,10 +217,4 @@ public class WM_genRpt_out_DOViewDet_Controller extends WM implements Initializa
     void logoutAcc(MouseEvent event) throws IOException {
         Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
     }
-
-    @FXML
-    void searchFunction(ActionEvent event) {
-
-    }
-
 }

@@ -474,7 +474,6 @@ public class WM_WHEnv_whSpace_Controller extends WM implements Initializable{
         System.exit(0);
     }
 
-
     @FXML
     void logoutAcc(MouseEvent event) throws IOException {
         Navigation nav = new Navigation(); nav.logout(event,logoutBtn);

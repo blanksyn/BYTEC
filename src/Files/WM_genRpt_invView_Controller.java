@@ -35,9 +35,6 @@ public class WM_genRpt_invView_Controller extends WM implements Initializable {
 
     @FXML
     private TableColumn<product_indv, String> col_upc, col_sku, col_prodName, col_unit, col_loc, col_sup, col_cat, col_expDate;
-
-    @FXML
-    private TextField TF_keyword;
     
     String month;
     static String thisYear, thisMonth;
@@ -182,10 +179,4 @@ public class WM_genRpt_invView_Controller extends WM implements Initializable {
     void logoutAcc(MouseEvent event) throws IOException {
         Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
     }
-
-    @FXML
-    void searchFunction(ActionEvent event) {
-
-    }
-
 }

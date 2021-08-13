@@ -51,9 +51,6 @@ public class WM_POIN_restock_view_Controller extends WM implements Initializable
     
     @FXML
     private Label PONumLabel,supLabel,dateLabel;
-
-    @FXML
-    private TextField TF_keyword;
     
     ObservableList<POin> ObserveList = FXCollections.observableArrayList();
     
@@ -179,10 +176,4 @@ public class WM_POIN_restock_view_Controller extends WM implements Initializable
             e.getCause();
         }
     }
-
-    @FXML
-    void searchFunction(ActionEvent event) {
-
-    }
-
 }

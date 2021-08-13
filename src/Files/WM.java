@@ -1017,9 +1017,9 @@ public class WM extends User{
                                         int sn =(ObserveList.get(i).getSN());
                                         String loc = (ObserveList.get(i).getLocation());
                                         //System.out.println(sn);
-                                        WM_WHEnv_whSpaceEditAll_Controller.getme(loc);
+                                        WM_WHEnv_whSpaceEditSpecific_Controller.getme(loc);
                                         try {
-                                            Parent fxml2 = FXMLLoader.load(getClass().getResource("WM_WHEnv_whSpaceEditAll.fxml"));
+                                            Parent fxml2 = FXMLLoader.load(getClass().getResource("WM_WHEnv_whSpaceEditSpecific.fxml"));
                                             Scene window3 = new Scene(fxml2);
                                             Stage parentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
                                             parentStage.setScene(window3);
@@ -1436,17 +1436,12 @@ public class WM extends User{
             
             try{
                 DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-                ResultSet rs7 = connectDB.createStatement().executeQuery("SELECT sn, name, location FROM storage WHERE location like '" + locName + " %';");
+                ResultSet rs7 = connectDB.createStatement().executeQuery("SELECT sn, name, location FROM storage WHERE location like '" + locName + "%';");
                 while (rs7.next()) {
                     String newName = locName + " ";
                     String[] parts = newName.split(" ");
                     String newnewName = parts[0];
-                    String locB = rs7.getString("location");
-                    PreparedStatement pst =connectDB.prepareStatement("DELETE FROM storage WHERE location like '" + locB + "'AND name = '" + newnewName + "';");
-                    pst.execute();
-                    PreparedStatement pst2 =connectDB.prepareStatement("DELETE FROM upc_location WHERE location like '" + locB + " %';");
-                    pst2.execute();
-                    
+                    String locB = rs7.getString("location");                 
                     int sn = Integer.valueOf(rs7.getString("sn"));
                     ResultSet rs = connectDB.createStatement().executeQuery("SELECT MAX(SN) as MaxSN FROM storage;");
                     while (rs.next()) {
@@ -1458,6 +1453,12 @@ public class WM extends User{
                             pst3.execute();
                         }
                     }
+                    PreparedStatement pst =connectDB.prepareStatement("DELETE FROM storage WHERE location like '" + locB + "'AND name = '" + newnewName + "';");
+                    pst.execute();
+                    PreparedStatement pst2 =connectDB.prepareStatement("DELETE FROM upc_location WHERE location like '" + locB + " %';");
+                    pst2.execute();
+                    
+                    
                 }
                 
                 
@@ -1561,7 +1562,7 @@ public class WM extends User{
                             String[] parts2 = newName2.split(" ");
                             String newnewName2 = parts2[0];
                             String newnewName3 = parts2[1];
-                            String[] parts3 = newnewName3.split(".");
+                            String[] parts3 = newnewName3.split("\\.");
                             String newNameConv2 = parts3[0];
                             String newLvl = parts3[1];
                             String newCol = parts3[2];
@@ -1620,46 +1621,6 @@ public class WM extends User{
         }
     }
     
-    /*SPACE FOR STORAGE STUFF
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    */
     //Master Product Table for WM
     public ObservableList viewProdMasterWM(TableView tableAccount, ObservableList<prod_master> ObserveList, TableColumn col_sn, TableColumn col_upc, TableColumn col_Name, TableColumn col_qty,
             TableColumn col_unit, TableColumn col_location, TableColumn col_supplier, TableColumn col_category, TableColumn col_minQty, TableColumn col_maxQty, TableColumn col_ARStatus, 
@@ -2379,7 +2340,7 @@ public class WM extends User{
         tableAccount.setItems(ObserveList);
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, sku, date_added, location, expiry_date FROM product_indv WHERE upc = '" + UPC + "' ORDER BY sn ASC;");
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, sku, date_added, location, expiry_date FROM product_indv WHERE upc = '" + UPC + "' AND status is NULL ORDER BY sn ASC;");
             while (rs.next()) {
                 ObserveList.add(new product_indv(rs.getString("date_added"), rs.getInt("sn"), rs.getString("sku"), rs.getString("location"), rs.getString("expiry_date")));
             }

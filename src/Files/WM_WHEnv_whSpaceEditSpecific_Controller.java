@@ -42,9 +42,7 @@ public class WM_WHEnv_whSpaceEditSpecific_Controller extends WM implements Initi
         System.out.println(thisloc);
         editViewStorageWM(thisloc, name, length, width, height);
     }
-    
-    
-    
+
     @FXML
     void editAllStorage(ActionEvent event) {
         String nameB = name.getText(); 
@@ -91,8 +89,33 @@ public class WM_WHEnv_whSpaceEditSpecific_Controller extends WM implements Initi
 
     @FXML
     void closeWindow(ActionEvent event) {
-        Platform.exit();
-        System.exit(0);
+        try{
+            Parent root = FXMLLoader.load(getClass().getResource("WM_WHEnv_whSpace.fxml"));
+            Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            loginStage.setScene(scene);
+            loginStage.centerOnScreen();
+            loginStage.show();
+
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    loginStage.setX(event.getScreenX() - xOffset);
+                    loginStage.setY(event.getScreenY() - yOffset);
+                }
+            });
+
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 
 

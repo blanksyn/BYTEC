@@ -34,9 +34,6 @@ public class WM_POIN_view_Controller extends WM implements Initializable{
     @FXML
     private TableColumn<POin, String> col_UPC, col_prodName;
 
-    @FXML
-    private TextField TF_keyword;
-
     ObservableList<POin> ObserveList = FXCollections.observableArrayList();
     
     static String thisoriPOnum, thisoriSup;
@@ -75,10 +72,4 @@ public class WM_POIN_view_Controller extends WM implements Initializable{
             e.getCause();
         }
     }
-
-    @FXML
-    void searchFunction(ActionEvent event) {
-
-    }
-
 }
