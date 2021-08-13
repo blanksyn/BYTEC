@@ -28,18 +28,18 @@ RUNNING JAVAFX PROJECT WITH INTELLIJ IDEA
 -----------------------------------------
 USERS
 --------------------
-[Warehouse Manager]
+Warehouse Manager
 username: 111
 password: 111
 -------------------
-[Supervisor]
+Supervisor
 username:1234
 password: 123
 -------------------
-[Picker/Packer]
+Picker/Packer
 username:9999
 password:123
 -------------------
-[Receiver]
+Receiver
 username:7890
 password:222
