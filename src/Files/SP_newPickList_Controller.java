@@ -333,7 +333,8 @@ public class SP_newPickList_Controller {
     @FXML
     void resetList(ActionEvent event) {
         newList.clear();
-        countList=1;
+        temp.clear();
+        countNum=1;
     }
 
     @FXML
@@ -380,7 +381,7 @@ public class SP_newPickList_Controller {
             String SONum = genSONum();
 
             //insert new PO in POout
-            String insertData = "INSERT INTO POout (PONum,company,company_add,date_created,createdBy,status,delivery_date,SONum) VALUES (?,?,?,?,?,?,?,?);";
+            String insertData = "INSERT INTO POout (PONum,company,company_add,date_created,createdBy,status,delivery_date,SONum,ppBy) VALUES (?,?,?,?,?,?,?,?,?);";
             PreparedStatement pst = connectDB.prepareStatement(insertData);
             pst.setString(1, PO);
             pst.setString(2, comp_name);
@@ -390,6 +391,7 @@ public class SP_newPickList_Controller {
             pst.setString(6, "Unpicked");
             pst.setString(7, String.valueOf(java.time.LocalDate.now().plusWeeks(1)));
             pst.setString(8, SONum);
+            pst.setString(9, "");
             pst.execute();
 
             //insert new data into pickingList _detail

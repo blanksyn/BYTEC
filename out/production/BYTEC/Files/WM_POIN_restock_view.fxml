@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -38,11 +37,6 @@
             <TableColumn fx:id="col_qty" prefWidth="200.0" style="-fx-background-color: white;  -fx-alignment: center;" text="Quantity" />
         </columns>
       </TableView>
-      <TextField fx:id="TF_keyword" layoutX="847.0" layoutY="148.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
-         <font>
-            <Font name="Bodoni MT" size="12.0" />
-         </font>
-      </TextField>
       <Label fx:id="PONumLabel" layoutX="170.0" layoutY="71.0" prefHeight="25.0" prefWidth="149.0">
          <font>
             <Font name="Bodoni MT" size="12.0" />

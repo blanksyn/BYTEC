@@ -411,7 +411,7 @@ public class SP_POIN_RcvListView_Controller {
         Connection connectDB = con.getConnection();
 
             //get latest sku
-            String getSKUIndv = "SELECT sku FROM product_indv WHERE upc = " + upc + " ORDER BY sku DESC LIMIT 1";
+            String getSKUIndv = "SELECT sku FROM product_indv WHERE upc = '" + upc + "' ORDER BY length(sku) DESC, sku DESC LIMIT 1";
             Statement stSKUIndv = connectDB.createStatement();
             ResultSet rsSKUIndv = stSKUIndv.executeQuery(getSKUIndv);
 
@@ -423,6 +423,7 @@ public class SP_POIN_RcvListView_Controller {
 
                 for(int i = 1; i<qty+1;i++){
                     String result = PC.concat(String.valueOf(num+i));
+                    System.out.println("Sku generated:" + result);
 
                     //check upc location
                     boolean locFilled = false;
@@ -446,21 +447,29 @@ public class SP_POIN_RcvListView_Controller {
                         }
                     }
 
-                    //insert sku in product_indv
-                    String prodIndv = "INSERT INTO product_indv(upc,sku,date_added,location) VALUES (?,?,?,?)";
-                    PreparedStatement pstindv = connectDB.prepareStatement(prodIndv);
-                    pstindv.setString(1, upc);
-                    pstindv.setString(2, result);
-                    pstindv.setString(3, String.valueOf(java.time.LocalDate.now()));
-                    pstindv.setString(4, loc);
-                    pstindv.execute();
+                    String getExpDate = "SELECT expiry_date FROM POin_rcv WHERE upc = '"+ upc + "' AND DONum = '"+ DONum + "' ;";
+                    Statement stExpDate = connectDB.createStatement();
+                    ResultSet rsExpDate = stExpDate.executeQuery(getExpDate);
 
-                    String prodrcvDet = "INSERT INTO POin_rcv_detail(DONum,upc,sku) VALUES (?,?,?)";
-                    PreparedStatement pstrcvDet = connectDB.prepareStatement(prodrcvDet);
-                    pstrcvDet.setString(1, DONum);
-                    pstrcvDet.setString(2, upc);
-                    pstrcvDet.setString(3, result);
-                    pstrcvDet.execute();
+                    while(rsExpDate.next()) {
+
+                        //insert sku in product_indv
+                        String prodIndv = "INSERT INTO product_indv(upc,sku,date_added,location,expiry_date) VALUES (?,?,?,?,?)";
+                        PreparedStatement pstindv = connectDB.prepareStatement(prodIndv);
+                        pstindv.setString(1, upc);
+                        pstindv.setString(2, result);
+                        pstindv.setString(3, String.valueOf(java.time.LocalDate.now()));
+                        pstindv.setString(4, loc);
+                        pstindv.setString(5,  String.valueOf(rsExpDate.getDate("expiry_date")));
+                        pstindv.execute();
+
+                        String prodrcvDet = "INSERT INTO POin_rcv_detail(DONum,upc,sku) VALUES (?,?,?)";
+                        PreparedStatement pstrcvDet = connectDB.prepareStatement(prodrcvDet);
+                        pstrcvDet.setString(1, DONum);
+                        pstrcvDet.setString(2, upc);
+                        pstrcvDet.setString(3, result);
+                        pstrcvDet.execute();
+                    }
                 }
             }
 

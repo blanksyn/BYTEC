@@ -228,7 +228,7 @@ public class SP_Controller {
                     s = true;
                 }else if(POout.getDate_created().toString().toLowerCase().indexOf(searchKeyword)>-1){
                     s = true;
-                }else if(POout.getPpBy().toLowerCase().indexOf(searchKeyword)>-1){
+                }else if(POout.getPpBy().toLowerCase().indexOf(searchKeyword)>-1) {
                     s = true;
                 }else if(POout.getStatus().toLowerCase().indexOf(searchKeyword)>-1){
                     s = true;

@@ -94,7 +94,7 @@ public class SP_POIN_PO_Controller {
 
     @FXML
     void initialize(){
-        createPOINBtn.setVisible(true);
+        createPOINBtn.setVisible(false);
         int count = 1;
 
         try{

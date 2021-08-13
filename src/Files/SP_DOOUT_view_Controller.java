@@ -181,6 +181,7 @@ public class SP_DOOUT_view_Controller {
         //change status to delivered
         DatabaseConnection con = new DatabaseConnection();
         Connection connectDB = con.getConnection();
+        String comp_address="";
 
         //update new scanned sku with delivered and delivered date
         for(POout p:DOTbl) {
@@ -216,6 +217,19 @@ public class SP_DOOUT_view_Controller {
                 e.printStackTrace();
             }
 
+            try{
+                String getValues = "SELECT company_add FROM POout WHERE SONum = '" + SONum + "';";
+                Statement statement = connectDB.createStatement();
+                ResultSet queryResult = statement.executeQuery(getValues);
+
+                while(queryResult.next()){
+                    comp_address = queryResult.getString("company_add");
+                }
+
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
             //create Delivery order
             XSSFWorkbook wb = new XSSFWorkbook();//for earlier version use HSSF
             XSSFSheet sheet = wb.createSheet("Delivery Order (Out)");
@@ -249,6 +263,8 @@ public class SP_DOOUT_view_Controller {
             XSSFRow title3 = sheet.createRow(3);
             title3.createCell(0).setCellValue("Courier:");
             title3.createCell(1).setCellValue(CB_courier.getValue());
+            title3.createCell(2).setCellValue("Company Address:");
+            title3.createCell(3).setCellValue(comp_address);
 
             XSSFRow blankSpace2 = sheet.createRow(4);
 
