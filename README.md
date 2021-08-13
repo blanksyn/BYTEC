@@ -24,3 +24,22 @@ RUNNING JAVAFX PROJECT WITH INTELLIJ IDEA
 7. Modify Options> Add VM Options
 8. Add (--module-path "D:\programs\javafx-sdk-15\lib" --add-modules javafx.controls,javafx.fxml) in VM Options. Change path to your own JavaFX directory. Apply and close.
 9. Run Main
+
+-----------------------------------------
+USERS
+--------------------
+[Warehouse Manager]
+username: 111
+password: 111
+-------------------
+[Supervisor]
+username:1234
+password: 123
+-------------------
+[Picker/Packer]
+username:9999
+password:123
+-------------------
+[Receiver]
+username:7890
+password:222
