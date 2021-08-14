@@ -81,8 +81,9 @@ public class WM_WHEnv_productMgt_ML_Controller extends WM implements Initializab
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
+        String keyword = TF_keyword.getText();
         welcome(welcomeLabel);
-        viewProdMasterWM(tableProductML,ObserveList, col_sn, col_upc, col_Name, col_qty, col_unit, col_location, col_supplier, col_category, col_minQty, 
+        viewProdMasterWM(keyword, tableProductML,ObserveList, col_sn, col_upc, col_Name, col_qty, col_unit, col_location, col_supplier, col_category, col_minQty, 
                 col_maxQty, col_ARStatus, col_dateAdded, col_action, col_action2);
     }
 
@@ -266,7 +267,9 @@ public class WM_WHEnv_productMgt_ML_Controller extends WM implements Initializab
 
     @FXML
     void searchFunction(ActionEvent event) {
-
+        String keyword = TF_keyword.getText();
+        viewProdMasterWM(keyword, tableProductML,ObserveList, col_sn, col_upc, col_Name, col_qty, col_unit, col_location, col_supplier, col_category, col_minQty, 
+                col_maxQty, col_ARStatus, col_dateAdded, col_action, col_action2);
     }
 
 }

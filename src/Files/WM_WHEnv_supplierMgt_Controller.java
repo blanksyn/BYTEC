@@ -56,7 +56,8 @@ public class WM_WHEnv_supplierMgt_Controller extends WM implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb){
         welcome(welcomeLabel);
-        ObserveList = viewSupplierWM(tableSupplier,ObserveList, col_sn, col_Name, col_email, col_contactNo, col_action);
+        String keyword = TF_keyword.getText();
+        ObserveList = viewSupplierWM(keyword, tableSupplier,ObserveList, col_sn, col_Name, col_email, col_contactNo, col_action);
     }
 
     @FXML
@@ -344,7 +345,8 @@ public class WM_WHEnv_supplierMgt_Controller extends WM implements Initializable
 
     @FXML
     void searchFunction(ActionEvent event) {
-
+        String keyword = TF_keyword.getText();
+        ObserveList = viewSupplierWM(keyword, tableSupplier,ObserveList, col_sn, col_Name, col_email, col_contactNo, col_action);
     }
 
 }

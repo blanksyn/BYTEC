@@ -205,16 +205,15 @@ public class WM_Controller extends WM implements Initializable{
 
     @FXML
     void searchFunction(ActionEvent event) {
-
+        String keyword = TF_keyword.getText();
+        viewAccountWM(keyword,tableAccount,ObserveList, col_sn, col_employeeID, col_Name, col_type, col_role, col_location, col_date, col_action);
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
-        //String keyword = TF_keyword.getText();
-        //if(!keyword.equals(null))
+        String keyword = TF_keyword.getText();
         welcome(welcomeLabel);
-        viewAccountWM(tableAccount,ObserveList, col_sn, col_employeeID, col_Name, col_type, col_role, col_location, col_date, col_action);
-        welcome(welcomeLabel);
+        viewAccountWM(keyword,tableAccount,ObserveList, col_sn, col_employeeID, col_Name, col_type, col_role, col_location, col_date, col_action);
 
         Calendar now = Calendar.getInstance();
         int dayNum = (now.get(Calendar.DAY_OF_MONTH));
@@ -314,7 +313,7 @@ public class WM_Controller extends WM implements Initializable{
                         Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
                     }
                     String check = "no";
-                    ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT qty, min_qty FROM product_master WHERE supplier = '" + rs.getString("supplier") + "';");
+                    ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT qty, min_qty FROM product_master WHERE supplier = '" + rs.getString("supplier") + "' AND auto_restock_status = 'true';");
                         while (rs3.next()) {
                             if(rs3.getInt("qty") < rs3.getInt("min_qty")){
                                 check = "yes";

@@ -62,8 +62,9 @@ public class WM extends User{
     }
     
     //Account Table for WM
-    public ObservableList viewAccountWM(TableView tableAccount, ObservableList<User> ObserveList, TableColumn col_sn, TableColumn col_employeeID, TableColumn col_Name, TableColumn col_type,
+    public ObservableList viewAccountWM(String search, TableView tableAccount, ObservableList<User> ObserveList, TableColumn col_sn, TableColumn col_employeeID, TableColumn col_Name, TableColumn col_type,
             TableColumn col_role, TableColumn col_location, TableColumn col_date, TableColumn<User,User> col_action){
+        tableAccount.getItems().clear();
         
         //col_action.setStyle( "-fx-alignment: CENTER;");
         col_action.setCellValueFactory(
@@ -129,7 +130,14 @@ public class WM extends User{
         tableAccount.setItems(ObserveList);
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, employeeID, name, type, role, location, date_created FROM accounts ORDER BY sn ASC;");
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, employeeID, name, type, role, location, date_created FROM accounts WHERE " +
+            "sn LIKE '%" + search + "%' or " +
+            "employeeID LIKE '%" + search + "%' or " +
+            "name LIKE '%" + search + "%' or " +
+            "type LIKE '%" + search + "%' or " +
+            "role LIKE '%" + search + "%' or " +
+            "location LIKE '%" + search + "%' or " +
+            "date_created LIKE '%" + search + "%' ORDER BY sn ASC;");
             while (rs.next()) {
                 if(rs.getString("type").equals("WM"))
                     accType = "Warehouse Manager";
@@ -482,8 +490,9 @@ public class WM extends User{
     }
     
     //Courier table for WM
-    public ObservableList viewCourierWM(TableView tableAccount, ObservableList<setup_courier> ObserveList, TableColumn col_sn, TableColumn col_Name, 
-            TableColumn<setup_courier,setup_courier> col_action){       
+    public ObservableList viewCourierWM(String search, TableView tableAccount, ObservableList<setup_courier> ObserveList, TableColumn col_sn, TableColumn col_Name, 
+            TableColumn<setup_courier,setup_courier> col_action){ 
+        tableAccount.getItems().clear();
 
         col_action.setCellValueFactory(
                 param -> new ReadOnlyObjectWrapper<>(param.getValue()));
@@ -568,7 +577,7 @@ public class WM extends User{
         tableAccount.setItems(ObserveList);
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, name FROM courier ORDER BY sn ASC;");
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, name FROM courier WHERE sn LIKE '%" + search + "%' OR name LIKE '%" + search + "%' ORDER BY sn ASC;");
             while (rs.next()) {
                 ObserveList.add(new setup_courier(rs.getInt("sn"), rs.getString("name")));
             }
@@ -666,8 +675,9 @@ public class WM extends User{
     }
     
     //Supplier table for WM
-    public ObservableList viewSupplierWM(TableView tableAccount, ObservableList<setup_supplier> ObserveList, TableColumn col_sn, TableColumn col_Name, 
-            TableColumn col_email, TableColumn col_contactNo, TableColumn<setup_supplier,setup_supplier> col_action){       
+    public ObservableList viewSupplierWM(String search, TableView tableAccount, ObservableList<setup_supplier> ObserveList, TableColumn col_sn, TableColumn col_Name, 
+            TableColumn col_email, TableColumn col_contactNo, TableColumn<setup_supplier,setup_supplier> col_action){
+        tableAccount.getItems().clear();
 
         col_action.setCellValueFactory(
                 param -> new ReadOnlyObjectWrapper<>(param.getValue()));
@@ -731,7 +741,8 @@ public class WM extends User{
         tableAccount.setItems(ObserveList);
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, name, email, contact_number FROM supplier ORDER BY sn ASC;");
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, name, email, contact_number FROM supplier "
+                    + "WHERE sn LIKE '%"+search+"%' or name LIKE '%"+search+"%' or email LIKE '%"+search+"%' or contact_number LIKE '%"+search+"%' ORDER BY sn ASC;");
             while (rs.next()) {
                 ObserveList.add(new setup_supplier(rs.getInt("sn"), rs.getString("name"), rs.getString("email"), rs.getString("contact_number")));
             }
@@ -988,9 +999,10 @@ public class WM extends User{
     }
     
     //Storage table for WM
-    public ObservableList viewStorageWM(TableView tableAccount, ObservableList<setup_storage> ObserveList, TableColumn col_sn, TableColumn col_Name, 
+    public ObservableList viewStorageWM(String search, TableView tableAccount, ObservableList<setup_storage> ObserveList, TableColumn col_sn, TableColumn col_Name, 
             TableColumn col_length, TableColumn col_width, TableColumn col_height, TableColumn col_vol
-            , TableColumn col_volA, TableColumn<setup_storage,setup_storage> col_action){       
+            , TableColumn col_volA, TableColumn<setup_storage,setup_storage> col_action){ 
+        tableAccount.getItems().clear();
 
         col_action.setCellValueFactory(
                 param -> new ReadOnlyObjectWrapper<>(param.getValue()));
@@ -1055,10 +1067,12 @@ public class WM extends User{
         tableAccount.setItems(ObserveList);
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT *  FROM storage ORDER BY sn ASC;");
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT *  FROM storage "
+                    + "WHERE (sn LIKE '%"+search+"%' or location LIKE '%"+search+"%' or " +
+                    "length LIKE '%"+search+"%' or width LIKE '%"+search+"%' or " +
+                    "height LIKE '%"+search+"%' or vol LIKE '%"+search+"%' or " +
+                    "vol_avail LIKE '%"+search+"%') ORDER BY sn ASC;");
             while (rs.next()) {
-                
-                
                 ObserveList.add(new setup_storage(rs.getInt("sn"), rs.getString("location"), rs.getDouble("length"), rs.getDouble("width"),rs.getDouble("height"),rs.getDouble("vol"),rs.getDouble("vol_avail")));
             }
         }catch(SQLException ex){
@@ -1622,9 +1636,10 @@ public class WM extends User{
     }
     
     //Master Product Table for WM
-    public ObservableList viewProdMasterWM(TableView tableAccount, ObservableList<prod_master> ObserveList, TableColumn col_sn, TableColumn col_upc, TableColumn col_Name, TableColumn col_qty,
+    public ObservableList viewProdMasterWM(String search, TableView tableAccount, ObservableList<prod_master> ObserveList, TableColumn col_sn, TableColumn col_upc, TableColumn col_Name, TableColumn col_qty,
             TableColumn col_unit, TableColumn col_location, TableColumn col_supplier, TableColumn col_category, TableColumn col_minQty, TableColumn col_maxQty, TableColumn col_ARStatus, 
-            TableColumn col_dateAdded, TableColumn<prod_master,prod_master> col_action, TableColumn<prod_master,prod_master> col_action2){       
+            TableColumn col_dateAdded, TableColumn<prod_master,prod_master> col_action, TableColumn<prod_master,prod_master> col_action2){
+        tableAccount.getItems().clear();
         
         //col_action.setStyle( "-fx-alignment: CENTER;");
         col_action.setCellValueFactory(
@@ -1744,7 +1759,14 @@ public class WM extends User{
         tableAccount.setItems(ObserveList);
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, upc, prod_name, qty, unit, location, supplier, category, min_qty, max_qty, auto_restock_status, date_added, volume FROM product_master ORDER BY sn ASC;");
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, upc, prod_name, qty, unit, location, supplier, category, min_qty, max_qty, auto_restock_status, date_added, volume FROM product_master "
+                    + "WHERE (sn LIKE '%" + search + "%' or upc LIKE '%" + search + "%' or " +
+                    "prod_name LIKE '%" + search + "%' or qty LIKE '%" + search + "%' or " +
+                    "unit LIKE '%" + search + "%' or location LIKE '%" + search + "%' or " +
+                    "supplier LIKE '%" + search + "%' or category LIKE '%" + search + "%' or " +
+                    "min_qty LIKE '%" + search + "%' or max_qty LIKE '%" + search + "%' or " +
+                    "auto_restock_status LIKE '%" + search + "%' or date_added LIKE '%" + search + "%' or " +
+                    "volume LIKE '%" + search + "%') ORDER BY sn ASC;");
             while (rs.next()) {
                 ObserveList.add(new prod_master(rs.getInt("sn"), rs.getString("upc"), rs.getString("prod_name"), rs.getInt("qty"), rs.getString("unit"), 
                         rs.getString("location"), rs.getString("supplier"), rs.getString("category"), rs.getInt("min_qty"), rs.getInt("max_qty"), 
@@ -2458,8 +2480,9 @@ public class WM extends User{
     }
     
     //POin Table for WM
-    public ObservableList viewPOWM(TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_PONumber, TableColumn col_supplierName, TableColumn col_orderedBy,
-            TableColumn col_orderedDate, TableColumn col_status, TableColumn<POin,POin> col_action){       
+    public ObservableList viewPOWM(String search, TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_PONumber, TableColumn col_supplierName, TableColumn col_orderedBy,
+            TableColumn col_orderedDate, TableColumn col_status, TableColumn<POin,POin> col_action){ 
+        table.getItems().clear();
         
         col_action.setCellValueFactory(
                 param -> new ReadOnlyObjectWrapper<>(param.getValue()));
@@ -2528,7 +2551,13 @@ public class WM extends User{
         int count =1;
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, supplier, orderBy, order_date, status FROM POin WHERE status != 'Not Approved' AND status != 'Fully Received';");
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, supplier, orderBy, order_date, status FROM POin WHERE status != 'Not Approved' AND status != 'Fully Received'"
+                    + "AND (sn LIKE '%" + search + "%' or " +
+                    "PONum LIKE '%" + search + "%' or " +
+                    "supplier LIKE '%" + search + "%' or " +
+                    "orderBy LIKE '%" + search + "%' or " +
+                    "order_date LIKE '%" + search + "%' or " +
+                    "status LIKE '%" + search + "%');");
             while (rs.next()) {
                 ObserveList.add(new POin(count, rs.getString("PONum"),rs.getString("supplier"),rs.getString("orderBy"), rs.getDate("order_date"),rs.getString("status")));
                 count++;
@@ -2598,8 +2627,9 @@ public class WM extends User{
     }
     
     //POin restock Table for WM
-    public ObservableList viewPOApprovalWM(TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_PONumber, TableColumn col_supplierName, TableColumn col_dateCreated,
-            TableColumn<POin,POin> col_action){       
+    public ObservableList viewPOApprovalWM(String search, TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_PONumber, TableColumn col_supplierName, TableColumn col_dateCreated,
+            TableColumn<POin,POin> col_action){ 
+        table.getItems().clear();
         
         col_action.setCellValueFactory(
                 param -> new ReadOnlyObjectWrapper<>(param.getValue()));
@@ -2668,7 +2698,13 @@ public class WM extends User{
         int count =1;
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, supplier, orderBy, order_date, status FROM POin WHERE status = 'Not Approved';");
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, supplier, orderBy, order_date, status FROM POin WHERE status = 'Not Approved'"
+                    + "AND (sn LIKE '%" + search + "%' or " +
+                    "PONum LIKE '%" + search + "%' or " +
+                    "supplier LIKE '%" + search + "%' or " +
+                    "orderBy LIKE '%" + search + "%' or " +
+                    "order_date LIKE '%" + search + "%' or " +
+                    "status LIKE '%" + search + "%');");
             while (rs.next()) {
                 ObserveList.add(new POin(count, rs.getString("PONum"),rs.getString("supplier"), rs.getDate("order_date")));
                 count++;
@@ -2725,9 +2761,9 @@ public class WM extends User{
     }
     
     //Inventory Table Report for WM
-    public ObservableList viewInvetoryReportMonthWM(TableView table, ObservableList<product_indv> ObserveList, TableColumn col_sn, TableColumn col_month, TableColumn col_year, TableColumn col_total,
+    public ObservableList viewInvetoryReportMonthWM(String search, TableView table, ObservableList<product_indv> ObserveList, TableColumn col_sn, TableColumn col_month, TableColumn col_year, TableColumn col_total,
             TableColumn<product_indv,product_indv> col_action){       
-        
+        table.getItems().clear();
         col_action.setCellValueFactory(
                 param -> new ReadOnlyObjectWrapper<>(param.getValue()));
         col_action.setCellFactory(param -> new TableCell<product_indv, product_indv>() {
@@ -2793,7 +2829,9 @@ public class WM extends User{
         int count =1;
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth");
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth "
+                    + "WHERE sn LIKE '%"+search+"%' or month LIKE '%"+search+"%' or " +
+                    "year LIKE '%"+search+"%' or startDate LIKE '%"+search+"%' or endDate LIKE '%"+search+"%'");
             while (rs.next()) {
                 ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT Count(sn) as qtyMonth FROM product_indv WHERE date_added <= '" + rs.getDate("endDate") + "' AND "
                         + "(delivery_date >= '" + rs.getDate("endDate") + "' OR delivery_date is NULL);");
@@ -2827,7 +2865,7 @@ public class WM extends User{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT startDate, endDate FROM ReportMonth WHERE month = '" + month + "' AND year = '" + year + "';");
             while (rs3.next()) {
-                ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc, sku, location, expiry_date FROM product_indv WHERE date_added >= '" + rs3.getDate("startDate") + "' AND (delivery_date >= '" + rs3.getDate("endDate") + "' OR delivery_date is NULL);");
+                ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc, sku, location, expiry_date FROM product_indv WHERE date_added <= '" + rs3.getDate("endDate") + "' AND (delivery_date >= '" + rs3.getDate("endDate") + "' OR delivery_date is NULL);");
                 while (rs.next()) {
                     ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT prod_name, unit, supplier, category FROM product_master WHERE upc = '" + rs.getString("upc") + "';");
                     while (rs2.next()) {
@@ -2862,9 +2900,9 @@ public class WM extends User{
     }
     
     //POin Table Report View for WM
-    public ObservableList viewPOinReportMonthWM(TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_month, TableColumn col_year, TableColumn col_total,
+    public ObservableList viewPOinReportMonthWM(String search, TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_month, TableColumn col_year, TableColumn col_total,
             TableColumn<POin,POin> col_action){       
-        
+        table.getItems().clear();
         col_action.setCellValueFactory(
                 param -> new ReadOnlyObjectWrapper<>(param.getValue()));
         col_action.setCellFactory(param -> new TableCell<POin, POin>() {
@@ -2932,7 +2970,9 @@ public class WM extends User{
         int count =1;
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth");
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth "
+                    + "WHERE sn LIKE '%"+search+"%' or month LIKE '%"+search+"%' or " +
+                    "year LIKE '%"+search+"%' or startDate LIKE '%"+search+"%' or endDate LIKE '%"+search+"%'");
             while (rs.next()) {
                 ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT Count(DISTINCT PONum) as qtyMonth FROM POin_rcv WHERE approvedBy is Not NULL AND date_rcv >= '" + rs.getDate("startDate") + "' AND date_rcv < '" + rs.getDate("endDate") + "';");
                 while (rs2.next()) {
@@ -2958,9 +2998,9 @@ public class WM extends User{
     }
     
     //POin Table Report View Per Month for WM
-    public ObservableList viewPOinReportWM(String month, String year, TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_PONum, TableColumn col_supplier, TableColumn col_OrdBy,
+    public ObservableList viewPOinReportWM(String search, String month, String year, TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_PONum, TableColumn col_supplier, TableColumn col_OrdBy,
             TableColumn col_dateOrd, TableColumn col_compDate, TableColumn col_status, TableColumn<POin,POin> col_action){       
-        
+        table.getItems().clear();
         col_action.setCellValueFactory(
                 param -> new ReadOnlyObjectWrapper<>(param.getValue()));
         col_action.setCellFactory(param -> new TableCell<POin, POin>() {
@@ -3032,7 +3072,8 @@ public class WM extends User{
             while (rs3.next()) {
                 ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT DISTINCT PONum, date_rcv FROM POin_rcv WHERE date_rcv >= '" + rs3.getDate("startDate") + "' AND date_rcv < '" + rs3.getDate("endDate") + "';");
                 while (rs2.next()) {
-                    ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, supplier, orderBy, order_date, status FROM POin WHERE status = 'Fully received' AND PONum = '" + rs2.getString("PONum") + "';");
+                    ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, supplier, orderBy, order_date, status FROM POin WHERE (sn LIKE '%"+search+"%' or supplier LIKE '%"+search+"%'"
+                            + "or orderBy LIKE '%"+search+"%' or order_date LIKE '%"+search+"%' or status LIKE '%"+search+"%') AND status = 'Fully received' AND PONum = '" + rs2.getString("PONum") + "';");
                     while (rs.next()) {
                         ObserveList.add(new POin(count, rs2.getString("PONum"),rs.getString("supplier"),rs.getString("orderBy"), rs.getDate("order_date"),rs2.getDate("date_rcv"),rs.getString("status")));
                         count++;
@@ -3091,8 +3132,9 @@ public class WM extends User{
     }
     
     //DOin Table Report View for WM
-    public ObservableList viewDOinReportMonthWM(TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_month, TableColumn col_year, TableColumn col_total,
-            TableColumn<POin,POin> col_action){       
+    public ObservableList viewDOinReportMonthWM(String search, TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_month, TableColumn col_year, TableColumn col_total,
+            TableColumn<POin,POin> col_action){  
+        table.getItems().clear();
         
         col_action.setCellValueFactory(
                 param -> new ReadOnlyObjectWrapper<>(param.getValue()));
@@ -3161,9 +3203,14 @@ public class WM extends User{
         int count =1;
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth");
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth "
+                    + "WHERE (sn LIKE '%"+search+"%' or month LIKE '%"+search+"%' or " +
+                    "year LIKE '%"+search+"%' or startDate LIKE '%"+search+"%' or " +
+                    "endDate LIKE '%"+search+"%');");
             while (rs.next()) {
-                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT Count(Distinct PONum) as qtyMonth,PONum FROM POin_rcv WHERE approvedBy is Not NULL AND date_rcv >= '" + rs.getDate("startDate") + "' AND date_rcv < '" + rs.getDate("endDate") + "';");
+                ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT Count(Distinct PONum) as qtyMonth,PONum FROM POin_rcv WHERE "
+                        + "approvedBy is Not NULL AND date_rcv >= '" + rs.getDate("startDate") + "' "
+                        + "AND date_rcv < '" + rs.getDate("endDate") + "';");
                 while (rs2.next()) {
                     ObserveList.add(new POin(count, rs.getString("month"),rs2.getInt("qtyMonth"),rs.getString("year")));
                     count++;
@@ -3187,8 +3234,9 @@ public class WM extends User{
     }
     
     //DOin Table Report View Per Month for WM
-    public ObservableList viewDOinReportWM(String month, String year, TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_DONum, TableColumn col_supplier, TableColumn col_OrdBy,
-            TableColumn col_dateOrd, TableColumn col_compDate, TableColumn col_status, TableColumn<POin,POin> col_action){       
+    public ObservableList viewDOinReportWM(String search, String month, String year, TableView table, ObservableList<POin> ObserveList, TableColumn col_sn, TableColumn col_DONum, TableColumn col_supplier, TableColumn col_OrdBy,
+            TableColumn col_dateOrd, TableColumn col_compDate, TableColumn col_status, TableColumn<POin,POin> col_action){ 
+        table.getItems().clear();
         
         col_action.setCellValueFactory(
                 param -> new ReadOnlyObjectWrapper<>(param.getValue()));
@@ -3270,7 +3318,8 @@ public class WM extends User{
             while (rs3.next()) {
                 ResultSet rs = connectDB.createStatement().executeQuery("SELECT DISTINCT DONum, PONum, date_rcv FROM POin_rcv WHERE date_rcv >= '" + rs3.getDate("startDate") + "' AND date_rcv < '" + rs3.getDate("endDate") + "';");
                 while (rs.next()) {
-                    ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT sn, supplier, orderBy, order_date, status FROM POin WHERE status = 'Fully received' AND PONum = '" + rs.getString("PONum") +"';");
+                    ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT sn, supplier, orderBy, order_date, status FROM POin WHERE (sn LIKE '%"+search+"%' or supplier LIKE '%"+search+"%'"
+                            + "or orderBy LIKE '%"+search+"%' or order_date LIKE '%"+search+"%' or status LIKE '%"+search+"%') AND status = 'Fully received' AND PONum = '" + rs.getString("PONum") +"';");
                     while (rs2.next()) {
                         ObserveList.add(new POin(rs.getString("DONum"), count, rs2.getString("supplier"),rs2.getString("orderBy"), rs2.getDate("order_date"),rs.getDate("date_rcv"),rs2.getString("status")));
                         count++;
@@ -3330,9 +3379,9 @@ public class WM extends User{
     }
     
     //POout Table Report View for WM
-    public ObservableList viewPOoutReportMonthWM(TableView table, ObservableList<POout> ObserveList, TableColumn col_sn, TableColumn col_month, TableColumn col_year, TableColumn col_total,
+    public ObservableList viewPOoutReportMonthWM(String search, TableView table, ObservableList<POout> ObserveList, TableColumn col_sn, TableColumn col_month, TableColumn col_year, TableColumn col_total,
             TableColumn<POout,POout> col_action){       
-        
+        table.getItems().clear();
         col_action.setCellValueFactory(
                 param -> new ReadOnlyObjectWrapper<>(param.getValue()));
         col_action.setCellFactory(param -> new TableCell<POout, POout>() {
@@ -3398,7 +3447,9 @@ public class WM extends User{
         int count =1;
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth");
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth "
+                    + "WHERE sn LIKE '%"+search+"%' or month LIKE '%"+search+"%' or " +
+                    "year LIKE '%"+search+"%' or startDate LIKE '%"+search+"%' or endDate LIKE '%"+search+"%'");
             while (rs.next()) {
                 ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT Count(DISTINCT PONum) as qtyMonth FROM POout WHERE status = 'Delivered' AND delivery_date >= '" + rs.getDate("startDate") + "' AND delivery_date < '" + rs.getDate("endDate") + "';");
                 while (rs2.next()) {
@@ -3423,9 +3474,9 @@ public class WM extends User{
     }
     
     //POout Table Report View Per Month for WM
-    public ObservableList viewPOoutReportWM(String month, String year, TableView table, ObservableList<POout> ObserveList, TableColumn col_sn, TableColumn col_PONum, TableColumn col_SONum, TableColumn col_company, TableColumn col_CrtBy,
+    public ObservableList viewPOoutReportWM(String search, String month, String year, TableView table, ObservableList<POout> ObserveList, TableColumn col_sn, TableColumn col_PONum, TableColumn col_SONum, TableColumn col_company, TableColumn col_CrtBy,
             TableColumn col_dateCrt, TableColumn col_deliverDate, TableColumn col_status, TableColumn<POout,POout> col_action){       
-        
+        table.getItems().clear();
         col_action.setCellValueFactory(
                 param -> new ReadOnlyObjectWrapper<>(param.getValue()));
         col_action.setCellFactory(param -> new TableCell<POout, POout>() {
@@ -3497,7 +3548,11 @@ public class WM extends User{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT startDate, endDate FROM ReportMonth WHERE month = '" + month + "' AND year = '" + year + "';");
             while (rs3.next()) {
-                ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, SONum, company, createdBy, date_created, delivery_date, status FROM POout WHERE status = 'Delivered'AND delivery_date >= '" + rs3.getDate("startDate") + "' AND delivery_date < '" + rs3.getDate("endDate") + "';");
+                ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, SONum, company, createdBy, date_created, delivery_date, status FROM POout "
+                        + "WHERE (sn LIKE '%"+search+"%' or PONum LIKE '%"+search+"%'"
+                        + "or SONum LIKE '%"+search+"%' or company LIKE '%"+search+"%' or createdBy LIKE '%"+search+"%'"
+                        + "or date_created LIKE '%"+search+"%' or delivery_date LIKE '%"+search+"%' or status LIKE '%"+search+"%') "
+                        + "AND status = 'Delivered'AND delivery_date >= '" + rs3.getDate("startDate") + "' AND delivery_date < '" + rs3.getDate("endDate") + "';");
                 while (rs.next()) {
                     ObserveList.add(new POout(count, rs.getString("PONum"),rs.getString("SONum"),rs.getString("company"),rs.getString("createdBy"), rs.getDate("date_created"),rs.getDate("delivery_date"),rs.getString("status")));
                     count++;
@@ -3556,9 +3611,9 @@ public class WM extends User{
     }
     
     //DOout Table Report View for WM
-    public ObservableList viewDOoutReportMonthWM(TableView table, ObservableList<POout> ObserveList, TableColumn col_sn, TableColumn col_month, TableColumn col_year, TableColumn col_total,
+    public ObservableList viewDOoutReportMonthWM(String search, TableView table, ObservableList<POout> ObserveList, TableColumn col_sn, TableColumn col_month, TableColumn col_year, TableColumn col_total,
             TableColumn<POout,POout> col_action){       
-        
+        table.getItems().clear();
         col_action.setCellValueFactory(
                 param -> new ReadOnlyObjectWrapper<>(param.getValue()));
         col_action.setCellFactory(param -> new TableCell<POout, POout>() {
@@ -3624,7 +3679,9 @@ public class WM extends User{
         int count =1;
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth");
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth "
+                    + "WHERE sn LIKE '%"+search+"%' or month LIKE '%"+search+"%' or " +
+                    "year LIKE '%"+search+"%' or startDate LIKE '%"+search+"%' or endDate LIKE '%"+search+"%'");
             while (rs.next()) {
                 ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT Count(DISTINCT DONum) as qtyMonth FROM POout WHERE status = 'Delivered' AND delivery_date >= '" + rs.getDate("startDate") + "' AND delivery_date < '" + rs.getDate("endDate") + "';");
                 while (rs2.next()) {
@@ -3649,9 +3706,9 @@ public class WM extends User{
     }
     
     //DOout Table Report View Per Month for WM
-    public ObservableList viewDOoutReportWM(String month, String year, TableView table, ObservableList<POout> ObserveList, TableColumn col_sn, TableColumn col_DONum, TableColumn col_SONum, TableColumn col_company, TableColumn col_CrtBy,
+    public ObservableList viewDOoutReportWM(String search, String month, String year, TableView table, ObservableList<POout> ObserveList, TableColumn col_sn, TableColumn col_DONum, TableColumn col_SONum, TableColumn col_company, TableColumn col_CrtBy,
             TableColumn col_dateCrt, TableColumn col_deliverDate, TableColumn col_status, TableColumn<POout,POout> col_action){       
-        
+        table.getItems().clear();
         col_action.setCellValueFactory(
                 param -> new ReadOnlyObjectWrapper<>(param.getValue()));
         col_action.setCellFactory(param -> new TableCell<POout, POout>() {
@@ -3722,7 +3779,11 @@ public class WM extends User{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT startDate, endDate FROM ReportMonth WHERE month = '" + month + "' AND year = '" + year + "';");
             while (rs3.next()) {
-                ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, DONum, SONum, company, createdBy, date_created, delivery_date, status FROM POout WHERE status = 'Delivered'AND delivery_date >= '" + rs3.getDate("startDate") + "' AND delivery_date < '" + rs3.getDate("endDate") + "';");
+                ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, DONum, SONum, company, createdBy, date_created, delivery_date, status FROM POout "
+                        + "WHERE (sn LIKE '%"+search+"%' or DONum LIKE '%"+search+"%'"
+                        + "or SONum LIKE '%"+search+"%' or company LIKE '%"+search+"%' or createdBy LIKE '%"+search+"%'"
+                        + "or date_created LIKE '%"+search+"%' or delivery_date LIKE '%"+search+"%' or status LIKE '%"+search+"%') "
+                        + "AND status = 'Delivered'AND delivery_date >= '" + rs3.getDate("startDate") + "' AND delivery_date < '" + rs3.getDate("endDate") + "';");
                 while (rs.next()) {
                     ObserveList.add(new POout(rs.getString("DONum"), count, rs.getString("SONum"),rs.getString("company"),rs.getString("createdBy"), rs.getDate("date_created"),rs.getDate("delivery_date"),rs.getString("status")));
                     count++;

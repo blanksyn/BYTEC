@@ -52,13 +52,17 @@ public class WM_POIN_Controller extends WM implements Initializable{
 
     @FXML
     private TableColumn<POin, POin> col_action;
+    
+    @FXML
+    TextField TF_keyword;
 
     ObservableList<POin> ObserveList = FXCollections.observableArrayList();
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
+        String keyword = TF_keyword.getText();
         welcome(welcomeLabel);
-        viewPOWM(tbl_PO, ObserveList, col_sn, col_PONumber, col_supplierName, col_orderedBy, col_orderedDate, col_status, col_action);
+        viewPOWM(keyword,tbl_PO, ObserveList, col_sn, col_PONumber, col_supplierName, col_orderedBy, col_orderedDate, col_status, col_action);
     }
 
     @FXML
@@ -180,6 +184,7 @@ public class WM_POIN_Controller extends WM implements Initializable{
     
     @FXML
     void searchFunction(ActionEvent event) {
-
+        String keyword = TF_keyword.getText();
+        viewPOWM(keyword,tbl_PO, ObserveList, col_sn, col_PONumber, col_supplierName, col_orderedBy, col_orderedDate, col_status, col_action);
     }
 }

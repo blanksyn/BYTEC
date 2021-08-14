@@ -58,7 +58,8 @@ public class WM_genRpt_out_DOView_Controller extends WM implements Initializable
         welcome(welcomeLabel);
         labelYear.setText(thisYear);
         labelMonth.setText(thisMonth);
-        viewDOoutReportWM(thisMonth, thisYear, tbl_POinRpt, ObserveList, col_sn, col_DONum, col_SONum, col_company, col_CrtBy,
+        String keyword = TF_keyword.getText();
+        viewDOoutReportWM(keyword, thisMonth, thisYear, tbl_POinRpt, ObserveList, col_sn, col_DONum, col_SONum, col_company, col_CrtBy,
             col_dateCrt, col_deliverDate, col_status, col_action);
     }
 
@@ -219,7 +220,9 @@ public class WM_genRpt_out_DOView_Controller extends WM implements Initializable
 
     @FXML
     void searchFunction(ActionEvent event) {
-
+        String keyword = TF_keyword.getText();
+        viewDOoutReportWM(keyword, thisMonth, thisYear, tbl_POinRpt, ObserveList, col_sn, col_DONum, col_SONum, col_company, col_CrtBy,
+            col_dateCrt, col_deliverDate, col_status, col_action);
     }
 
 }
