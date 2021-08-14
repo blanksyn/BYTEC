@@ -92,7 +92,7 @@
             <Font name="Bodoni MT" size="14.0" />
          </font>
       </Button>
-      <TextField fx:id="TF_keyword" layoutX="1027.0" layoutY="44.0" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
+      <TextField fx:id="TF_keyword" layoutX="1027.0" layoutY="44.0" onAction="#searchFunction" prefHeight="30.0" prefWidth="149.0" promptText="Keyword" style="-fx-border-color: #4B0082;">
          <font>
             <Font name="Bodoni MT" size="12.0" />
          </font>
