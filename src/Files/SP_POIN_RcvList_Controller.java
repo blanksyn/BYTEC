@@ -100,7 +100,7 @@ public class SP_POIN_RcvList_Controller {
 
             while(rsStatus.next()) {
 
-                String getValues = "SELECT * FROM POin_rcv WHERE PONum = '"+ rsStatus.getString("PONum")+ "' AND approvedBy is null GROUP BY DONum ";
+                String getValues = "SELECT PONum,DONum,date_rcv,rcvBy,approvedBy FROM POin_rcv WHERE PONum = '"+ rsStatus.getString("PONum")+ "' AND approvedBy is null GROUP BY DONum ";
                 Statement statement = connectDB.createStatement();
                 ResultSet queryResult = statement.executeQuery(getValues);
 

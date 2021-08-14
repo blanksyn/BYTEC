@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="BYTEC:jar">
+  <artifact type="jar" build-on-make="true" name="BYTEC:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/BYTEC_jar</output-path>
     <root id="archive" name="BYTEC.jar">
       <element id="module-output" name="BYTEC" />
@@ -155,6 +155,14 @@
       <element id="file-copy" path="$PROJECT_DIR$/lib/poi-ooxml-5.0.0.jar" />
       <element id="file-copy" path="$PROJECT_DIR$/lib/poi-ooxml-full-5.0.0.jar" />
       <element id="file-copy" path="$PROJECT_DIR$/lib/xmlbeans-4.0.0.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../poi-5.0.0/ooxml-lib/xmlbeans-4.0.0.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../poi-5.0.0/poi-ooxml-lite-5.0.0.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../poi-5.0.0/poi-ooxml-full-5.0.0.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../poi-5.0.0/poi-5.0.0.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../poi-5.0.0/poi-ooxml-5.0.0.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../poi-5.0.0/ooxml-lib/commons-compress-1.20.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../poi-5.0.0/lib/commons-collections4-4.4.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/barcode4j.jar" />
     </root>
   </artifact>
 </component>

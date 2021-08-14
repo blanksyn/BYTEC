@@ -67,7 +67,6 @@ public class RC_AppRcvList_Controller {
     @FXML
     private TextField TF_keyword;
 
-
     String Username;
 
     ObservableList<POin> rcvList = FXCollections.observableArrayList();
@@ -220,9 +219,5 @@ public class RC_AppRcvList_Controller {
         Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
     }
 
-    @FXML
-    void searchFunction(ActionEvent event) {
-
-    }
 
 }

@@ -40,24 +40,6 @@ public class SP_POIN_PO_Controller {
     private Label welcomeLabel;
 
     @FXML
-    private Button pickListBtn;
-
-    @FXML
-    private Button WHEnvBtn;
-
-    @FXML
-    private Button POINBtn;
-
-    @FXML
-    private Button POOutBtn;
-
-    @FXML
-    private Button POBtn;
-
-    @FXML
-    private Button rcvListBtn;
-
-    @FXML
     private TableView<POin> tbl_PO;
 
     @FXML
@@ -92,16 +74,16 @@ public class SP_POIN_PO_Controller {
 
     ObservableList<POin> POList = FXCollections.observableArrayList();
 
+    DatabaseConnection con = new DatabaseConnection();
+    Connection connectDB = con.getConnection();
+
     @FXML
     void initialize(){
         createPOINBtn.setVisible(false);
         int count = 1;
 
         try{
-            DatabaseConnection con = new DatabaseConnection();
-            Connection connectDB = con.getConnection();
-
-            String getValues = "SELECT * FROM POin WHERE status != 'Fully Received';";
+            String getValues = "SELECT PONum,supplier,orderBy,order_date,status FROM POin WHERE status != 'Fully Received';";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 

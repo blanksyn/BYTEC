@@ -83,7 +83,7 @@ public class SP_productMgt_ML_detailView_Controller {
             DatabaseConnection con = new DatabaseConnection();
             Connection connectDB = con.getConnection();
 
-            String getValues = "SELECT * FROM product_master WHERE upc = '"+ upc+ "' LIMIT 1;";
+            String getValues = "SELECT prod_name,unit,max_qty,supplier,weight,length,width,height,min_qty,description,auto_restock_status,special_handling,category FROM product_master WHERE upc = '"+ upc+ "' LIMIT 1;";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 
@@ -125,9 +125,6 @@ public class SP_productMgt_ML_detailView_Controller {
 
                 CB_cat.setValue(queryResult.getString("category"));
                 CB_cat.setEditable(false);
-
-                //IV_product
-
 
 
             }

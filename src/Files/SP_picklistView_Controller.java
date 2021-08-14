@@ -20,9 +20,6 @@ import java.sql.*;
 public class SP_picklistView_Controller {
 
     @FXML
-    private Button closeBtn;
-
-    @FXML
     private Label welcomeLabel;
 
     @FXML
@@ -45,12 +42,6 @@ public class SP_picklistView_Controller {
 
     @FXML
     private TextField TF_keyword;
-
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<?> CB_field;
 
     @FXML
     private Label Lab_PONum;
@@ -76,6 +67,9 @@ public class SP_picklistView_Controller {
     String SONum ="";
     ObservableList<POout> pickList = FXCollections.observableArrayList();
 
+    DatabaseConnection con = new DatabaseConnection();
+    Connection connectDB = con.getConnection();
+
     @FXML
     void initialize(String username, String SONum, String status){
         int count =1;
@@ -87,18 +81,15 @@ public class SP_picklistView_Controller {
         this.SONum = SONum;
         Lab_SONum.setText(SONum);
 
-        //System.out.println("PONum: "+ PONum);
-        //System.out.println("Username: " + Username);
+        approveBtn.setVisible(false);
+        rejectBtn.setVisible(false);
 
-        if(status.equals("Unpicked") || status.equals("Delivered")){
-            approveBtn.setVisible(false);
-            rejectBtn.setVisible(false);
+        if(status.equals("Not Approved")){
+            approveBtn.setVisible(true);
+            rejectBtn.setVisible(true);
         }
 
         try{
-            DatabaseConnection con = new DatabaseConnection();
-            Connection connectDB = con.getConnection();
-
             //fill table
             String getSO = "SELECT PONum FROM POout WHERE SONum = "+ SONum ;
             Statement stSO = connectDB.createStatement();
@@ -114,9 +105,6 @@ public class SP_picklistView_Controller {
         }
 
         try{
-            DatabaseConnection con = new DatabaseConnection();
-            Connection connectDB = con.getConnection();
-
             //fill table
             String getValues = "SELECT sn,upc,prod_name,sku,sku_scanned FROM pickingList_detail WHERE SONum = "+ SONum ;
             Statement statement = connectDB.createStatement();
@@ -141,8 +129,6 @@ public class SP_picklistView_Controller {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
-
 
         col_sn.setCellValueFactory((new PropertyValueFactory<>("sn")));
         col_productName.setCellValueFactory((new PropertyValueFactory<>("prod_name")));
@@ -190,9 +176,6 @@ public class SP_picklistView_Controller {
 
     @FXML
     void approvePL(ActionEvent event) throws SQLException {
-        DatabaseConnection con = new DatabaseConnection();
-        Connection connectDB = con.getConnection();
-
         String DO = generateDONum();
         //update picking list status to approved
         String getLabel = "UPDATE POout SET status = 'Approved',DONum = ? WHERE SONum = '"+ SONum + "'";
@@ -201,7 +184,7 @@ public class SP_picklistView_Controller {
         ps.execute();
 
         //update product_indv status
-        String getProd = "SELECT sku,sku_scanned FROM pickingList_detail WHERE SONum = " +SONum +" AND (DONum ='' or DONum is null)";
+        String getProd = "SELECT sku,sku_scanned,upc FROM pickingList_detail WHERE SONum = " +SONum +" AND (DONum ='' or DONum is null)";
         Statement stProd = connectDB.createStatement();
         ResultSet rsProd = stProd.executeQuery(getProd);
         while(rsProd.next()) {
@@ -221,6 +204,23 @@ public class SP_picklistView_Controller {
             String upProdSKU = "UPDATE product_indv SET status = 'Packed' WHERE sku = '" + rsProd.getString("sku_scanned") + "';";
             PreparedStatement psUpProdSKU = connectDB.prepareStatement(upProdSKU);
             psUpProdSKU.execute();
+
+            //find current quantity in master list and update
+            System.out.println("Updating qty in masterlist...");
+
+            String getValues = "SELECT qty FROM product_master WHERE upc = '" + rsProd.getString("upc") + "';";
+            Statement statement = connectDB.createStatement();
+            ResultSet queryResult = statement.executeQuery(getValues);
+
+            while (queryResult.next()) {
+                int num = queryResult.getInt("qty");
+                num--;
+                String updateQty = "UPDATE product_master SET qty = '" + num + "' WHERE upc = '" + rsProd.getString("upc") + "';";
+                PreparedStatement pstQty = connectDB.prepareStatement(updateQty);
+                pstQty.execute();
+                System.out.println("Master list quantity successfully updated: "+ rsProd.getString("upc"));
+            }
+
         }
 
         System.out.println("Purchase Order Approved.");
@@ -234,9 +234,6 @@ public class SP_picklistView_Controller {
 
         //if there is existing DONum
         try{
-            DatabaseConnection con = new DatabaseConnection();
-            Connection connectDB = con.getConnection();
-
             //get latest DO number
             String getDONum = "SELECT DONum FROM POout ORDER BY DONum DESC LIMIT 1";
             Statement stDONum = connectDB.createStatement();
@@ -271,8 +268,6 @@ public class SP_picklistView_Controller {
 
     @FXML
     void rejectPL(ActionEvent event) throws SQLException {
-        DatabaseConnection con = new DatabaseConnection();
-        Connection connectDB = con.getConnection();
         String rejectCouunt ="0";
         String getReject = "SELECT reject FROM POout WHERE SONum = '"+ SONum + "' LIMIT 1";
         Statement statement = connectDB.createStatement();

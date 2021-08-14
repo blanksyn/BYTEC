@@ -25,28 +25,10 @@ import java.sql.*;
 public class SP_DOOUT_Controller {
 
     @FXML
-    private Button closeBtn;
-
-    @FXML
     private ImageView logoutBtn;
 
     @FXML
     private Label welcomeLabel;
-
-    @FXML
-    private Button pickListBtn;
-
-    @FXML
-    private Button WHEnvBtn;
-
-    @FXML
-    private Button POINBtn;
-
-    @FXML
-    private Button POOutBtn;
-
-    @FXML
-    private Button POBtn;
 
     @FXML
     private TableView<POout> tbl_DO;
@@ -78,12 +60,6 @@ public class SP_DOOUT_Controller {
     @FXML
     private TextField TF_keyword;
 
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<?> CB_field;
-
     String Username,PONum;
     ObservableList<POout> DOList = FXCollections.observableArrayList();
 
@@ -95,7 +71,7 @@ public class SP_DOOUT_Controller {
             DatabaseConnection con = new DatabaseConnection();
             Connection connectDB = con.getConnection();
 
-            String getStatus = "SELECT * FROM POout WHERE status = 'Approved';";
+            String getStatus = "SELECT PONum,SONum,DONum,company,date_created,delivery_date FROM POout WHERE status = 'Approved';";
             Statement stStatus = connectDB.createStatement();
             ResultSet rsStatus = stStatus.executeQuery(getStatus);
 
