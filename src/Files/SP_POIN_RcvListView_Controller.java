@@ -316,10 +316,6 @@ public class SP_POIN_RcvListView_Controller {
         closeWindow(event);
     }
 
-    @FXML
-    void searchFunction(ActionEvent event) {
-
-    }
 
     void generateNewSKU(String upc, int qty) throws SQLException {
         DatabaseConnection con = new DatabaseConnection();

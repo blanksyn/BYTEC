@@ -67,11 +67,6 @@ public class RC_AppRcvList_Controller {
     @FXML
     private TextField TF_keyword;
 
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<String> CB_field;
 
     String Username;
 

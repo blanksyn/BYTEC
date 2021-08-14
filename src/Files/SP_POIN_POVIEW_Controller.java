@@ -59,11 +59,6 @@ public class SP_POIN_POVIEW_Controller {
     @FXML
     private TextField TF_keyword;
 
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<String> CB_field;
 
     ObservableList<POin> POList = FXCollections.observableArrayList();
     private double xOffset = 0;
@@ -192,9 +187,5 @@ public class SP_POIN_POVIEW_Controller {
         }
     }
 
-    @FXML
-    void searchFunction(ActionEvent event) {
-
-    }
 
 }

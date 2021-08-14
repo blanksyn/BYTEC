@@ -54,11 +54,6 @@ public class RC_POView_Controller {
     @FXML
     private TextField TF_keyword;
 
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<?> CB_field;
 
     @FXML
     private Label Lab_PONum;

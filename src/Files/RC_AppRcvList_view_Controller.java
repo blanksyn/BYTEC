@@ -61,12 +61,6 @@ public class RC_AppRcvList_view_Controller {
     private TextField TF_keyword;
 
     @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<String> CB_field;
-
-    @FXML
     private Label Lab_PONum;
 
     @FXML
@@ -284,9 +278,5 @@ public class RC_AppRcvList_view_Controller {
         closeWindow(event);
     }
 
-    @FXML
-    void searchFunction(ActionEvent event) {
-
-    }
 
 }

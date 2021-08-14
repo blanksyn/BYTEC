@@ -289,9 +289,5 @@ public class SP_POIN_PO_Controller {
         Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
     }
 
-    @FXML
-    void searchFunction(ActionEvent event) {
-
-    }
 
 }

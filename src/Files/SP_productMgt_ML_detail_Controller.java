@@ -52,11 +52,6 @@ public class SP_productMgt_ML_detail_Controller {
     @FXML
     private TextField TF_keyword;
 
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<String> CB_field;
 
     String Username, upc;
 
@@ -146,11 +141,6 @@ public class SP_productMgt_ML_detail_Controller {
     void closeWindow(ActionEvent event) {
         Navigation nav = new Navigation();
         nav.SP_productManagement(event,Username);
-    }
-
-    @FXML
-    void searchFunction(ActionEvent event) {
-
     }
 
 }

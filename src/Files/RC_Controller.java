@@ -70,11 +70,6 @@ public class RC_Controller {
     @FXML
     private TextField TF_keyword;
 
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<?> CB_field;
     String Username;
 
     ObservableList<POin> rcvPO = FXCollections.observableArrayList();
@@ -222,11 +217,6 @@ public class RC_Controller {
     @FXML
     void logoutAcc(MouseEvent event) throws IOException {
         Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
-    }
-
-    @FXML
-    void searchFunction(ActionEvent event) {
-
     }
 
 }

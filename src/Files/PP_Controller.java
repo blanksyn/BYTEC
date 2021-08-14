@@ -54,11 +54,6 @@ public class PP_Controller {
     @FXML
     private TextField TF_keyword;
 
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<?> CB_field;
 
     String Username;
 

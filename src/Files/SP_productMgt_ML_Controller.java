@@ -99,11 +99,6 @@ public class SP_productMgt_ML_Controller {
     @FXML
     private TextField TF_keyword;
 
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private ComboBox<String> CB_field;
 
     String Username;
 
@@ -319,9 +314,5 @@ public class SP_productMgt_ML_Controller {
         Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
     }
 
-    @FXML
-    void searchFunction(ActionEvent event) {
-
-    }
 
 }
