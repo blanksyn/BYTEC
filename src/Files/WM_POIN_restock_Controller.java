@@ -8,7 +8,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -45,13 +44,17 @@ public class WM_POIN_restock_Controller extends WM implements Initializable{
 
     @FXML
     private TableColumn<POin, POin> col_action;
+    
+    @FXML
+    TextField TF_keyword;
 
     ObservableList<POin> ObserveList = FXCollections.observableArrayList();
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
+        String keyword = TF_keyword.getText();
         welcome(welcomeLabel);
-        viewPOApprovalWM(tableCourier, ObserveList, col_sn, col_PONumber, col_supplierName, col_dateCreated, col_action);
+        viewPOApprovalWM(keyword,tableCourier, ObserveList, col_sn, col_PONumber, col_supplierName, col_dateCreated, col_action);
     }
     
     @FXML
@@ -174,7 +177,8 @@ public class WM_POIN_restock_Controller extends WM implements Initializable{
 
     @FXML
     void searchFunction(ActionEvent event) {
-
+        String keyword = TF_keyword.getText();
+        viewPOApprovalWM(keyword,tableCourier, ObserveList, col_sn, col_PONumber, col_supplierName, col_dateCreated, col_action);
     }
 
 }

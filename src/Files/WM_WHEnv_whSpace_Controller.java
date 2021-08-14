@@ -74,14 +74,16 @@ public class WM_WHEnv_whSpace_Controller extends WM implements Initializable{
     ObservableList<setup_storage> ObserveList = FXCollections.observableArrayList();
     
     @Override
-    public void initialize(URL url, ResourceBundle rb){welcome(welcomeLabel);
+    public void initialize(URL url, ResourceBundle rb){
+        String keyword = TF_keyword.getText();
+        welcome(welcomeLabel);
         cbName_Convention.getItems().add("Alphabetical");
         cbName_Convention.getItems().add("Numerical");
         cbLevel_Convention.getItems().add("Alphabetical");
         cbLevel_Convention.getItems().add("Numerical");
         cbCol_Convention.getItems().add("Alphabetical");
         cbCol_Convention.getItems().add("Numerical");
-        viewStorageWM(tableSpace,ObserveList, col_sn, col_Name, col_length, col_width, col_height, col_vol, col_volA, col_action);
+        viewStorageWM(keyword,tableSpace,ObserveList, col_sn, col_Name, col_length, col_width, col_height, col_vol, col_volA, col_action);
 
         cbCol_Convention.setVisible(false);
         cbLevel_Convention.setVisible(false);
@@ -481,6 +483,8 @@ public class WM_WHEnv_whSpace_Controller extends WM implements Initializable{
 
     @FXML
     void searchFunction(ActionEvent event) {
+        String keyword = TF_keyword.getText();
+        viewStorageWM(keyword,tableSpace,ObserveList, col_sn, col_Name, col_length, col_width, col_height, col_vol, col_volA, col_action);
 
     }
 

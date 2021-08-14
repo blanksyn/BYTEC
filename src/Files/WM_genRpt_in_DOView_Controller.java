@@ -63,7 +63,8 @@ public class WM_genRpt_in_DOView_Controller extends WM implements Initializable{
         System.out.print(thisYear);
         System.out.print(thisMonth);
         labelMonth.setText(thisMonth);
-        viewDOinReportWM(thisMonth, thisYear, tbl_POinRpt, ObserveList, col_sn, col_DONum, col_supplier, col_OrdBy,
+        String keyword = TF_keyword.getText();
+        viewDOinReportWM(keyword, thisMonth, thisYear, tbl_POinRpt, ObserveList, col_sn, col_DONum, col_supplier, col_OrdBy,
             col_dateOrd, col_compDate, col_status, col_action);
     }
 
@@ -224,7 +225,9 @@ public class WM_genRpt_in_DOView_Controller extends WM implements Initializable{
 
     @FXML
     void searchFunction(ActionEvent event) {
-
+        String keyword = TF_keyword.getText();
+        viewDOinReportWM(keyword, thisMonth, thisYear, tbl_POinRpt, ObserveList, col_sn, col_DONum, col_supplier, col_OrdBy,
+            col_dateOrd, col_compDate, col_status, col_action);
     }
 
 }

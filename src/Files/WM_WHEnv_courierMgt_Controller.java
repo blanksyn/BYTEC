@@ -52,8 +52,10 @@ public class WM_WHEnv_courierMgt_Controller extends WM implements Initializable{
     ObservableList<setup_courier> ObserveList = FXCollections.observableArrayList();
     
     @Override
-    public void initialize(URL url, ResourceBundle rb){welcome(welcomeLabel);
-        ObserveList = viewCourierWM(tableCourier,ObserveList, col_sn, col_Name, col_action);
+    public void initialize(URL url, ResourceBundle rb){
+        String keyword = TF_keyword.getText();
+        welcome(welcomeLabel);
+        ObserveList = viewCourierWM(keyword, tableCourier,ObserveList, col_sn, col_Name, col_action);
     }
     
     @FXML
@@ -291,6 +293,7 @@ public class WM_WHEnv_courierMgt_Controller extends WM implements Initializable{
     
     @FXML
     void searchFunction(ActionEvent event) {
-
+        String keyword = TF_keyword.getText();
+        ObserveList = viewCourierWM(keyword, tableCourier,ObserveList, col_sn, col_Name, col_action);
     }
 }

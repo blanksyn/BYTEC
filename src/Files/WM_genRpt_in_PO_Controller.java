@@ -57,7 +57,8 @@ public class WM_genRpt_in_PO_Controller extends WM implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle rb){
         welcome(welcomeLabel);
-        viewPOinReportMonthWM(tableCourier, ObserveList, col_sn, col_month, col_year, col_total, col_action);
+        String keyword = TF_keyword.getText();
+        viewPOinReportMonthWM(keyword, tableCourier, ObserveList, col_sn, col_month, col_year, col_total, col_action);
     }
 
     @FXML
@@ -267,7 +268,8 @@ public class WM_genRpt_in_PO_Controller extends WM implements Initializable{
 
     @FXML
     void searchFunction(ActionEvent event) {
-
+        String keyword = TF_keyword.getText();
+        viewPOinReportMonthWM(keyword, tableCourier, ObserveList, col_sn, col_month, col_year, col_total, col_action);
     }
 
 }

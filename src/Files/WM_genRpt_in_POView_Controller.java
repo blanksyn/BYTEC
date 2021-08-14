@@ -58,7 +58,8 @@ public class WM_genRpt_in_POView_Controller extends WM implements Initializable{
         welcome(welcomeLabel);
         labelYear.setText(thisYear);
         labelMonth.setText(thisMonth);
-        viewPOinReportWM(thisMonth, thisYear, tbl_POinRpt, ObserveList, col_sn, col_PONum, col_supplier, col_OrdBy,
+        String keyword = TF_keyword.getText();
+        viewPOinReportWM(keyword, thisMonth, thisYear, tbl_POinRpt, ObserveList, col_sn, col_PONum, col_supplier, col_OrdBy,
             col_dateOrd, col_compDate, col_status, col_action);
     }
 
@@ -219,7 +220,9 @@ public class WM_genRpt_in_POView_Controller extends WM implements Initializable{
 
     @FXML
     void searchFunction(ActionEvent event) {
-
+        String keyword = TF_keyword.getText();
+        viewPOinReportWM(keyword, thisMonth, thisYear, tbl_POinRpt, ObserveList, col_sn, col_PONum, col_supplier, col_OrdBy,
+            col_dateOrd, col_compDate, col_status, col_action);
     }
 
 }

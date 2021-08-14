@@ -57,8 +57,9 @@ public class WM_genRpt_in_DO_Controller extends WM implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
+        String keyword = TF_keyword.getText();
         welcome(welcomeLabel);
-        viewDOinReportMonthWM(tableCourier, ObserveList, col_sn, col_month, col_year, col_total, col_action);
+        viewDOinReportMonthWM(keyword, tableCourier, ObserveList, col_sn, col_month, col_year, col_total, col_action);
     }
 
     @FXML
@@ -269,7 +270,8 @@ public class WM_genRpt_in_DO_Controller extends WM implements Initializable{
 
     @FXML
     void searchFunction(ActionEvent event) {
-
+        String keyword = TF_keyword.getText();
+        viewDOinReportMonthWM(keyword,tableCourier, ObserveList, col_sn, col_month, col_year, col_total, col_action);
     }
 
 }
