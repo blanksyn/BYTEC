@@ -47,10 +47,6 @@ public class Main_Controller {
 
     private double xOffset = 0;
     private double yOffset = 0;
-    static String user;
-
-    DatabaseConnection con = new DatabaseConnection();
-    Connection connectDB = con.getConnection();
 
     @FXML
     void cancelAccount(ActionEvent event) {
@@ -62,28 +58,36 @@ public class Main_Controller {
     void loginAccount(ActionEvent event) throws IOException {
         if(username.getText().isBlank()==false && password.getText().isBlank()==false){
             validateLogin(event);
+            //prototypeLogin(event);
         }else{
             Errormsg.setText("Please enter Username/Password.");
         }
     }
 
     private void validateLogin(ActionEvent event){
+        //prototypeLogin(event);
 
+        DatabaseConnection con = new DatabaseConnection();
+        Connection connectDB = con.getConnection();
         String UT = "";
+        String ac = username.getText();
 
-        String verifyLogin= "SELECT count(1) as toCheck,type FROM accounts WHERE employeeID = '" + username.getText() + "' AND password = '" + password.getText() + "'";
+        String verifyLogin= "SELECT count(1) FROM accounts WHERE employeeID = '" + username.getText() + "' AND password = '" + password.getText() + "'";
+        String getUserType = "SELECT type FROM accounts WHERE employeeID = '" + username.getText() + "' AND password = '" + password.getText() + "'";
 
         try{
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(verifyLogin);
+            Statement statement2 = connectDB.createStatement();
+            ResultSet queryUserType = statement2.executeQuery(getUserType);
 
             while(queryResult.next()){
-                if(queryResult.getInt("toCheck")==1) {
-                    UT = queryResult.getString("type");
-                    //change static username
-                    this.user = username.getText();
-
-                    login(event,UT,this.user);
+                if(queryResult.getInt(1)==1){
+                    while(queryUserType.next()){
+                        UT = queryUserType.getString(1);
+                    }
+                    login(event,UT,ac);
+                    
                 }else{
                     Errormsg.setText("Invalid login. Try again.");
                 }
@@ -94,13 +98,53 @@ public class Main_Controller {
         }
     }
 
+    private void prototypeLogin(ActionEvent event) {
+        String ac = username.getText();
+        //System.out.println(ac);
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            Parent root = loader.load(getClass().getResource(ac+".fxml"));
+            Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 1200, 700);
+            loginStage.setScene(scene);
+            loginStage.centerOnScreen();
+            loginStage.show();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
 
     private void login(ActionEvent event, String userType,String user){
 
-        //change scene
+        //pass username to controller
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource(userType+".fxml"));
             Parent root = loader.load();
+
+            switch (userType){
+                case "WM":
+                    WM controllerwm = loader.getController();
+
+                    break;
+
+                case "SP":
+                    SP_Controller controllersp = loader.getController();
+                    controllersp.welcomeMsg(user);
+                    break;
+
+                case "PP":
+                    PP_Controller controllerpp = loader.getController();
+                    controllerpp.welcomeMsg(user);
+                    break;
+                case "RC":
+                    RC_Controller controllerrc = loader.getController();
+                    controllerrc.welcomeMsg(user);
+                    break;
+                default: System.out.println("Error! Invalid user type.");
+            }
+
             Navigation nav = new Navigation();
             nav.stageSetup(event,root);
 

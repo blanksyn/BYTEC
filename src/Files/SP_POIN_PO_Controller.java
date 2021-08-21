@@ -83,7 +83,7 @@ public class SP_POIN_PO_Controller {
         int count = 1;
 
         try{
-            String getValues = "SELECT PONum,supplier,orderBy,order_date,status FROM POin WHERE (status != 'Fully Received' AND status != 'Not Approved by WM');";
+            String getValues = "SELECT PONum,supplier,orderBy,order_date,status FROM POin WHERE status != 'Fully Received';";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 

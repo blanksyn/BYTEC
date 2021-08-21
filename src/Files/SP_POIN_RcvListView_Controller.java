@@ -72,9 +72,6 @@ public class SP_POIN_RcvListView_Controller {
     String Username,DONum,PONum;
     ObservableList<POin> rcvListView = FXCollections.observableArrayList();
 
-    DatabaseConnection con = new DatabaseConnection();
-    Connection connectDB = con.getConnection();
-
     @FXML
     void initialize(String username,String DONum,String PONum){
         welcomeLabel.setText("User: "+ username);
@@ -84,7 +81,9 @@ public class SP_POIN_RcvListView_Controller {
         Lab_PONum.setText(PONum);
         this.PONum = PONum;
         int count = 1;
-        RejectBtn.setVisible(false);
+
+        DatabaseConnection con = new DatabaseConnection();
+        Connection connectDB = con.getConnection();
 
         //hide approve button
         try{
@@ -209,7 +208,6 @@ public class SP_POIN_RcvListView_Controller {
 
         //add product qty to master list
         // get received quantity
-        System.out.println("Changing master quantity...");
         String getQty = "SELECT upc,qty FROM POin_rcv WHERE DONum = "+ DONum;
         Statement stQty = connectDB.createStatement();
         ResultSet rsQty = stQty.executeQuery(getQty);
@@ -220,26 +218,24 @@ public class SP_POIN_RcvListView_Controller {
             Statement stQtyML = connectDB.createStatement();
             ResultSet rsQtyML = stQtyML.executeQuery(getQtyML);
 
-            int qty_rcv = rsQty.getInt("qty");
             while(rsQtyML.next()) {
                 //add both qty
-                int qty_master = rsQtyML.getInt("qty");
-                int sum = qty_master + qty_rcv;
-                String updateQty = "UPDATE product_master SET qty = '" + sum +"' WHERE upc = '" + rsQty.getString("upc") + "';";
+                int sum = rsQtyML.getInt("qty")+ rsQty.getInt("qty");
+                String updateQty = "UPDATE product_master SET qty =" + sum +" WHERE upc = " + rsQty.getString("upc");
                 PreparedStatement psUpdateQty = connectDB.prepareStatement(updateQty);
                 psUpdateQty.execute();
+                System.out.println("Product master quantity updated.");
             }
-            System.out.println("Product master quantity updated.");
+
         }
 
         //check for existing SKU*
-        System.out.println("Generating SKU...");
         String getSKUstatus = "SELECT upc,qty FROM POin_rcv WHERE DONum = "+ DONum;
         Statement stSKU = connectDB.createStatement();
         ResultSet rsSKU = stSKU.executeQuery(getSKUstatus);
 
         while(rsSKU.next()){
-            String getSKUindv = "SELECT count(upc) AS c FROM product_indv WHERE upc = '"+ rsSKU.getString("upc") + "';";
+            String getSKUindv = "SELECT count(upc) AS c FROM product_indv WHERE upc = "+ rsSKU.getString("upc");
             Statement stSKUindv = connectDB.createStatement();
             ResultSet rsSKUindv = stSKUindv.executeQuery(getSKUindv);
             while(rsSKUindv.next()) {
@@ -255,7 +251,6 @@ public class SP_POIN_RcvListView_Controller {
         }
 
         //update and check for partial or complete delivery
-        System.out.println("Updating quantity in POin_detail...");
         String getQtyIndv = "SELECT qty_remaining,qty_rcv,upc FROM POin_detail WHERE PONum = "+ PONum+ " ;";
         Statement stQtyIndv = connectDB.createStatement();
         ResultSet rsQtyIndv = stQtyIndv.executeQuery(getQtyIndv);
@@ -267,11 +262,10 @@ public class SP_POIN_RcvListView_Controller {
             ps.setString(1,"0");
             ps.setString(2, String.valueOf(remaining));
             ps.execute();
+            System.out.println("POin_detail updated.");
         }
-        System.out.println("POin_detail updated.");
-
         boolean st = false;
-        String getValues = "SELECT qty_remaining FROM POin_detail WHERE PONum = "+ PONum;
+        String getValues = "SELECT * FROM POin_detail WHERE PONum = "+ PONum;
         Statement statement = connectDB.createStatement();
         ResultSet queryResult = statement.executeQuery(getValues);
 
@@ -282,7 +276,6 @@ public class SP_POIN_RcvListView_Controller {
         }
 
         //update status in POin
-        System.out.println("Updating PO status...");
         String update = "";
         if(!st){
             update = "Fully received";
@@ -298,9 +291,7 @@ public class SP_POIN_RcvListView_Controller {
         String appBy = "UPDATE POin_rcv SET approvedBy = '" + Username + "' WHERE DONum = " + DONum;
         PreparedStatement psappBy = connectDB.prepareStatement(appBy);
         psappBy.execute();
-        System.out.println("POin updated.");
 
-        System.out.println("Closing window...");
         closeWindow(event);
     }
 
@@ -314,6 +305,7 @@ public class SP_POIN_RcvListView_Controller {
 
             Navigation nav = new Navigation();
             nav.stageSetup(event, root);
+            System.out.println("Closing window...");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -326,6 +318,8 @@ public class SP_POIN_RcvListView_Controller {
 
 
     void generateNewSKU(String upc, int qty) throws SQLException {
+        DatabaseConnection con = new DatabaseConnection();
+        Connection connectDB = con.getConnection();
         String prod_nameSKU = "";
         String upcSKU = "";
 
@@ -354,7 +348,6 @@ public class SP_POIN_RcvListView_Controller {
                 for(int i = 0;i<qty;i++) {
                     //sku result
                     String result = prod_nameSKU + upcSKU + i;
-                    System.out.println("Sku generated:" + result);
 
                     //check upc location
                     boolean locFilled = false;
@@ -410,6 +403,8 @@ public class SP_POIN_RcvListView_Controller {
     }
 
     void generateExistingSKU(String upc, int qty) throws SQLException {
+        DatabaseConnection con = new DatabaseConnection();
+        Connection connectDB = con.getConnection();
 
             //get latest sku
             String getSKUIndv = "SELECT sku FROM product_indv WHERE upc = '" + upc + "' ORDER BY length(sku) DESC, sku DESC LIMIT 1";

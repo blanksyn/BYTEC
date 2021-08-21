@@ -94,7 +94,7 @@ public class SP_POIN_POVIEW_Controller {
             DatabaseConnection con = new DatabaseConnection();
             Connection connectDB = con.getConnection();
 
-            String getValues = "SELECT upc,qty_ordered,qty_rcv,qty_remaining FROM POin_detail WHERE PONum = "+ PONum;
+            String getValues = "SELECT * FROM POin_detail WHERE PONum = "+ PONum;
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 

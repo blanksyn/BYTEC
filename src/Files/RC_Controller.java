@@ -76,16 +76,13 @@ public class RC_Controller {
 
     @FXML
     void initialize(){
-        this.Username = Main_Controller.user;
-        //System.out.println("RC user: " + Username);
-        welcomeMsg(Username);
         int count = 1;
 
         try{
             DatabaseConnection con = new DatabaseConnection();
             Connection connectDB = con.getConnection();
 
-            String getValues = "SELECT PONum,supplier,orderBy,order_date,status,eta FROM POin WHERE status != 'Fully received' AND status != 'Not Approved' ORDER BY order_date ASC";
+            String getValues = "SELECT * FROM POin WHERE status != 'Fully received' AND status != 'Not Approved' ORDER BY order_date ASC";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 

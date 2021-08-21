@@ -69,9 +69,6 @@ public class RC_POView_Controller {
 
     ObservableList<POin> rcvOb = FXCollections.observableArrayList();
 
-    DatabaseConnection con = new DatabaseConnection();
-    Connection connectDB = con.getConnection();
-
     @FXML
     void initialize(String username,String PONum,String supplier){
         welcomeLabel.setText("User: "+ username);
@@ -84,6 +81,8 @@ public class RC_POView_Controller {
 
 
         try{
+            DatabaseConnection con = new DatabaseConnection();
+            Connection connectDB = con.getConnection();
 
             String getValues = "SELECT upc,qty_ordered,qty_rcv,qty_remaining FROM POin_detail WHERE PONum = '" +PONum +"' AND qty_remaining != '0'";
             Statement statement = connectDB.createStatement();
@@ -148,21 +147,14 @@ public class RC_POView_Controller {
         tbl_PO.setItems(rcvOb);
 
         tbl_PO.setEditable(true);
-        try {
-            col_qtyRcv.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-            col_qtyRcv.setOnEditCommit(e -> {
 
-                System.out.println("Alert here");
+        col_qtyRcv.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        try {
+            col_qtyRcv.setOnEditCommit(e -> {
                 e.getTableView().getItems().get(e.getTablePosition().getRow()).setQty_rcv(e.getNewValue());
             });
         }catch (NumberFormatException ex){
             System.out.println("Invalid number format");
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Warning alert");
-            alert.setHeaderText("Invalid format:");
-            alert.setContentText("Enter only integer values!");
-
-            alert.showAndWait();
         }
 
         FilteredList<POin> filteredData = new FilteredList<>(rcvOb, b-> true);
@@ -225,6 +217,8 @@ public class RC_POView_Controller {
     @FXML
     void update(ActionEvent event) throws SQLException {
 
+        DatabaseConnection con = new DatabaseConnection();
+        Connection connectDB = con.getConnection();
         String DOnum = "";
 
         TextInputDialog DO = new TextInputDialog();
@@ -242,14 +236,11 @@ public class RC_POView_Controller {
             PreparedStatement pstDet = connectDB.prepareStatement(updateDet);
 
             //update status on POin
-            System.out.println("Updating status...");
             String updateStat = "UPDATE POin SET status = 'Not Approved' WHERE PONum = '"+PONum+"';";
             PreparedStatement pstStat = connectDB.prepareStatement(updateStat);
             pstStat.execute();
-            System.out.println("Status updated.");
 
             //insert values to POin_rcv
-            System.out.println("Inserting data into POin_rcv...");
             String updateVal = "INSERT INTO POin_rcv (PONum,DONum,upc,qty,rcvBy,date_rcv,expiry_date) VALUES (?,?,?,?,?,?,?) ;" ;
             PreparedStatement pstupdateVal = connectDB.prepareStatement(updateVal);
 
@@ -267,14 +258,14 @@ public class RC_POView_Controller {
                 pstDet.setString(2,p.upc);
                 pstDet.execute();
             }
-            System.out.println("Database updated.");
 
-            System.out.println("Closing window...");
             closeWindow(event);
-
+            System.out.println("Database updated.");
         }
 
+
     }
+
 
     @FXML
     void editQtyRcv(ActionEvent event) {

@@ -70,7 +70,7 @@ public class SP_productMgt_ML_detail_Controller {
             DatabaseConnection con = new DatabaseConnection();
             Connection connectDB = con.getConnection();
 
-            String getValues = "SELECT date_added,sku,location,expiry_date FROM product_indv WHERE upc = '"+ upc+ "' AND (status = 'standby' OR status ='Picked' OR status is null) ORDER BY upc ASC";
+            String getValues = "SELECT * FROM product_indv WHERE upc = '"+ upc+ "' AND (status != 'Delivered' OR status is null) ORDER BY upc ASC";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 

@@ -31,12 +31,29 @@ import java.util.Locale;
 
 public class SP_Controller {
 
+    @FXML
+    private Button closeBtn;
 
     @FXML
     private ImageView logoutBtn;
 
     @FXML
     private Label welcomeLabel;
+
+    @FXML
+    private Button pickListBtn;
+
+    @FXML
+    private Button WHEnvBtn;
+
+    @FXML
+    private Button POINBtn;
+
+    @FXML
+    private Button POOutBtn;
+
+    @FXML
+    private Button pickListBtn1;
 
     @FXML
     private TableView<POout> tbl_pickList;
@@ -69,6 +86,12 @@ public class SP_Controller {
     private TextField TF_keyword;
 
     @FXML
+    private Button searchBtn;
+
+    @FXML
+    private ComboBox<?> CB_field;
+
+    @FXML
     private Button createPickBtn;
 
     private double xOffset = 0;
@@ -77,20 +100,15 @@ public class SP_Controller {
 
     ObservableList<POout> pickList = FXCollections.observableArrayList();
 
-    DatabaseConnection con = new DatabaseConnection();
-    Connection connectDB = con.getConnection();
-
     @FXML
     void initialize(){
-        //initialise username and welcome message
-        this.Username = Main_Controller.user;
-        //System.out.println("SP user: " + Username);
-        welcomeMsg(Username);
-
         int count = 1;
 
         try{
-            String getValues = "SELECT PONum,SONum,company,date_created,ppBy,status,reject FROM POout WHERE status != 'Approved' AND status != 'Delivered' ORDER BY reject DESC, status ASC, date_created ASC";
+            DatabaseConnection con = new DatabaseConnection();
+            Connection connectDB = con.getConnection();
+
+            String getValues = "SELECT * FROM POout WHERE status != 'Approved' AND status != 'Delivered' ORDER BY reject DESC, status ASC, date_created ASC";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 
@@ -230,7 +248,7 @@ public class SP_Controller {
 
     public void welcomeMsg(String username){
         welcomeLabel.setText("User: "+ username);
-        this.Username = username;
+        Username = username;
     }
 
     @FXML
@@ -269,6 +287,10 @@ public class SP_Controller {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("SP_newPickList.fxml"));
             Parent root = loader.load();
 
+            SP_newPickList_Controller controllersp = loader.getController();
+            String PONum ="";
+            controllersp.welcomeMsg(Username, PONum);
+
             Navigation nav = new Navigation();
             nav.stageSetup(event,root);
 
@@ -281,6 +303,11 @@ public class SP_Controller {
     @FXML
     void logoutAcc(MouseEvent event) throws IOException {
         Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
+    }
+
+    @FXML
+    void searchFunction(ActionEvent event){
+
     }
 
 }

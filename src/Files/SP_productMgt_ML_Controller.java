@@ -113,7 +113,7 @@ public class SP_productMgt_ML_Controller {
             DatabaseConnection con = new DatabaseConnection();
             Connection connectDB = con.getConnection();
 
-            String getValues = "SELECT upc,prod_name,qty,unit,location,supplier,category,min_qty,max_qty,auto_restock_status,date_added FROM product_master ORDER BY upc ASC";
+            String getValues = "SELECT * FROM product_master ORDER BY upc ASC";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 

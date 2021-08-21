@@ -20,6 +20,8 @@ import java.sql.*;
 
 public class SP_editPickList_Controller {
 
+    @FXML
+    private Button closeBtn;
 
     @FXML
     private Label welcomeLabel;
@@ -58,6 +60,12 @@ public class SP_editPickList_Controller {
     private TextField TF_qty;
 
     @FXML
+    private Button addBtn;
+
+    @FXML
+    private Button orderBtn;
+
+    @FXML
     private TextField TF_compName;
 
     @FXML
@@ -67,22 +75,22 @@ public class SP_editPickList_Controller {
     private TextArea TA_compAdd;
 
     @FXML
-    private TextField TF_keyword;
+    private Button resetbtn;
 
     @FXML
     private Button deleteBtn;
 
     @FXML
-    private Button orderBtn;
+    private Label errorAdd;
+
+    @FXML
+    private TextField TF_keyword;
 
     private double xOffset = 0;
     private double yOffset = 0;
     private String Username, PONum ,SONum;
 
     ObservableList<product_indv> newList = FXCollections.observableArrayList();
-
-    DatabaseConnection con = new DatabaseConnection();
-    Connection connectDB = con.getConnection();
 
     @FXML
     void initialize(String username, String SONum){
@@ -94,9 +102,12 @@ public class SP_editPickList_Controller {
         CB_UPC.setEditable(true);
         CB_productName.setEditable(true);
 
+        DatabaseConnection con = new DatabaseConnection();
+        Connection connectDB = con.getConnection();
+
         //get PONum
         try {
-            String getValues = "SELECT PONum,status FROM POout WHERE SONum = '"+ SONum +"' LIMIT 1;";
+            String getValues = "SELECT PONum FROM POout WHERE SONum = '"+ SONum +"' LIMIT 1;";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 
@@ -104,11 +115,6 @@ public class SP_editPickList_Controller {
 
                 this.PONum = queryResult.getString("PONum");
                 TF_PONum.setText(PONum);
-
-                if(queryResult.getString("status").equals("Picking in Progress")){
-                    deleteBtn.setVisible(false);
-                    orderBtn.setVisible(false);
-                }
             }
         }catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -408,16 +414,15 @@ public class SP_editPickList_Controller {
         alert.setContentText("Confirm delete");
 
         if(alert.showAndWait().get()== ButtonType.OK) {
+            DatabaseConnection con = new DatabaseConnection();
+            Connection connectDB = con.getConnection();
 
             //delete PO entry
-            System.out.println("Deleting POout...");
             String deletePO = "DELETE FROM POout WHERE SONum = '" + SONum+"';";
             PreparedStatement ps = connectDB.prepareStatement(deletePO);
             ps.execute();
-            System.out.println("POout entry deleted");
 
             //change standby status to ''
-            System.out.println("Resetting SKU status");
             String getValues = "SELECT sku_scanned FROM pickingList_detail WHERE SONum = '" + SONum +"';";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
@@ -433,7 +438,7 @@ public class SP_editPickList_Controller {
                         pstDet.execute();
                     }
                 }
-                else {
+                else if(!queryResult.getString("sku_scanned").equals("") || queryResult.getString("sku_scanned") !=null) {
                     sku_scanned = queryResult.getString("sku_scanned");
                     String deletePLD = "UPDATE product_indv SET status = '' WHERE sku = '" + queryResult.getString("sku_scanned")+"';";
                     PreparedStatement pstDet = connectDB.prepareStatement(deletePLD);
@@ -441,40 +446,47 @@ public class SP_editPickList_Controller {
 
                 }
             }
-            System.out.println("SKU reset.");
 
             //delete all entry in picking list detail that has the PO number
-            System.out.println("Deleting entries in pickingList_detail...");
             String deletePLD = "DELETE FROM pickingList_detail WHERE SONum = '" + SONum+"';";
             PreparedStatement pstDet = connectDB.prepareStatement(deletePLD);
             pstDet.execute();
-            System.out.println("Entries deleted");
         }
 
-        System.out.println("Closing window...");
         closeWindow(event);
-
 
     }
 
     @FXML
     void editLIst(ActionEvent event) throws SQLException {
+        DatabaseConnection con = new DatabaseConnection();
+        Connection connectDB = con.getConnection();
 
+        String date_created ="";
+        String createdBy ="";
         String beforeStatus = "";
+        String delivery_date = "";
 
         //get original creator and original date
-        String getdate = "SELECT status FROM POout WHERE SONum = '" + SONum + "' LIMIT 1";
+        String getdate = "SELECT date_created,createdBy,status,delivery_date FROM POout WHERE SONum = '" + SONum + "' LIMIT 1";
         Statement statementDate = connectDB.createStatement();
         ResultSet queryResultDate = statementDate.executeQuery(getdate);
 
         while(queryResultDate.next()) {
+            date_created = queryResultDate.getString("date_created");
+            createdBy = queryResultDate.getString("createdBy");
             beforeStatus = queryResultDate.getString("status");
+            delivery_date = queryResultDate.getString("delivery_date");
         }
 
-        //edit all fields in db
+        //remove all fields in db
 
-        //reset status
-        System.out.println("Resetting status...");
+        //delete PO entry
+        String deletePO = "DELETE FROM POout WHERE SONum = '" + SONum+"';";
+        PreparedStatement ps = connectDB.prepareStatement(deletePO);
+        ps.execute();
+
+        //change standby status to ''
         if(beforeStatus.equals("Unpicked")){
             String getsku = "SELECT sku FROM pickingList_detail WHERE SONum = '" + SONum+"';";
             Statement stSku = connectDB.createStatement();
@@ -497,13 +509,12 @@ public class SP_editPickList_Controller {
                pstDet.execute();
             }
         }
-        System.out.println("Status reset.");
 
-        //delete all entry in picking list detail that has the SO number
-        System.out.println("Editing Sales Order...");
+        //delete all entry in picking list detail that has the PO number
         String deletePLD = "DELETE FROM pickingList_detail WHERE SONum = '" + SONum+"';";
         PreparedStatement pstDetail = connectDB.prepareStatement(deletePLD);
         pstDetail.execute();
+
 
         //recreate a new entry
         //send data to database
@@ -511,17 +522,22 @@ public class SP_editPickList_Controller {
         String comp_name = TF_compName.getText();
         String comp_add = TA_compAdd.getText();
 
-        //update POout
-        System.out.println("Updating POout...");
-        String upPOout = "UPDATE POout SET date_edited = ?,last_edit = ?  WHERE SONum = '" + SONum + "';";
-        PreparedStatement psPOout = connectDB.prepareStatement(upPOout);
-        psPOout.setString(1, String.valueOf(java.time.LocalDate.now()));
-        psPOout.setString(2,Username);
-        psPOout.execute();
-        System.out.println("POout updated.");
+        //insert new PO in POout
+        String insertData = "INSERT INTO POout (PONum,company,company_add,date_created,createdBy,status,last_edit,date_edited,delivery_date,SONum) VALUES (?,?,?,?,?,?,?,?,?,?);";
+        PreparedStatement pst = connectDB.prepareStatement(insertData);
+        pst.setString(1, PO);
+        pst.setString(2,comp_name);
+        pst.setString(3,comp_add);
+        pst.setString(4, date_created);
+        pst.setString(5,createdBy);
+        pst.setString(6, beforeStatus);
+        pst.setString(7,Username);
+        pst.setString(8,String.valueOf(java.time.LocalDate.now()));
+        pst.setString(9,delivery_date);
+        pst.setString(10,SONum);
+        pst.execute();
 
         //insert new data into pickingList _detail
-        System.out.println("Editting pickingList_detail...");
         String insertDataDet = "INSERT INTO pickingList_detail (SONum,company,date_created,upc,prod_name,sku) VALUES (?,?,?,?,?,?);";
         PreparedStatement pstDet = connectDB.prepareStatement(insertDataDet);
         for(product_indv p:newList){
@@ -536,27 +552,21 @@ public class SP_editPickList_Controller {
             pstDet.setString(6, sku);
             pstDet.execute();
         }
-        System.out.println("PickingList updated.");
 
         //update status
-        System.out.println("Updating product status...");
         String updateDataDet = "UPDATE product_indv SET status = 'standby' WHERE sku = ?";
         PreparedStatement pstDetUP = connectDB.prepareStatement(updateDataDet);
         for(product_indv p:newList){
             pstDetUP.setString(1, p.sku);
             pstDetUP.execute();
         }
-        System.out.println("Status updated.");
 
-        System.out.println("Closing window...");
         closeWindow(event);
     }
 
     @FXML
     void resetList(ActionEvent event) {
         newList.clear();
-        System.out.println("List cleared.");
     }
-
 
 }
