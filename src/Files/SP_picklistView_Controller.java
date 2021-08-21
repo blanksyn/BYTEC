@@ -15,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import javax.sound.midi.SysexMessage;
 import java.sql.*;
 
 public class SP_picklistView_Controller {
@@ -200,17 +201,21 @@ public class SP_picklistView_Controller {
         ps.setString(1,DO);
         ps.execute();
 
+        System.out.println("Updating DONum...");
+        for(POout p:pickList){
+            //update picking list status to approved
+            String updateDO = "UPDATE pickingList_detail SET DONum = ? WHERE sku_scanned = '"+ p.sku_scanned + "'";
+            PreparedStatement upDO = connectDB.prepareStatement(updateDO);
+            upDO.setString(1,DO);
+            upDO.execute();
+        }
+        System.out.println("DONum updated.");
+
         //update product_indv status
         String getProd = "SELECT sku,sku_scanned,upc FROM pickingList_detail WHERE SONum = " +SONum +" AND (DONum ='' or DONum is null)";
         Statement stProd = connectDB.createStatement();
         ResultSet rsProd = stProd.executeQuery(getProd);
         while(rsProd.next()) {
-
-            //update picking list status to approved
-            String updateDO = "UPDATE pickingList_detail SET DONum = ? WHERE sku_scanned = '"+ rsProd.getString("sku_scanned") + "'";
-            PreparedStatement upDO = connectDB.prepareStatement(updateDO);
-            ps.setString(1,DO);
-            ps.execute();
 
             //update new scanned sku with packed
             String upProdSKU = "UPDATE product_indv SET status = 'Packed' WHERE sku = '" + rsProd.getString("sku_scanned") + "';";
