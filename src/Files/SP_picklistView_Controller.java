@@ -206,6 +206,12 @@ public class SP_picklistView_Controller {
         ResultSet rsProd = stProd.executeQuery(getProd);
         while(rsProd.next()) {
 
+            //update picking list status to approved
+            String updateDO = "UPDATE pickingList_detail SET DONum = ? WHERE sku_scanned = '"+ rsProd.getString("sku_scanned") + "'";
+            PreparedStatement upDO = connectDB.prepareStatement(updateDO);
+            ps.setString(1,DO);
+            ps.execute();
+
             //update new scanned sku with packed
             String upProdSKU = "UPDATE product_indv SET status = 'Packed' WHERE sku = '" + rsProd.getString("sku_scanned") + "';";
             PreparedStatement psUpProdSKU = connectDB.prepareStatement(upProdSKU);
