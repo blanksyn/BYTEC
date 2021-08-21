@@ -90,7 +90,7 @@ public class WM_WHEnv_whSpace_Controller extends WM implements Initializable{
         cbName_Convention.setVisible(false);
         
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            //DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT DISTINCT name FROM storage;");
             ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT DISTINCT name, name_conv FROM storage;");
             while (rs.next()) {

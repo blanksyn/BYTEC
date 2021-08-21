@@ -141,6 +141,8 @@ public class WM_POIN_create_Controller extends WM implements Initializable{
     @FXML
     void fill_cb(ActionEvent event) {
         String supName = CB_supplier.getValue();
+        CB_UPC.getItems().clear();
+        CB_productName.getItems().clear();
 
         try {
             //fill combobox
@@ -439,7 +441,7 @@ public class WM_POIN_create_Controller extends WM implements Initializable{
     void orderProducts(ActionEvent event) throws SQLException{
         String PONum = " ";
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            //DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT MAX(PONum) as MaxPO FROM POin;");
             while (rs.next()) {
                 int maxPO = 0;

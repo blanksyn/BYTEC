@@ -58,7 +58,7 @@ public class WM_editAcc_Controller extends WM implements Initializable{
         welcome(welcomeLabel);
 
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            //DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT DISTINCT role FROM accounts;");
             while (rs.next()) {
                 cb_role.getItems().add(rs.getString("role"));

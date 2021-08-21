@@ -44,12 +44,12 @@ import javafx.scene.control.Label;
 public class WM extends User{
     double xOffset = 0;
     double yOffset = 0;
-
+    DatabaseConnection con = new DatabaseConnection();
+    Connection connectDB = con.getConnection();
 
     public void welcome(Label welcomeLabel){
         try{
-            DatabaseConnection con = new DatabaseConnection();
-            Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT employeeID FROM accounts WHERE type = 'WM';");
             while (rs.next()) {
                 String username = "User: " + rs.getString("employeeID");
@@ -129,7 +129,7 @@ public class WM extends User{
         });
         tableAccount.setItems(ObserveList);
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, employeeID, name, type, role, location, date_created FROM accounts WHERE " +
             "sn LIKE '%" + search + "%' or " +
             "employeeID LIKE '%" + search + "%' or " +
@@ -208,7 +208,6 @@ public class WM extends User{
         {
             String check = "no";
             try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT employeeID FROM accounts;");
             while (rs.next()) {
                 if(employeeID.equals(rs.getString("employeeID"))){
@@ -238,7 +237,7 @@ public class WM extends User{
                 if(action.get() == ButtonType.OK)
                 {
                     try{
-                        DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                        
                         ResultSet rs = connectDB.createStatement().executeQuery("SELECT MAX(SN) as MaxSN FROM accounts;");
                         while (rs.next()) {
                             int sna = rs.getInt("MaxSN");
@@ -297,7 +296,7 @@ public class WM extends User{
         cb_accType.getItems().add("Picker/Packer");
         cb_accType.getItems().add("Receiver");
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, employeeID, name, type, role, password FROM accounts WHERE (`SN` = '"+sn+"');");
             while (rs.next()) {
                 switch (rs.getString("type")) {
@@ -361,7 +360,7 @@ public class WM extends User{
             String check = "no";
             if(!oriEmpID.equals(employeeID)){
                 try{
-                DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                
                 ResultSet rs = connectDB.createStatement().executeQuery("SELECT employeeID FROM accounts;");
                 while (rs.next()) {
                     if(employeeID.equals(rs.getString("employeeID"))){
@@ -393,7 +392,7 @@ public class WM extends User{
                 if(action.get() == ButtonType.OK)
                 {
                     try{
-                        DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                        
                         PreparedStatement pst =connectDB.prepareStatement("UPDATE accounts SET employeeID = ?, name =?, type=?, role=?, password=? WHERE (`SN` = '"+sn+"');");
                         pst.setString(1,employeeID);
                         pst.setString(2,name);
@@ -446,7 +445,7 @@ public class WM extends User{
         if(action.get() == ButtonType.OK)
         {
             try{
-                DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                
                 PreparedStatement pst =connectDB.prepareStatement("DELETE FROM accounts WHERE SN = '"+sn+"';");                
                 pst.execute();
                 
@@ -526,7 +525,7 @@ public class WM extends User{
                                         Optional<ButtonType> action = alert.showAndWait();
                                         if(action.get() == ButtonType.OK){
                                             try{
-                                                DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                                                
                                                 PreparedStatement pst =connectDB.prepareStatement("DELETE FROM courier WHERE SN = '"+sn+"';");                
                                                 pst.execute();
 
@@ -576,7 +575,7 @@ public class WM extends User{
         });
         tableAccount.setItems(ObserveList);
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, name FROM courier WHERE sn LIKE '%" + search + "%' OR name LIKE '%" + search + "%' ORDER BY sn ASC;");
             while (rs.next()) {
                 ObserveList.add(new setup_courier(rs.getInt("sn"), rs.getString("name")));
@@ -605,7 +604,7 @@ public class WM extends User{
         {
             String check = "no";
             try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT name FROM courier;");
             while (rs.next()) {
                 if((name.toLowerCase()).equals((rs.getString("name").toLowerCase())) || (name.toUpperCase()).equals((rs.getString("name")).toUpperCase())){
@@ -627,7 +626,7 @@ public class WM extends User{
                 if(action.get() == ButtonType.OK)
                 {
                     try{
-                        DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                        
                         ResultSet rs = connectDB.createStatement().executeQuery("SELECT MAX(SN) as MaxSN FROM courier;");
                         while (rs.next()) {
                             int sna = rs.getInt("MaxSN");
@@ -740,7 +739,7 @@ public class WM extends User{
         });
         tableAccount.setItems(ObserveList);
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, name, email, contact_number FROM supplier "
                     + "WHERE sn LIKE '%"+search+"%' or name LIKE '%"+search+"%' or email LIKE '%"+search+"%' or contact_number LIKE '%"+search+"%' ORDER BY sn ASC;");
             while (rs.next()) {
@@ -780,7 +779,7 @@ public class WM extends User{
         {
             String check = "no";
             try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT name FROM supplier;");
             while (rs.next()) {
                 if((name.toLowerCase()).equals((rs.getString("name").toLowerCase())) || (name.toUpperCase()).equals((rs.getString("name")).toUpperCase())){
@@ -802,7 +801,7 @@ public class WM extends User{
                 if(action.get() == ButtonType.OK)
                 {
                     try{
-                        DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                        
                         ResultSet rs = connectDB.createStatement().executeQuery("SELECT MAX(SN) as MaxSN FROM supplier;");
                         while (rs.next()) {
                             int sna = rs.getInt("MaxSN");
@@ -854,7 +853,7 @@ public class WM extends User{
     //View Edit Information for Supplier for WM
     public void editViewSupWM(int sn, TextField name, TextField email, TextField cn){
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, name, email, contact_number FROM supplier WHERE (`SN` = '"+sn+"');");
             while (rs.next()) {
                 name.setText(rs.getString("name"));
@@ -885,7 +884,7 @@ public class WM extends User{
             String check = "no";
             if(!oriName.equals(name)){
                 try{
-                DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                
                 ResultSet rs = connectDB.createStatement().executeQuery("SELECT name FROM supplier;");
                 while (rs.next()) {
                     if((name.toLowerCase()).equals((rs.getString("name").toLowerCase())) || (name.toUpperCase()).equals((rs.getString("name")).toUpperCase())){
@@ -907,7 +906,7 @@ public class WM extends User{
                 if(action.get() == ButtonType.OK)
                 {
                     try{
-                        DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                        
                         PreparedStatement pst =connectDB.prepareStatement("UPDATE supplier SET name = ?, email =?, contact_number=? WHERE (`SN` = '"+sn+"');");
                         pst.setString(1,name);
                         pst.setString(2,email);
@@ -917,6 +916,17 @@ public class WM extends User{
                     }catch(SQLException ex){
                         Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
                     }
+
+                    try{
+                        
+                        PreparedStatement pst =connectDB.prepareStatement("UPDATE product_master SET supplier = ? WHERE supplier = '"+oriName+"';");
+                        pst.setString(1,name);
+                        pst.execute();
+
+                    }catch(SQLException ex){
+                        Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+                    }
+                    
                     try{
                         Parent root = FXMLLoader.load(getClass().getResource("WM_WHEnv_supplierMgt.fxml"));
                         Stage loginStage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -957,7 +967,7 @@ public class WM extends User{
         if(action.get() == ButtonType.OK)
         {
             try{
-                DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                
                 PreparedStatement pst =connectDB.prepareStatement("DELETE FROM supplier WHERE SN = '"+sn+"';");                
                 pst.execute();
                 ResultSet rs = connectDB.createStatement().executeQuery("SELECT MAX(SN) as MaxSN FROM supplier;");
@@ -1066,7 +1076,7 @@ public class WM extends User{
         });
         tableAccount.setItems(ObserveList);
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn,location,length,width,height,vol,vol_avail FROM storage "
                     + "WHERE (sn LIKE '%"+search+"%' or location LIKE '%"+search+"%' or " +
                     "length LIKE '%"+search+"%' or width LIKE '%"+search+"%' or " +
@@ -1138,7 +1148,7 @@ public class WM extends User{
             
                 String check = "no";
                 /*try{
-                DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                
                 ResultSet rs = connectDB.createStatement().executeQuery("SELECT name,name_conv,column,level FROM storage;");
                 while (rs.next()) {
                     if(name.equals(rs.getString("name")) && name.equals(rs.getString("name_conv")) && name.equals(rs.getString("column")) && name.equals(rs.getString("level"))){
@@ -1162,7 +1172,7 @@ public class WM extends User{
                 {
                     for (int p = 1; p <= Integer.valueOf(qty); p++){
                         try{
-                                DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                                
                                 ResultSet rs = connectDB.createStatement().executeQuery("SELECT MAX(name_conv) as MaxN FROM storage WHERE name = '"+name+"';");
                                 while (rs.next()) {
                                     char nama;
@@ -1233,7 +1243,7 @@ public class WM extends User{
                                 }
                                     /*if(cbName_Convention.equals("Alphabetical")){
                                         try{
-                                            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                                            
                                             ResultSet rs = connectDB.createStatement().executeQuery("SELECT MAX(name_conv) as MaxN FROM storage;");
                                             while (rs.next()) {
                                                 if(rs.getString("MaxN").equals("null"))
@@ -1249,7 +1259,7 @@ public class WM extends User{
                                     }
                                     else{
                                         try{
-                                            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                                            
                                             ResultSet rs = connectDB.createStatement().executeQuery("SELECT MAX(name_conv) as MaxN FROM storage;");
                                             while (rs.next()) {
                                                 int nameCint = rs.getInt("MaxN") + 1;
@@ -1300,7 +1310,7 @@ public class WM extends User{
     //View Edit Information for Edit Acc for WM
     public void editViewStorageWM(String locName, TextField name, TextField length, TextField width, TextField height){
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT length, width, height FROM storage WHERE location like '" + locName + "%';");
             while (rs.next()) {
                 name.setText(locName);
@@ -1335,7 +1345,7 @@ public class WM extends User{
             String check = "no";
             if(!name.equals(locName)){
                 try{
-                    DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                    
                     String newName = name + " ";
                     String[] parts = newName.split(" ");
                     String newnewName = parts[0];
@@ -1365,7 +1375,7 @@ public class WM extends User{
                 if(action.get() == ButtonType.OK)
                 {
                     try{
-                        DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                        
                         
                         ResultSet rs7 = connectDB.createStatement().executeQuery("SELECT name, name_conv, level, col, location, vol, vol_avail FROM storage WHERE location like '" + locName + "%';");
                         while (rs7.next()) {
@@ -1449,7 +1459,7 @@ public class WM extends User{
         {
             
             try{
-                DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                
                 ResultSet rs7 = connectDB.createStatement().executeQuery("SELECT sn, name, location FROM storage WHERE location like '" + locName + "%';");
                 while (rs7.next()) {
                     String newName = locName + " ";
@@ -1531,7 +1541,7 @@ public class WM extends User{
             String check = "no";
             if(!name.equals(locName)){
                 try{
-                    DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                    
                     String newName = name + " ";
                     String[] parts = newName.split(" ");
                     String newnewName = parts[0];
@@ -1561,7 +1571,7 @@ public class WM extends User{
                 if(action.get() == ButtonType.OK)
                 {
                     try{
-                        DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                        
                         
                         ResultSet rs7 = connectDB.createStatement().executeQuery("SELECT name, name_conv, level, col, location, vol, vol_avail FROM storage WHERE location like '" + locName + "%';");
                         while (rs7.next()) {
@@ -1758,7 +1768,7 @@ public class WM extends User{
         });
         tableAccount.setItems(ObserveList);
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, upc, prod_name, qty, unit, location, supplier, category, min_qty, max_qty, auto_restock_status, date_added, volume FROM product_master "
                     + "WHERE (sn LIKE '%" + search + "%' or upc LIKE '%" + search + "%' or " +
                     "prod_name LIKE '%" + search + "%' or qty LIKE '%" + search + "%' or " +
@@ -1860,7 +1870,7 @@ public class WM extends User{
             String check = "no";
             Double volume = (Double.parseDouble(TF_length) * Double.parseDouble(TF_width) * Double.parseDouble(TF_height))/1000000;
             try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc, location FROM product_master;");
             ResultSet rs6 = connectDB.createStatement().executeQuery("SELECT vol_avail FROM storage WHERE location = '" + CB_location + "';");
             while (rs.next()) {
@@ -1891,7 +1901,7 @@ public class WM extends User{
                 if(action.get() == ButtonType.OK)
                 {
                     try{
-                        DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                        
                         ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT vol_avail, vol FROM storage WHERE location = '" + CB_location + "';");
                         while (rs2.next()){
                             int locMaxQty = 0;
@@ -2008,7 +2018,7 @@ public class WM extends User{
     public void editViewProdMasterWM(int sn, TextField TF_upc, TextField TF_name, TextField TF_maxQty, TextField TF_weight, TextField TF_length, TextField TF_width, TextField TF_height, TextField TF_minQty,
              TextArea TA_desc, ComboBox<String> CB_unit, ComboBox<String> CB_supplier, ComboBox<String> CB_cat, CheckBox checkBox_restock, TextField TF_fileLoc, ComboBox<String> CB_specialHand){
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, upc, prod_name, max_qty, weight, length, width, height, min_qty, "
                                             + "description, location, unit, supplier, category, special_handling, auto_restock_status FROM product_master WHERE (`SN` = '"+sn+"');");
             while (rs.next()) {
@@ -2095,7 +2105,7 @@ public class WM extends User{
             Double volume = (Double.parseDouble(TF_length) * Double.parseDouble(TF_width) * Double.parseDouble(TF_height))/1000000;
             if(!oriUPC.equals(TF_upc)){
                 try{
-                    DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                    
                     ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc, location FROM product_master;");
                     while (rs.next()) {
                         if(TF_upc.equals(rs.getString("upc"))){
@@ -2121,7 +2131,7 @@ public class WM extends User{
                 if(action.get() == ButtonType.OK)
                 {
                     try{
-                        DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                        
                         PreparedStatement pst =connectDB.prepareStatement("UPDATE product_master SET upc = ?, prod_name = ?, max_qty = ?, weight = ?, length = ?, width = ?, height = ?, min_qty = ?, "
                                             + "description = ?, unit = ?, supplier = ?, category = ?, special_handling = ?, auto_restock_status = ?, image_loc = ?, volume = ? WHERE (`upc` = '"+oriUPC+"');");
                         pst.setString(1,TF_upc); 
@@ -2222,7 +2232,7 @@ public class WM extends User{
         if(action.get() == ButtonType.OK)
         {
             try{
-                DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                
                 PreparedStatement pst =connectDB.prepareStatement("DELETE FROM product_master WHERE SN = '"+sn+"';");                
                 pst.execute();
                 ResultSet rs = connectDB.createStatement().executeQuery("SELECT MAX(SN) as MaxSN FROM product_master;");
@@ -2361,7 +2371,7 @@ public class WM extends User{
         });
         tableAccount.setItems(ObserveList);
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, sku, date_added, location, expiry_date FROM product_indv WHERE upc = '" + UPC + "' AND status is NULL ORDER BY sn ASC;");
             while (rs.next()) {
                 ObserveList.add(new product_indv(rs.getString("date_added"), rs.getInt("sn"), rs.getString("sku"), rs.getString("location"), rs.getString("expiry_date")));
@@ -2390,7 +2400,7 @@ public class WM extends User{
     //View Edit Information for Indv for WM
     public void editViewProdIndvWM(int sn, String sku, TextField TF_sku, ComboBox<String> CB_location, TextField TF_expDate){
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sku, location, expiry_date FROM product_indv WHERE SN = '"+sn+"' AND sku = '" + sku + "';");
             while (rs.next()) {
                 TF_sku.setText(rs.getString("Sku"));
@@ -2416,7 +2426,7 @@ public class WM extends User{
             String check = "no";
             if(!oriSKU.equals(TF_sku)){
                 try{
-                    DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                    
                     ResultSet rs = connectDB.createStatement().executeQuery("SELECT sku FROM product_indv;");
                     while (rs.next()) {
                         if(TF_sku.equals(rs.getString("sku"))){
@@ -2442,7 +2452,7 @@ public class WM extends User{
                 if(action.get() == ButtonType.OK)
                 {
                     try{
-                        DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                        
                         PreparedStatement pst =connectDB.prepareStatement("UPDATE product_indv SET sku = ?, location = ?, expiry_date = ? WHERE sku = '"+oriSKU+"' AND sn = '" + sn + "';");
                         pst.setString(1,TF_sku); 
                         pst.setString(2,CB_location); 
@@ -2550,7 +2560,7 @@ public class WM extends User{
         table.setItems(ObserveList);
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, supplier, orderBy, order_date, status FROM POin WHERE status != 'Not Approved' AND status != 'Fully Received'"
                     + "AND (sn LIKE '%" + search + "%' or " +
                     "PONum LIKE '%" + search + "%' or " +
@@ -2586,7 +2596,7 @@ public class WM extends User{
             TableColumn col_UPC, TableColumn col_prodName){
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc,qty_ordered,qty_rcv,qty_remaining FROM POin_detail WHERE PONum = '" + PONum +"';");
             while (rs.next()) {
                 ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT prod_name FROM product_master WHERE upc = '" + rs.getString("upc") +"';");
@@ -2697,7 +2707,7 @@ public class WM extends User{
         table.setItems(ObserveList);
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, supplier, orderBy, order_date, status FROM POin WHERE status = 'Not Approved by WM'"
                     + "AND (sn LIKE '%" + search + "%' or " +
                     "PONum LIKE '%" + search + "%' or " +
@@ -2733,7 +2743,7 @@ public class WM extends User{
         table.setItems(ObserveList);
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc,qty_ordered FROM POin_detail WHERE PONum = '" + PONum +"';");
             while (rs.next()) {
                 ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT prod_name FROM product_master WHERE upc = '" + rs.getString("upc") +"';");
@@ -2828,7 +2838,7 @@ public class WM extends User{
         table.setItems(ObserveList);
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth "
                     + "WHERE sn LIKE '%"+search+"%' or month LIKE '%"+search+"%' or " +
                     "year LIKE '%"+search+"%' or startDate LIKE '%"+search+"%' or endDate LIKE '%"+search+"%'");
@@ -2862,7 +2872,7 @@ public class WM extends User{
             TableColumn col_cat, TableColumn col_expDate){
         int count = 1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT startDate, endDate FROM ReportMonth WHERE month = '" + month + "' AND year = '" + year + "';");
             while (rs3.next()) {
                 ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc, sku, location, expiry_date FROM product_indv WHERE date_added <= '" + rs3.getDate("endDate") + "' AND (delivery_date >= '" + rs3.getDate("endDate") + "' OR delivery_date is NULL);");
@@ -2969,7 +2979,7 @@ public class WM extends User{
         table.setItems(ObserveList);
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth "
                     + "WHERE sn LIKE '%"+search+"%' or month LIKE '%"+search+"%' or " +
                     "year LIKE '%"+search+"%' or startDate LIKE '%"+search+"%' or endDate LIKE '%"+search+"%'");
@@ -3067,7 +3077,7 @@ public class WM extends User{
         table.setItems(ObserveList);
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT startDate, endDate FROM ReportMonth WHERE month = '" + month + "' AND year = '" + year + "';");
             while (rs3.next()) {
                 ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT DISTINCT PONum, date_rcv FROM POin_rcv WHERE date_rcv >= '" + rs3.getDate("startDate") + "' AND date_rcv < '" + rs3.getDate("endDate") + "';");
@@ -3105,7 +3115,7 @@ public class WM extends User{
             TableColumn col_UPC, TableColumn col_prodName){
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc, qty_ordered FROM POin_detail WHERE PONum = '" + PONum +"';");
             while (rs.next()) {
                 ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT prod_name FROM product_master WHERE upc = '" + rs.getString("upc") +"';");
@@ -3202,7 +3212,7 @@ public class WM extends User{
         table.setItems(ObserveList);
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth "
                     + "WHERE (sn LIKE '%"+search+"%' or month LIKE '%"+search+"%' or " +
                     "year LIKE '%"+search+"%' or startDate LIKE '%"+search+"%' or " +
@@ -3267,7 +3277,7 @@ public class WM extends User{
                                         String oriSup =(ObserveList.get(i).getSupplier());
                                         Date oriDate =(ObserveList.get(i).getOrderDate());
                                         try{
-                                            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                                            
                                             ResultSet rs = connectDB.createStatement().executeQuery("SELECT DISTINCT PONum FROM POin_rcv WHERE DONum = '" + oriDOnum + "';");
                                             while (rs.next()) {
                                                 oriPOnum = rs.getString("PONum");
@@ -3313,7 +3323,7 @@ public class WM extends User{
         table.setItems(ObserveList);
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT startDate, endDate FROM ReportMonth WHERE month = '" + month + "' AND year = '" + year + "';");
             while (rs3.next()) {
                 ResultSet rs = connectDB.createStatement().executeQuery("SELECT DISTINCT DONum, PONum, date_rcv FROM POin_rcv WHERE date_rcv >= '" + rs3.getDate("startDate") + "' AND date_rcv < '" + rs3.getDate("endDate") + "';");
@@ -3352,7 +3362,7 @@ public class WM extends User{
             TableColumn col_UPC, TableColumn col_prodName){
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc, qty FROM POin_detail WHERE DONum = '" + DONum +"';");
             while (rs.next()) {
                 ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT prod_name FROM product_master WHERE upc = '" + rs.getString("upc") +"';");
@@ -3446,7 +3456,7 @@ public class WM extends User{
         table.setItems(ObserveList);
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth "
                     + "WHERE sn LIKE '%"+search+"%' or month LIKE '%"+search+"%' or " +
                     "year LIKE '%"+search+"%' or startDate LIKE '%"+search+"%' or endDate LIKE '%"+search+"%'");
@@ -3545,7 +3555,7 @@ public class WM extends User{
         table.setItems(ObserveList);
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT startDate, endDate FROM ReportMonth WHERE month = '" + month + "' AND year = '" + year + "';");
             while (rs3.next()) {
                 ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, SONum, company, createdBy, date_created, delivery_date, status FROM POout "
@@ -3584,7 +3594,7 @@ public class WM extends User{
             TableColumn col_UPC, TableColumn col_prodName){
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc, prod_name, sku_scanned FROM pickingList_detail WHERE SONum = '" + SONum + "';");
             while (rs.next()) {
                 ObserveList.add(new POout(count, rs.getString("upc"), rs.getString("prod_name"), rs.getString("sku_scanned")));
@@ -3678,7 +3688,7 @@ public class WM extends User{
         table.setItems(ObserveList);
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, month, year, startDate, endDate FROM ReportMonth "
                     + "WHERE sn LIKE '%"+search+"%' or month LIKE '%"+search+"%' or " +
                     "year LIKE '%"+search+"%' or startDate LIKE '%"+search+"%' or endDate LIKE '%"+search+"%'");
@@ -3776,7 +3786,7 @@ public class WM extends User{
         table.setItems(ObserveList);
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT startDate, endDate FROM ReportMonth WHERE month = '" + month + "' AND year = '" + year + "';");
             while (rs3.next()) {
                 ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, DONum, SONum, company, createdBy, date_created, delivery_date, status FROM POout "
@@ -3815,7 +3825,7 @@ public class WM extends User{
             TableColumn col_UPC, TableColumn col_prodName){
         int count =1;
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc, prod_name, sku_scanned FROM pickingList_detail WHERE DONum = '" + DONum + "';");
             while (rs.next()) {
                 ObserveList.add(new POout(count, rs.getString("upc"), rs.getString("prod_name"), rs.getString("sku_scanned")));

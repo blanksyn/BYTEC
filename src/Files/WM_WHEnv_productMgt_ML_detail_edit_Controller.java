@@ -44,7 +44,7 @@ public class WM_WHEnv_productMgt_ML_detail_edit_Controller extends WM implements
     @Override
     public void initialize(URL url, ResourceBundle rb){welcome(welcomeLabel);
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            //DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             ResultSet rs4 = connectDB.createStatement().executeQuery("SELECT location FROM upc_location WHERE upc = '" + thisUPC + "';");
             while (rs4.next()) {
                 CB_location.getItems().add(rs4.getString("location"));

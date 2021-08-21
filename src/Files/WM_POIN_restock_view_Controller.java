@@ -89,7 +89,7 @@ public class WM_POIN_restock_view_Controller extends WM implements Initializable
         if(action.get() == ButtonType.OK)
         {
             try{
-                DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                //DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
                 PreparedStatement pst =connectDB.prepareStatement("UPDATE POin SET status = ? WHERE PONum = '"+thisoriPOnum+"';");
                 pst.setString(1,"Not Received"); 
                 pst.execute();
@@ -124,7 +124,7 @@ public class WM_POIN_restock_view_Controller extends WM implements Initializable
         if(action.get() == ButtonType.OK)
         {
             try{
-                DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                //DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
                 PreparedStatement pst =connectDB.prepareStatement("DELETE FROM POin WHERE PONum = '"+thisoriPOnum+"';");
                 pst.execute();
                 PreparedStatement pst2 =connectDB.prepareStatement("DELETE FROM POin_detail WHERE PONum = '"+thisoriPOnum+"';");

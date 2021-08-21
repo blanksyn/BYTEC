@@ -66,7 +66,7 @@ public class WM_WHEnv_productMgt_ML_editLocation_Controller extends WM implement
     @Override
     public void initialize(URL url, ResourceBundle rb){welcome(welcomeLabel);
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            //DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, location FROM upc_location WHERE upc = '" + thisOriUPC + "';");
             while (rs.next()) {
                 ObserveList.add(new prod_master(rs.getInt("sn"),rs.getString("location")));
@@ -99,7 +99,7 @@ public class WM_WHEnv_productMgt_ML_editLocation_Controller extends WM implement
                 {
                     //moreButton.getStyleClass().add("moreButton");
                     try{
-                        DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                        //DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
                         ResultSet rs4 = connectDB.createStatement().executeQuery("SELECT location FROM storage WHERE vol_avail > 0;");
                         while (rs4.next()) {
                             CBlocation.getItems().add(rs4.getString("location"));
@@ -128,7 +128,7 @@ public class WM_WHEnv_productMgt_ML_editLocation_Controller extends WM implement
                                         {
                                             String oriLoc =(ObserveList.get(i).getLocation());
                                             try{
-                                                DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+                                                //DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
                                                 ResultSet rs7 = connectDB.createStatement().executeQuery("SELECT location, max_qty FROM upc_location WHERE upc = '" + thisOriUPC + "' AND location = '" + oriLoc + "';");
                                                 while (rs7.next()) {
                                                     String originalLoc = rs7.getString("location");
@@ -177,7 +177,7 @@ public class WM_WHEnv_productMgt_ML_editLocation_Controller extends WM implement
     @FXML
     void cancel(ActionEvent event) {
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            //DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             String master_loc = "";
             ResultSet rs4 = connectDB.createStatement().executeQuery("SELECT location FROM upc_location WHERE upc >= '" + thisOriUPC + "';");
             while (rs4.next()) {

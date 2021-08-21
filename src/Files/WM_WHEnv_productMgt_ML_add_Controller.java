@@ -79,7 +79,7 @@ public class WM_WHEnv_productMgt_ML_add_Controller extends WM implements Initial
     @Override
     public void initialize(URL url, ResourceBundle rb){welcome(welcomeLabel);
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            //DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT DISTINCT unit FROM product_master;");
             ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT DISTINCT category FROM product_master;");
             ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT DISTINCT special_handling FROM product_master;");

@@ -91,7 +91,7 @@ public class WM_WHEnv_productMgt_ML_edit_Controller extends WM implements Initia
         welcome(welcomeLabel);
         TF_fileLoc.setVisible(false);
         try{
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            //DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             ResultSet rs = connectDB.createStatement().executeQuery("SELECT DISTINCT unit FROM product_master;");
             ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT DISTINCT category FROM product_master;");
             ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT DISTINCT special_handling FROM product_master;");

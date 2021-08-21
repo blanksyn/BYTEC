@@ -264,7 +264,7 @@ public class WM_Controller extends WM implements Initializable{
             String firstDate = year + "-" + String.valueOf(monthNum) + "-" + "01";
             String lastDate = year + "-" + String.valueOf(monthNum + 1) + "-" + "01";
             String check = "no";
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+            //DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             try{
                 ResultSet rs = connectDB.createStatement().executeQuery("SELECT month, year FROM ReportMonth");
                 while (rs.next()) {
@@ -293,8 +293,8 @@ public class WM_Controller extends WM implements Initializable{
         //Auto check stock on Monday 
         int firstDay = now.get(Calendar.DAY_OF_WEEK); //Monday = 2
         String times = "no";
-        if(firstDay == 2){
-            DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
+        if(firstDay == 7){
+            //DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             try{
                 ResultSet check = connectDB.createStatement().executeQuery("SELECT PONum FROM POin WHERE status = 'Not Approved by WM' AND order_date = '"+ String.valueOf(java.time.LocalDate.now()) +"';");
                 while (check.next()) {
