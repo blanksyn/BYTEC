@@ -1067,7 +1067,7 @@ public class WM extends User{
         tableAccount.setItems(ObserveList);
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT *  FROM storage "
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn,location,length,width,height,vol,vol_avail FROM storage "
                     + "WHERE (sn LIKE '%"+search+"%' or location LIKE '%"+search+"%' or " +
                     "length LIKE '%"+search+"%' or width LIKE '%"+search+"%' or " +
                     "height LIKE '%"+search+"%' or vol LIKE '%"+search+"%' or " +
@@ -2587,7 +2587,7 @@ public class WM extends User{
         int count =1;
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT * FROM POin_detail WHERE PONum = '" + PONum +"';");
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc,qty_ordered,qty_rcv,qty_remaining FROM POin_detail WHERE PONum = '" + PONum +"';");
             while (rs.next()) {
                 ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT prod_name FROM product_master WHERE upc = '" + rs.getString("upc") +"';");
                 while (rs2.next()) {
@@ -2698,7 +2698,7 @@ public class WM extends User{
         int count =1;
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, supplier, orderBy, order_date, status FROM POin WHERE status = 'Not Approved'"
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT sn, PONum, supplier, orderBy, order_date, status FROM POin WHERE status = 'Not Approved by WM'"
                     + "AND (sn LIKE '%" + search + "%' or " +
                     "PONum LIKE '%" + search + "%' or " +
                     "supplier LIKE '%" + search + "%' or " +
@@ -2734,7 +2734,7 @@ public class WM extends User{
         int count =1;
         try{
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
-            ResultSet rs = connectDB.createStatement().executeQuery("SELECT * FROM POin_detail WHERE PONum = '" + PONum +"';");
+            ResultSet rs = connectDB.createStatement().executeQuery("SELECT upc,qty_ordered FROM POin_detail WHERE PONum = '" + PONum +"';");
             while (rs.next()) {
                 ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT prod_name FROM product_master WHERE upc = '" + rs.getString("upc") +"';");
                 while (rs2.next()) {
