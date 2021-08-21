@@ -62,7 +62,7 @@ public class PP_Controller {
     @FXML
     void initialize(){
         this.Username = Main_Controller.user;
-        System.out.println("PP user: " + Username);
+        //System.out.println("PP user: " + Username);
         welcomeMsg(Username);
         int count = 1;
 

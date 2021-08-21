@@ -17,14 +17,13 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.util.IOUtils;
+import org.apache.poi.xssf.usermodel.*;
+import org.krysalis.barcode4j.impl.code128.Code128Bean;
+import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -257,6 +256,36 @@ public class RC_AppRcvList_view_Controller {
             XSSFRow row2 = sheet.createRow(index);
             row2.createCell(0).setCellValue(rcvList.get(i).sku);
             row2.createCell(1).setCellValue(rcvList.get(i).loc);
+
+            createImage(rcvList.get(i).sku,rcvList.get(i).sku);
+
+            //============= Inserting image - START
+            /* Read input PNG / JPG Image into FileInputStream Object*/
+            InputStream my_banner_image = new FileInputStream("./src/Barcodes/" + rcvList.get(i).sku + ".png");
+            /* Convert picture to be added into a byte array */
+            byte[] bytes = IOUtils.toByteArray(my_banner_image);
+            /* Add Picture to Workbook, Specify picture type as PNG and Get an Index */
+            int my_picture_id = wb.addPicture(bytes, wb.PICTURE_TYPE_PNG);
+            /* Close the InputStream. We are ready to attach the image to workbook now */
+            my_banner_image.close();
+            /* Create the drawing container */
+            XSSFDrawing drawing = (XSSFDrawing) sheet.createDrawingPatriarch();
+            /* Create an anchor point */
+            //============= Inserting image - END
+
+            //========adding image START
+            XSSFClientAnchor my_anchor = new XSSFClientAnchor();
+            /* Define top left corner, and we can resize picture suitable from there */
+
+            my_anchor.setCol1(2); //Column C
+            my_anchor.setRow1(row2.getRowNum()-1); //Row
+            my_anchor.setCol2(3); //Column D
+            my_anchor.setRow2(row2.getRowNum()+1); //Row
+
+            /* Invoke createPicture and pass the anchor point and ID */
+            XSSFPicture my_picture = drawing.createPicture(my_anchor, my_picture_id);
+            //========adding image END
+
             index++;
 
             XSSFRow blankSpace4 = sheet.createRow(index);
@@ -279,5 +308,25 @@ public class RC_AppRcvList_view_Controller {
         closeWindow(event);
     }
 
+    public static void createImage(String image_name,String myString)  {
+        try {
+            Code128Bean code128 = new Code128Bean();
+            code128.setHeight(15f);
+            code128.setModuleWidth(0.3);
+            code128.setQuietZone(10);
+            code128.doQuietZone(true);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            BitmapCanvasProvider canvas = new BitmapCanvasProvider(baos, "image/x-png", 300, BufferedImage.TYPE_BYTE_BINARY, false, 0);
+            code128.generateBarcode(canvas, myString);
+            canvas.finish();
+            //save as  png
+            FileOutputStream fos = new FileOutputStream("./src/Barcodes/"+image_name+".png",false);
+            fos.write(baos.toByteArray());
+            fos.flush();
+            fos.close();
+        } catch (Exception e) {
+            System.out.println("Unable to create barcode.");
+        }
+    }
 
 }
