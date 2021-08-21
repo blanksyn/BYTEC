@@ -292,63 +292,73 @@ public class WM_Controller extends WM implements Initializable{
         
         //Auto check stock on Monday 
         int firstDay = now.get(Calendar.DAY_OF_WEEK); //Monday = 2
+        String times = "no";
         if(firstDay == 2){
             DatabaseConnection con = new DatabaseConnection();Connection connectDB = con.getConnection();
             try{
-                ResultSet rs = connectDB.createStatement().executeQuery("SELECT DISTINCT supplier FROM product_master;");
-                while (rs.next()) {
-                    String PONum = " ";
-                    try{
-                        ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT MAX(PONum) as MaxPO FROM POin;");
-                        while (rs2.next()) {
-                            int maxPO = 0;
-                            if(rs2.getString("MaxPO") == null)
-                                maxPO = 9000;
-                            else
-                                maxPO = Integer.parseInt(rs2.getString("MaxPO"));
-                            int po = maxPO + 1;
-                            PONum = String.valueOf(po);
-                        }
-                    }catch(SQLException ex){
-                        Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
-                    }
-                    String check = "no";
-                    ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT qty, min_qty FROM product_master WHERE supplier = '" + rs.getString("supplier") + "' AND auto_restock_status = 'true';");
-                        while (rs3.next()) {
-                            if(rs3.getInt("qty") < rs3.getInt("min_qty")){
-                                check = "yes";
-                            }
-                    }
-                    if(check.equals("yes")){
-                        String newPOin = "INSERT INTO POin (PONum,supplier,orderBy,order_date,status,eta) VALUES (?,?,?,?,?,?);";
-                        PreparedStatement pst = connectDB.prepareStatement(newPOin);
-                        pst.setString(1,PONum);
-                        pst.setString(2,rs.getString("supplier"));
-                        pst.setString(3,"111");
-                        pst.setString(4,String.valueOf(java.time.LocalDate.now()));
-                        pst.setString(5,"Not Approved");
-                        pst.setString(6,String.valueOf(java.time.LocalDate.now().plusWeeks(1)));
-                        pst.execute();
-                        ResultSet rs4 = connectDB.createStatement().executeQuery("SELECT upc,qty, min_qty, max_qty FROM product_master WHERE supplier = '" + rs.getString("supplier") + "';");
-                        while (rs4.next()) {
-                            if(rs4.getInt("qty") < rs4.getInt("min_qty")){
-                                int qtyOrdered = rs4.getInt("max_qty") - rs4.getInt("qty");
-                                String newPOinDetail = "INSERT INTO POin_detail (PONum,upc,qty_ordered,qty_rcv,qty_remaining) VALUES (?,?,?,?,?);";
-                                PreparedStatement pstDet = connectDB.prepareStatement(newPOinDetail);
-                                pstDet.setString(1, PONum);
-                                pstDet.setString(2, rs4.getString("upc"));
-                                pstDet.setString(3, String.valueOf(qtyOrdered));
-                                pstDet.setString(4, "0");
-                                pstDet.setString(5, String.valueOf(qtyOrdered));
-                                pstDet.execute();
-                            }
-                        }
-                    }
+                ResultSet check = connectDB.createStatement().executeQuery("SELECT PONum FROM POin WHERE status = 'Not Approved by WM' AND order_date = '"+ String.valueOf(java.time.LocalDate.now()) +"';");
+                while (check.next()) {
+                   times = "yes";
                 }
             }catch(SQLException ex){
                 Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
             }
-            
+            if(times.equals("no")){
+                try{
+                    ResultSet rs = connectDB.createStatement().executeQuery("SELECT DISTINCT supplier FROM product_master;");
+                    while (rs.next()) {
+                        String PONum = " ";
+                        try{
+                            ResultSet rs2 = connectDB.createStatement().executeQuery("SELECT MAX(PONum) as MaxPO FROM POin;");
+                            while (rs2.next()) {
+                                int maxPO = 0;
+                                if(rs2.getString("MaxPO") == null)
+                                    maxPO = 9000;
+                                else
+                                    maxPO = Integer.parseInt(rs2.getString("MaxPO"));
+                                int po = maxPO + 1;
+                                PONum = String.valueOf(po);
+                            }
+                        }catch(SQLException ex){
+                            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+                        }
+                        String check = "no";
+                        ResultSet rs3 = connectDB.createStatement().executeQuery("SELECT qty, min_qty FROM product_master WHERE supplier = '" + rs.getString("supplier") + "' AND auto_restock_status = 'true';");
+                            while (rs3.next()) {
+                                if(rs3.getInt("qty") < rs3.getInt("min_qty")){
+                                    check = "yes";
+                                }
+                        }
+                        if(check.equals("yes")){
+                            String newPOin = "INSERT INTO POin (PONum,supplier,orderBy,order_date,status,eta) VALUES (?,?,?,?,?,?);";
+                            PreparedStatement pst = connectDB.prepareStatement(newPOin);
+                            pst.setString(1,PONum);
+                            pst.setString(2,rs.getString("supplier"));
+                            pst.setString(3,"111");
+                            pst.setString(4,String.valueOf(java.time.LocalDate.now()));
+                            pst.setString(5,"Not Approved by WM");
+                            pst.setString(6,String.valueOf(java.time.LocalDate.now().plusWeeks(1)));
+                            pst.execute();
+                            ResultSet rs4 = connectDB.createStatement().executeQuery("SELECT upc,qty, min_qty, max_qty FROM product_master WHERE supplier = '" + rs.getString("supplier") + "';");
+                            while (rs4.next()) {
+                                if(rs4.getInt("qty") < rs4.getInt("min_qty")){
+                                    int qtyOrdered = rs4.getInt("max_qty") - rs4.getInt("qty");
+                                    String newPOinDetail = "INSERT INTO POin_detail (PONum,upc,qty_ordered,qty_rcv,qty_remaining) VALUES (?,?,?,?,?);";
+                                    PreparedStatement pstDet = connectDB.prepareStatement(newPOinDetail);
+                                    pstDet.setString(1, PONum);
+                                    pstDet.setString(2, rs4.getString("upc"));
+                                    pstDet.setString(3, String.valueOf(qtyOrdered));
+                                    pstDet.setString(4, "0");
+                                    pstDet.setString(5, String.valueOf(qtyOrdered));
+                                    pstDet.execute();
+                                }
+                            }
+                        }
+                    }
+                }catch(SQLException ex){
+                    Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+                }
+            }
         }
     }
 
