@@ -183,6 +183,7 @@ public class RC_AppRcvList_view_Controller {
 
     @FXML
     void printLabel(ActionEvent event) throws IOException {
+        System.out.println("Creating labels...");
         XSSFWorkbook wb = new XSSFWorkbook();//for earlier version use HSSF
         XSSFSheet sheet = wb.createSheet("Labels - to print"+ DONum);
 
@@ -201,6 +202,7 @@ public class RC_AppRcvList_view_Controller {
         String[] colHeadings1 ={"SN","UPC","Product Name"};
         String[] colHeadings2 ={"SKU", "Location"};
 
+        System.out.println("Inserting data in workbook...");
         int index = 0;
         for (int i = 0; i<rcvList.size();i++){
 
@@ -292,6 +294,7 @@ public class RC_AppRcvList_view_Controller {
             index++;
 
         }
+        System.out.println("Data inserted successfully");
 
         for(int i=0; i<6;i++){
             sheet.autoSizeColumn(i);

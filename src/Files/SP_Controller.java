@@ -108,7 +108,7 @@ public class SP_Controller {
             DatabaseConnection con = new DatabaseConnection();
             Connection connectDB = con.getConnection();
 
-            String getValues = "SELECT * FROM POout WHERE status != 'Approved' AND status != 'Delivered' ORDER BY reject DESC, status ASC, date_created ASC";
+            String getValues = "SELECT PONum,SONum,company,date_created,ppBy,status,reject FROM POout WHERE status != 'Approved' AND status != 'Delivered' ORDER BY reject DESC, status ASC, date_created ASC";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
 
@@ -248,7 +248,7 @@ public class SP_Controller {
 
     public void welcomeMsg(String username){
         welcomeLabel.setText("User: "+ username);
-        Username = username;
+        this.Username = username;
     }
 
     @FXML
@@ -287,10 +287,6 @@ public class SP_Controller {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("SP_newPickList.fxml"));
             Parent root = loader.load();
 
-            SP_newPickList_Controller controllersp = loader.getController();
-            String PONum ="";
-            controllersp.welcomeMsg(Username, PONum);
-
             Navigation nav = new Navigation();
             nav.stageSetup(event,root);
 
@@ -305,9 +301,5 @@ public class SP_Controller {
         Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
     }
 
-    @FXML
-    void searchFunction(ActionEvent event){
-
-    }
 
 }

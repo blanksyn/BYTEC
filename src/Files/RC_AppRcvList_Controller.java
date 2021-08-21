@@ -220,9 +220,5 @@ public class RC_AppRcvList_Controller {
         Navigation nav = new Navigation(); nav.logout(event,logoutBtn);
     }
 
-    @FXML
-    void searchFunction(ActionEvent event) {
-
-    }
 
 }

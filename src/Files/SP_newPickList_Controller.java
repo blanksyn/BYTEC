@@ -82,8 +82,17 @@ public class SP_newPickList_Controller {
     ObservableList<product_indv> newList = FXCollections.observableArrayList();
     ObservableList<product_indv> temp = FXCollections.observableArrayList();
 
+    DatabaseConnection con = new DatabaseConnection();
+    Connection connectDB = con.getConnection();
+
     @FXML
     void initialize(){
+        this.PONum = "";
+
+        //initialise username and welcome message
+        this.Username = Main_Controller.user;
+        welcomeMsg(Username);
+
         CB_UPC.setEditable(true);
         CB_productName.setEditable(true);
         TF_PONum.setText(PONum);
@@ -92,9 +101,6 @@ public class SP_newPickList_Controller {
 
         try {
             //fill combobox
-            DatabaseConnection con = new DatabaseConnection();
-            Connection connectDB = con.getConnection();
-
             String getValues = "SELECT upc,prod_name FROM product_master";
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(getValues);
@@ -122,10 +128,9 @@ public class SP_newPickList_Controller {
         });
     }
 
-    public void welcomeMsg(String username, String PONum){
+    public void welcomeMsg(String username){
         welcomeLabel.setText("User: "+ username);
         Username = username;
-        this.PONum = PONum;
     }
 
 
@@ -147,9 +152,6 @@ public class SP_newPickList_Controller {
         if(prod_name==null){
             prod_name="";
         }
-
-        DatabaseConnection con = new DatabaseConnection();
-        Connection connectDB = con.getConnection();
 
         if(TF_qty.getText() == null || TF_qty.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -356,8 +358,6 @@ public class SP_newPickList_Controller {
 
     @FXML
     void orderProducts(ActionEvent event) throws SQLException {
-        DatabaseConnection con = new DatabaseConnection();
-        Connection connectDB = con.getConnection();
 
         for(product_indv p:temp){
             getProd(p.upc, p.qty);
@@ -408,32 +408,21 @@ public class SP_newPickList_Controller {
                 pstDet.setString(5, prod_name);
                 pstDet.setString(6, sku);
                 pstDet.execute();
+                System.out.println("Data inserted into pickingList_detail for sku: "+ p.sku);
             }
+            System.out.println("Data inserted into pickingList_detail.");
 
             //update status
+            System.out.println("Updating product status...");
             String updateDataDet = "UPDATE product_indv SET status = 'standby' WHERE sku = ?";
             PreparedStatement pstDetUP = connectDB.prepareStatement(updateDataDet);
             for (product_indv p : newList) {
                 pstDetUP.setString(1, p.sku);
                 pstDetUP.execute();
+                System.out.println("Status updated for: " + p.sku);
             }
             System.out.println("Status successfully updated.");
 
-            //find current quantity in master list and update
-            for (product_indv p : newList) {
-                String getValues = "SELECT qty FROM product_master WHERE upc = '" + p.upc + "';";
-                Statement statement = connectDB.createStatement();
-                ResultSet queryResult = statement.executeQuery(getValues);
-
-                while (queryResult.next()) {
-                    int num = queryResult.getInt("qty");
-                    num--;
-                    String updateQty = "UPDATE product_master SET qty = '" + num + "' WHERE upc = '" + p.upc + "';";
-                    PreparedStatement pstQty = connectDB.prepareStatement(updateQty);
-                    pstQty.execute();
-                    System.out.println("Master list quantity successfully updated.");
-                }
-            }
 
             System.out.println("New sales order created.");
 
